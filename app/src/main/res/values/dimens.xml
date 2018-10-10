@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="padding_to_parent">15dp</dimen>
+    <dimen name="space_between_elements">10dp</dimen>
+
+    <dimen name="small_space_between_items">5dp</dimen>
+</resources>

@@ -1,10 +1,35 @@
 <resources>
     <string name="app_name">Real Estate Manager</string>
 
+    <!-- POPUP TITLE PERM -->
+    <string name="popup_title_permission_files_access">This application needs permissions to access your images</string>
+
     <!-- MENU -->
     <string name="menu_add_text">Add</string>
     <string name="menu_edit_text">Edit</string>
     <string name="menu_search_text">Search</string>
+
+    <!-- ACTIVITY/FRAGMENT TITLE -->
+    <string name="activity_add_title">New estate</string>
+
+    <!-- ADD ACTIVITY -->
+    <string name="activity_add_estate_type_hint">Choose the estate type</string>
+    <string name="activity_add_estate_price_hint">Estate price</string>
+    <string name="activity_add_estate_surface_hint">Estate surface</string>
+    <string name="activity_add_estate_room_number_hint">Rooms number</string>
+    <string name="activity_add_estate_desc_hint">Description</string>
+    <string name="activity_add_estate_date_hint">Estate market entry date</string>
+
+    <string name="activity_add_estate_choose_pic">Choose picture</string>
+    <string name="activity_add_estate_take_pic">Take picture</string>
+
+    <!-- ESTATE TYPE -->
+    <string-array name="estate_type">
+        <item>FLAT</item>
+        <item>HOUSE</item>
+        <item>DUPLEX</item>
+        <item>PENTHOUSE</item>
+    </string-array>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
