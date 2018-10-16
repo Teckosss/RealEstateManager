@@ -2,24 +2,29 @@ package com.openclassrooms.realestatemanager.Controller.Activities
 
 import android.Manifest
 import android.app.DatePickerDialog
-import android.app.PendingIntent.getActivity
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
-import android.graphics.Bitmap
+import android.location.Address
 import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.MediaStore
+import android.support.design.widget.TextInputEditText
+import android.support.design.widget.TextInputLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.Toolbar
 import android.util.Log
 import android.view.View
-import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.LinearLayout
+import android.widget.PopupMenu
+import butterknife.BindView
 import butterknife.ButterKnife
-import butterknife.OnClick
-import butterknife.OnItemSelected
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
+import com.openclassrooms.realestatemanager.Controller.ViewModel.EstateViewModel
 import com.openclassrooms.realestatemanager.Controller.Views.ActivityAddAdapter
+import com.openclassrooms.realestatemanager.Di.Injection
+import com.openclassrooms.realestatemanager.Models.Estate
+import com.openclassrooms.realestatemanager.Models.Location
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.Utils.ItemClickSupport
 import com.openclassrooms.realestatemanager.Utils.Utils
@@ -27,7 +32,6 @@ import kotlinx.android.synthetic.main.activity_add.*
 import kotlinx.android.synthetic.main.toolbar.*
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
-import java.net.URI
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -42,18 +46,23 @@ class AddActivity : AppCompatActivity(), ActivityAddAdapter.Listener {
     private lateinit var images:ArrayList<Uri>
     private lateinit var uriImageSelected:Uri
 
+    private lateinit var estateViewModel:EstateViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add)
         ButterKnife.bind(this)
 
+        this.estateViewModel = ViewModelProviders.of(this,Injection.provideViewModelFactory(this)).get(EstateViewModel::class.java)
+
         this.configureToolbar()
-        this.populateSpinner()
         this.setOnClickListener()
         this.populateWithTodayDate()
         this.configureRecyclerView()
         this.configureOnClickRecyclerView()
     }
+
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -71,17 +80,6 @@ class AddActivity : AppCompatActivity(), ActivityAddAdapter.Listener {
         ab!!.setDisplayHomeAsUpEnabled(true)
     }
 
-    private fun populateSpinner(){
-        ArrayAdapter.createFromResource(
-                this,
-                R.array.estate_type,
-                android.R.layout.simple_spinner_item
-        ).also{
-            adapter -> adapter.setDropDownViewResource(android.R.layout.simple_spinner_item)
-            spinner.adapter = adapter
-        }
-    }
-
     private fun configureRecyclerView() {
         this.images = ArrayList()
         this.adapter = ActivityAddAdapter(this.images,this)
@@ -92,6 +90,8 @@ class AddActivity : AppCompatActivity(), ActivityAddAdapter.Listener {
     private fun setOnClickListener(){
         add_activity_date.setOnClickListener{this.displayDatePicker()}
         add_activity_choose_pic.setOnClickListener{this.onClickAddFile()}
+        add_activity_spinner.setOnClickListener{this.displayPopupMenu()}
+        add_activity_save.setOnClickListener{this.saveEstateToDatabase()}
     }
 
     // -------------------
@@ -123,6 +123,13 @@ class AddActivity : AppCompatActivity(), ActivityAddAdapter.Listener {
         datePickerDialog.show()
     }
 
+    private fun displayPopupMenu(){
+        val popupMenu = PopupMenu(this,add_activity_spinner)
+        popupMenu.menuInflater.inflate(R.menu.popup_menu_estate_type,popupMenu.menu)
+        popupMenu.setOnMenuItemClickListener { item -> add_activity_spinner.setText(item.title); true}
+        popupMenu.show()
+    }
+
     private fun populateWithTodayDate(){add_activity_date.setText(Utils.getTodayDate())}
 
     // --------------------
@@ -140,12 +147,64 @@ class AddActivity : AppCompatActivity(), ActivityAddAdapter.Listener {
 
     private fun configureOnClickRecyclerView() {
         ItemClickSupport.addTo(add_activity_recycler_view, R.layout.activity_add_item)
-                .setOnItemClickListener { recyclerView, position, v -> Log.e("TAG", "Position : $position") }
+                .setOnItemClickListener { recyclerView, position, v ->
+                    Log.e("TAG", "Position : $position")
+                    //createDescBlock()
+                }
     }
 
     override fun onClickDeleteButton(position: Int) {
         images.removeAt(position)
         adapter.notifyDataSetChanged()
+    }
+
+    private fun createDescBlock(){
+        val textInputLayout = TextInputLayout(this)
+        textInputLayout.id = View.generateViewId()
+        val textInputLayoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+        textInputLayout.layoutParams = textInputLayoutParams
+
+        val textInputEditText = TextInputEditText(textInputLayout.context)
+        textInputEditText.id = View.generateViewId()
+        val editTextParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT)
+        textInputEditText.layoutParams = editTextParams
+
+        textInputLayout.addView(textInputEditText,editTextParams)
+
+        add_activity_container.addView(textInputLayout, textInputLayoutParams)
+    }
+
+    private fun saveEstateToDatabase(){
+        val estate = Estate(0,
+                add_activity_spinner.text.toString(),
+                add_activity_price.text.toString().toDoubleOrNull(),
+                add_activity_surface.text.toString().toIntOrNull(),
+                add_activity_room_number.text.toString().toIntOrNull(),
+                add_activity_desc.text.toString(),
+                null,
+                resources.getString(R.string.activity_add_estate_available),
+                Utils.getTodayDate(),
+                null,
+                "Adrien")
+       estateViewModel.createEstate(estate)
+
+
+    }
+
+    fun saveLocationToDatabase(estateId:Long){
+        Log.e("ADD_ACTIVITY","Id Inserted is : $estateId")
+
+        val location = Location(0,
+                add_activity_address.text.toString(),
+                add_activity_add_address.text.toString(),
+                add_activity_city_address.text.toString(),
+                add_activity_zip_address.text.toString(),
+                add_activity_country_address.text.toString(),
+                estateId)
+
+        Log.e("Location","Info : $location")
+
+        estateViewModel.createLocation(location)
     }
 
 // --------------------

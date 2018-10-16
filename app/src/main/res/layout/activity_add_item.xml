@@ -8,8 +8,8 @@
     <ImageView
         android:id="@+id/horizontal_item_view_image"
         android:paddingEnd="@dimen/small_space_between_items"
-        android:layout_width="100dp"
-        android:layout_height="100dp" />
+        android:layout_width="@dimen/size_image_width"
+        android:layout_height="@dimen/size_image_height" />
 
     <ImageButton
         android:id="@+id/horizontal_item_delete"

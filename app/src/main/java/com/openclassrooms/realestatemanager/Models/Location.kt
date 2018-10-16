@@ -5,15 +5,16 @@ import android.arch.persistence.room.ForeignKey
 import android.arch.persistence.room.PrimaryKey
 
 /**
- * Created by Adrien Deguffroy on 10/10/2018.
+ * Created by Adrien Deguffroy on 16/10/2018.
  */
 
 @Entity(foreignKeys = [ForeignKey(entity = Estate::class,
         parentColumns = ["id"],
         childColumns = ["estateId"])])
-data class Image(@PrimaryKey(autoGenerate = true) val id:Long,
-                 var imagePath:String,
-                 var imagetitle:String,
-                 var imageDesc:String,
-                 var estateId:Long
-                 )
+data class Location(@PrimaryKey(autoGenerate = true) val id:Long,
+               var address:String?,
+               var additionalAddress:String?,
+               var city:String?,
+               var zipCode:String?,
+               var country:String?,
+               var estateId:Long)

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/estate_type_flat"
+        android:title="@string/activity_add_estate_flat"
+        />
+    <item
+        android:id="@+id/estate_type_house"
+        android:title="@string/activity_add_estate_house"
+        />
+    <item
+        android:id="@+id/estate_type_duplex"
+        android:title="@string/activity_add_estate_duplex"
+        />
+    <item
+        android:id="@+id/estate_type_penthouse"
+        android:title="@string/activity_add_estate_penthouse"
+        />
+</menu>

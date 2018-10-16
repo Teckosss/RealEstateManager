@@ -5,6 +5,6 @@
     <dimen name="small_space_between_items">5dp</dimen>
 
     <!-- Images -->
-    <dimen name="size_image_width">100dp</dimen>
+    <dimen name="size_image_width">200dp</dimen>
     <dimen name="size_image_height">@dimen/size_image_width</dimen>
 </resources>

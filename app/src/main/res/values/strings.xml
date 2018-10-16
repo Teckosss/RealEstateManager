@@ -13,23 +13,44 @@
     <string name="activity_add_title">New estate</string>
 
     <!-- ADD ACTIVITY -->
-    <string name="activity_add_estate_type_hint">Choose the estate type</string>
+    <string name="activity_add_estate_type_hint">Estate type</string>
     <string name="activity_add_estate_price_hint">Estate price</string>
     <string name="activity_add_estate_surface_hint">Estate surface</string>
     <string name="activity_add_estate_room_number_hint">Rooms number</string>
     <string name="activity_add_estate_desc_hint">Description</string>
     <string name="activity_add_estate_date_hint">Estate market entry date</string>
+    <string name="activity_add_estate_address_hint">Address</string>
+    <string name="activity_add_estate_add_address_hint">Additional address</string>
+    <string name="activity_add_estate_city_address_hint">City</string>
+    <string name="activity_add_estate_zip_address_hint">Zip Code</string>
+    <string name="activity_add_estate_country_address_hint">Country</string>
 
     <string name="activity_add_estate_choose_pic">Choose picture</string>
     <string name="activity_add_estate_take_pic">Take picture</string>
+    <string name="activity_add_estate_save">Save</string>
 
     <!-- ESTATE TYPE -->
     <string-array name="estate_type">
-        <item>FLAT</item>
-        <item>HOUSE</item>
-        <item>DUPLEX</item>
-        <item>PENTHOUSE</item>
+        <item>@string/activity_add_estate_flat</item>
+        <item>@string/activity_add_estate_house</item>
+        <item>@string/activity_add_estate_duplex</item>
+        <item>@string/activity_add_estate_penthouse</item>
     </string-array>
+
+    <string name="activity_add_estate_flat">FLAT</string>
+    <string name="activity_add_estate_house">HOUSE</string>
+    <string name="activity_add_estate_duplex">DUPLEX</string>
+    <string name="activity_add_estate_penthouse">PENTHOUSE</string>
+
+    <!-- ESTATE STATUTE -->
+    <string-array name="estate_statute">
+        <item>@string/activity_add_estate_available</item>
+        <item>@string/activity_add_estate_sold</item>
+    </string-array>
+
+    <string name="activity_add_estate_available">AVAILABLE</string>
+    <string name="activity_add_estate_sold">SOLD</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
