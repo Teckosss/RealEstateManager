@@ -4,10 +4,11 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.FrameLayout
 import com.facebook.stetho.Stetho
+import com.openclassrooms.realestatemanager.Controller.Fragments.DetailFragment
 import com.openclassrooms.realestatemanager.Controller.Fragments.ListFragment
 import com.openclassrooms.realestatemanager.R
 import kotlinx.android.synthetic.main.toolbar.*
@@ -15,7 +16,11 @@ import kotlinx.android.synthetic.main.toolbar.*
 private const val FRAGMENT_LIST = 10
 private const val FRAGMENT_DETAIL = 20
 
+var TABLET_MODE:Boolean = false
+
 class MainActivity : AppCompatActivity() {
+
+    private var detailFragment: DetailFragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,7 +29,7 @@ class MainActivity : AppCompatActivity() {
 
         this.configureToolbar()
 
-        showFragment(FRAGMENT_LIST)
+        this.showFragment(ListFragment.newInstance())
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -60,22 +65,19 @@ class MainActivity : AppCompatActivity() {
     // FRAGMENTS
     // ---------------------
 
-    private fun showFragment(fragmentId :Int){
-        lateinit var newFragment:Fragment
-        when(fragmentId){
-            FRAGMENT_LIST -> {
-                newFragment = ListFragment.newInstance()
-                Log.e("MainActivity","Requested : Display ListFragment")
-            }
+    private fun showFragment(newFragment: Fragment){
+        val transaction = supportFragmentManager.beginTransaction()
+
+        if (detailFragment == null && findViewById<FrameLayout>(R.id.fragment_view_detail) != null){
+            TABLET_MODE = true
+            detailFragment = DetailFragment.newInstance()
+            transaction.add(R.id.fragment_view_detail, detailFragment as DetailFragment)
+        }else{
+            TABLET_MODE = false
         }
 
-        val transaction = supportFragmentManager.beginTransaction()
-        // Replace whatever is in the fragment_container view with this fragment,
-        // and add the transaction to the back stack if needed
         transaction.replace(R.id.fragment_view, newFragment)
         transaction.addToBackStack(null)
-        // Commit the transaction
         transaction.commit()
-
     }
 }

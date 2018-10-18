@@ -1,10 +1,10 @@
 package com.openclassrooms.realestatemanager.Controller.Views
 
-import android.graphics.Bitmap
 import android.net.Uri
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.openclassrooms.realestatemanager.Models.Image
 import com.openclassrooms.realestatemanager.R
 
 /**
@@ -24,7 +24,7 @@ class ActivityAddAdapter(private val pictures:List<Uri>, val callback:Listener) 
        return pictures.size
     }
 
-    fun getImage(position: Int):Int{
+    fun getImage(position: Int): Image {
         return this.getImage(position)
     }
 

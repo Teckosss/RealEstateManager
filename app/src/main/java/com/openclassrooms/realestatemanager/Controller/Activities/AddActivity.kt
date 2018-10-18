@@ -2,28 +2,22 @@ package com.openclassrooms.realestatemanager.Controller.Activities
 
 import android.Manifest
 import android.app.DatePickerDialog
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
-import android.location.Address
 import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.design.widget.TextInputEditText
-import android.support.design.widget.TextInputLayout
+import android.provider.MediaStore
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.Toolbar
 import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.LinearLayout
 import android.widget.PopupMenu
-import butterknife.BindView
-import butterknife.ButterKnife
 import com.openclassrooms.realestatemanager.Controller.ViewModel.EstateViewModel
 import com.openclassrooms.realestatemanager.Controller.Views.ActivityAddAdapter
 import com.openclassrooms.realestatemanager.Di.Injection
 import com.openclassrooms.realestatemanager.Models.Estate
+import com.openclassrooms.realestatemanager.Models.Image
 import com.openclassrooms.realestatemanager.Models.Location
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.Utils.ItemClickSupport
@@ -45,13 +39,15 @@ class AddActivity : AppCompatActivity(), ActivityAddAdapter.Listener {
     private lateinit var adapter:ActivityAddAdapter
     private lateinit var images:ArrayList<Uri>
     private lateinit var uriImageSelected:Uri
+    private var listImageToSave:ArrayList<Image> = ArrayList()
+    private val listImages = ArrayList<Uri>()
 
     private lateinit var estateViewModel:EstateViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add)
-        ButterKnife.bind(this)
+        activity_add_overlay_layout.visibility = View.INVISIBLE
 
         this.estateViewModel = ViewModelProviders.of(this,Injection.provideViewModelFactory(this)).get(EstateViewModel::class.java)
 
@@ -60,9 +56,8 @@ class AddActivity : AppCompatActivity(), ActivityAddAdapter.Listener {
         this.populateWithTodayDate()
         this.configureRecyclerView()
         this.configureOnClickRecyclerView()
+        //this.testRetrieveImageFromDB(2) // TEST FUNCTION
     }
-
-
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -92,6 +87,8 @@ class AddActivity : AppCompatActivity(), ActivityAddAdapter.Listener {
         add_activity_choose_pic.setOnClickListener{this.onClickAddFile()}
         add_activity_spinner.setOnClickListener{this.displayPopupMenu()}
         add_activity_save.setOnClickListener{this.saveEstateToDatabase()}
+
+        overlay_cancel.setOnClickListener{this.hideOverlayLayout()}
     }
 
     // -------------------
@@ -100,7 +97,6 @@ class AddActivity : AppCompatActivity(), ActivityAddAdapter.Listener {
 
     private fun <T> updateUI(results:T) {
         if(results is Uri){
-            Log.e("UpdateUI","List : $results")
             images.add(results)
         }else if(results is ArrayList<*>){
             images.addAll(results as ArrayList<Uri>)
@@ -149,29 +145,18 @@ class AddActivity : AppCompatActivity(), ActivityAddAdapter.Listener {
         ItemClickSupport.addTo(add_activity_recycler_view, R.layout.activity_add_item)
                 .setOnItemClickListener { recyclerView, position, v ->
                     Log.e("TAG", "Position : $position")
-                    //createDescBlock()
+
+                    activity_add_overlay_layout.visibility = View.VISIBLE
                 }
+    }
+
+    private fun hideOverlayLayout(){
+        activity_add_overlay_layout.visibility = View.INVISIBLE
     }
 
     override fun onClickDeleteButton(position: Int) {
         images.removeAt(position)
         adapter.notifyDataSetChanged()
-    }
-
-    private fun createDescBlock(){
-        val textInputLayout = TextInputLayout(this)
-        textInputLayout.id = View.generateViewId()
-        val textInputLayoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
-        textInputLayout.layoutParams = textInputLayoutParams
-
-        val textInputEditText = TextInputEditText(textInputLayout.context)
-        textInputEditText.id = View.generateViewId()
-        val editTextParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT)
-        textInputEditText.layoutParams = editTextParams
-
-        textInputLayout.addView(textInputEditText,editTextParams)
-
-        add_activity_container.addView(textInputLayout, textInputLayoutParams)
     }
 
     private fun saveEstateToDatabase(){
@@ -186,12 +171,16 @@ class AddActivity : AppCompatActivity(), ActivityAddAdapter.Listener {
                 Utils.getTodayDate(),
                 null,
                 "Adrien")
-       estateViewModel.createEstate(estate)
 
+        this.estateViewModel.createEstate(estate)
 
+        this.estateViewModel.lastIdInserted.observe(this, Observer<Long>{
+            saveLocationToDatabase(estateViewModel.getLastIdInserted())
+            saveImageToDatabase(estateViewModel.getLastIdInserted())
+        })
     }
 
-    fun saveLocationToDatabase(estateId:Long){
+    private fun saveLocationToDatabase(estateId:Long){
         Log.e("ADD_ACTIVITY","Id Inserted is : $estateId")
 
         val location = Location(0,
@@ -202,9 +191,28 @@ class AddActivity : AppCompatActivity(), ActivityAddAdapter.Listener {
                 add_activity_country_address.text.toString(),
                 estateId)
 
-        Log.e("Location","Info : $location")
+        this.estateViewModel.createLocation(location)
+    }
 
-        estateViewModel.createLocation(location)
+    private fun saveImageToDatabase(estateId: Long){
+        Log.e("SaveImageToDatabase","List size : ${listImageToSave.size}")
+        (0 until listImageToSave.size).forEach{
+            listImageToSave[it].estateId = estateId
+            Log.e("SaveImageToDatabase","Image created : ${listImageToSave[it]}")
+            this.estateViewModel.createImage(listImageToSave[it])
+        }
+
+    }
+
+    private fun testRetrieveImageFromDB(estateId:Long){
+        estateViewModel.getImages(estateId).observe(this,Observer<List<Image>>{
+            for (image in it!!){
+                Log.e("testRetrieveImageFromDB", "Image : ${image.imagePath}")
+                val imagePath = image.imagePath
+                updateUI(Uri.parse(imagePath))
+            }
+            adapter.notifyDataSetChanged()
+        })
     }
 
 // --------------------
@@ -228,14 +236,21 @@ class AddActivity : AppCompatActivity(), ActivityAddAdapter.Listener {
         if (requestCode == RC_CHOOSE_PHOTO) {
             if (resultCode == RESULT_OK) { //SUCCESS
                 if (data!!.clipData != null) {
-                    val listImages = ArrayList<Uri>()
-                    (0 until data.clipData.itemCount ).forEach { i -> listImages.add(data.clipData.getItemAt(i).uri) }
+                    (0 until data.clipData.itemCount ).forEach {
+                        i ->
+                        val uri = data.clipData.getItemAt(i).uri
+                        listImages.add(uri)
+                        val imageToSave = Image(0,uri.toString(),null,null,0)
+                        listImageToSave.add(imageToSave)
+                    }
                     Log.e("HandleResponse","ListImages : $listImages")
                     updateUI(listImages)
                     //do something with the image (save it to some directory or whatever you need to do with it here)
                 }else if(data.data != null) {
                     this.uriImageSelected = data.data
-                    updateUI(this.uriImageSelected)
+                    val imageToSave = Image(0,uriImageSelected.toString(),null,null,0)
+                    listImageToSave.add(imageToSave)
+                    updateUI(uriImageSelected)
                     //do something with the image (save it to some directory or whatever you need to do with it here)
                 }
             }

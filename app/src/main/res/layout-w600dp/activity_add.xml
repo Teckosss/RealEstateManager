@@ -309,4 +309,95 @@
 
         </android.support.constraint.ConstraintLayout>
     </ScrollView>
+
+    <!-- OVERLAY LAYOUT -->
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/activity_add_overlay_layout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#88666666"
+        android:padding="@dimen/space_between_elements"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        >
+
+        <ImageView
+            android:id="@+id/overlay_image_view"
+            android:layout_width="@dimen/size_image_width"
+            android:layout_height="@dimen/size_image_height"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/overlay_title_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:hint="@string/activity_add_estate_date_hint"
+            app:layout_constraintTop_toBottomOf="@id/overlay_image_view"
+            app:layout_constraintStart_toStartOf="parent"
+            android:paddingTop="@dimen/space_between_elements"
+            android:paddingBottom="@dimen/space_between_elements"
+            >
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/overlay_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="false"
+                />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/overlay_desc_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:hint="@string/activity_add_estate_date_hint"
+            android:paddingBottom="@dimen/space_between_elements"
+            app:layout_constraintTop_toBottomOf="@id/overlay_title_layout"
+            app:layout_constraintStart_toStartOf="parent"
+            >
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/overlay_desc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="false"
+                android:inputType="textMultiLine"
+                />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <Button
+            android:id="@+id/overlay_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CANCEL"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/overlay_save"
+            android:layout_marginEnd="@dimen/space_between_elements"
+            />
+
+        <Button
+            android:id="@+id/overlay_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SAVE"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/overlay_cancel"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="@dimen/space_between_elements"
+            />
+
+    </android.support.constraint.ConstraintLayout>
+
 </android.support.constraint.ConstraintLayout>

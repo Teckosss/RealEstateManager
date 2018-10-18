@@ -19,6 +19,10 @@ class FragmentListAdapter(private val listEstate:List<Estate>) : RecyclerView.Ad
        return if (listEstate.isNotEmpty()) listEstate.size else 0
     }
 
+    fun getEstateInfos(position:Int):Estate{
+        return listEstate[position]
+    }
+
     override fun onBindViewHolder(p0: FragmentListViewHolder, p1: Int) {
         p0.updateWithData(this.listEstate[p1])
     }

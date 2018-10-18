@@ -1,18 +1,15 @@
 package com.openclassrooms.realestatemanager.Controller.ViewModel
 
-import android.app.Application
 import android.arch.lifecycle.ViewModel
 import com.openclassrooms.realestatemanager.Controller.Repositories.EstateDataRepository
-import com.openclassrooms.realestatemanager.Database.RealEstateManagerDatabase
-import android.content.ClipData.Item
 import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MutableLiveData
 import android.util.Log
-import com.openclassrooms.realestatemanager.Controller.Activities.AddActivity
 import com.openclassrooms.realestatemanager.Controller.Repositories.ImageDataRepository
 import com.openclassrooms.realestatemanager.Controller.Repositories.LocationDataRepository
 import com.openclassrooms.realestatemanager.Models.Estate
+import com.openclassrooms.realestatemanager.Models.Image
 import com.openclassrooms.realestatemanager.Models.Location
-import io.reactivex.Observable
 import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable
 
@@ -28,9 +25,19 @@ class EstateViewModel(private val estateDataRepository: EstateDataRepository,
 
     private val disposable = CompositeDisposable()
 
+    var lastIdInserted : MutableLiveData<Long> = MutableLiveData()
+
     override fun onCleared() {
         super.onCleared()
         this.disposable.dispose()
+    }
+
+    fun updateLastIdInserted(newId:Long){
+        lastIdInserted.value = newId
+    }
+
+    fun getLastIdInserted():Long{
+        return lastIdInserted.value!!
     }
 
     // --------------------
@@ -46,8 +53,27 @@ class EstateViewModel(private val estateDataRepository: EstateDataRepository,
                 .observeOn(observerOn)
                 .subscribeOn(subscriberOn)
                 .subscribe(
-                        {id -> AddActivity().saveLocationToDatabase(id); Log.e("CREATE_ESTATE","OnNext")},
+                        {id -> updateLastIdInserted(id); Log.e("CREATE_ESTATE","OnNext")},
                         {e -> Log.e("CREATE_ESTATE","OnError : ${e.localizedMessage}")}
+                )
+        )
+    }
+
+    // --------------------
+    // IMAGE
+    // --------------------
+
+    fun getImages(estateId:Long): LiveData<List<Image>>{
+        return imageDataRepository.getImages(estateId)
+    }
+
+    fun createImage(image: Image) {
+        this.disposable.add(imageDataRepository.createImage(image)
+                .observeOn(observerOn)
+                .subscribeOn(subscriberOn)
+                .subscribe(
+                        {Log.e("CREATE_IMAGE","OnNext")},
+                        {e -> Log.e("CREATE_IMAGE","OnError : ${e.localizedMessage}")}
                 )
         )
     }

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/horizontal_item_view_image"
+        android:paddingEnd="@dimen/small_space_between_items"
+        android:layout_width="@dimen/size_image_width"
+        android:layout_height="@dimen/size_image_height" />
+
+    <ImageButton
+        android:id="@+id/horizontal_item_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/small_space_between_items"
+        android:background="@drawable/baseline_delete_forever_white_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</android.support.constraint.ConstraintLayout>

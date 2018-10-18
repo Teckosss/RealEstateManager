@@ -12,8 +12,8 @@ import android.arch.persistence.room.PrimaryKey
         parentColumns = ["id"],
         childColumns = ["estateId"])])
 data class Image(@PrimaryKey(autoGenerate = true) val id:Long,
-                 var imagePath:String,
-                 var imagetitle:String,
-                 var imageDesc:String,
+                 var imagePath: String,
+                 var imagetitle:String?,
+                 var imageDesc:String?,
                  var estateId:Long
                  )
