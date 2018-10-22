@@ -6,6 +6,7 @@ import android.arch.persistence.room.Insert
 import android.arch.persistence.room.Query
 import android.arch.persistence.room.Update
 import com.openclassrooms.realestatemanager.Models.Estate
+import com.openclassrooms.realestatemanager.Models.FullEstate
 
 
 /**
@@ -15,8 +16,11 @@ import com.openclassrooms.realestatemanager.Models.Estate
 @Dao
 interface EstateDao {
 
-    @Query("SELECT * FROM Estate")
-    fun getItems(): LiveData<List<Estate>>
+    @Query("SELECT Estate.*,Location.* FROM Estate INNER JOIN Location ON Estate.id = Location.estateId ")
+    fun getItems(): LiveData<List<FullEstate>>
+
+    @Query("SELECT Estate.*,Location.* FROM Estate INNER JOIN Location ON Estate.id = Location.estateId  WHERE Estate.id = :index")
+    fun getItemsByID(index:Long) : LiveData<FullEstate>
 
     @Insert
     fun insertItem(estate: Estate) : Long

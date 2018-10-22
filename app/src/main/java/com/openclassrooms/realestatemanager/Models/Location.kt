@@ -1,5 +1,6 @@
 package com.openclassrooms.realestatemanager.Models
 
+import android.arch.persistence.room.ColumnInfo
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.ForeignKey
 import android.arch.persistence.room.PrimaryKey
@@ -11,10 +12,10 @@ import android.arch.persistence.room.PrimaryKey
 @Entity(foreignKeys = [ForeignKey(entity = Estate::class,
         parentColumns = ["id"],
         childColumns = ["estateId"])])
-data class Location(@PrimaryKey(autoGenerate = true) val id:Long,
-               var address:String?,
-               var additionalAddress:String?,
-               var city:String?,
-               var zipCode:String?,
-               var country:String?,
-               var estateId:Long)
+data class Location(@PrimaryKey(autoGenerate = true) @ColumnInfo(name = "locationId") val id:Long,
+                    var address:String?,
+                    var additionalAddress:String?,
+                    var city:String?,
+                    var zipCode:String?,
+                    var country:String?,
+                    var estateId:Long)

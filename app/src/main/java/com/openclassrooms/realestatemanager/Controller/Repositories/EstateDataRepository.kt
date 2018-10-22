@@ -7,6 +7,7 @@ import android.util.Log
 import com.openclassrooms.realestatemanager.Database.Dao.EstateDao
 import com.openclassrooms.realestatemanager.Database.RealEstateManagerDatabase
 import com.openclassrooms.realestatemanager.Models.Estate
+import com.openclassrooms.realestatemanager.Models.FullEstate
 import io.reactivex.Completable
 import io.reactivex.Observable
 import java.util.concurrent.Executor
@@ -18,8 +19,12 @@ class EstateDataRepository(private val database: RealEstateManagerDatabase) {
 
     // --- GET ---
 
-    fun getEstates(): LiveData<List<Estate>> {
+    fun getEstates(): LiveData<List<FullEstate>> {
         return this.database.estateDao().getItems()
+    }
+
+    fun gesEstateByID(estateID:Long) : LiveData<FullEstate>{
+        return this.database.estateDao().getItemsByID(estateID)
     }
 
     // --- CREATE ---

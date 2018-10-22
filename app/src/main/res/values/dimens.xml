@@ -3,8 +3,13 @@
     <dimen name="padding_to_parent">15dp</dimen>
     <dimen name="space_between_elements">10dp</dimen>
     <dimen name="small_space_between_items">5dp</dimen>
+    <dimen name="material_margin_fab">8dp</dimen>
 
     <!-- Images -->
     <dimen name="size_image_width">100dp</dimen>
     <dimen name="size_image_height">@dimen/size_image_width</dimen>
+
+    <!-- Text Size -->
+    <dimen name="size_text_normal">13sp</dimen>
+    <dimen name="size_text_big">18sp</dimen>
 </resources>

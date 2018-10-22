@@ -1,14 +1,278 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Controller.Fragments.DetailFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".Controller.Fragments.DetailFragment"
+    android:padding="@dimen/padding_to_parent">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/detail_fragment_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/baseline_edit_white_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="match_parent">
 
-</FrameLayout>
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/detail_fragment_text_media"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/detail_fragment_media"
+            android:textStyle="bold"
+            />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/detail_fragment_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/detail_fragment_text_media"
+            >
+        </android.support.v7.widget.RecyclerView>
+
+        <TextView
+            android:id="@+id/detail_fragment_text_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/detail_fragment_desc"
+            app:layout_constraintTop_toBottomOf="@id/detail_fragment_recycler_view"
+            android:textStyle="bold"
+            />
+
+        <EditText
+            android:id="@+id/detail_fragment_edit_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/detail_fragment_text_desc"
+            android:inputType="textMultiLine"
+            android:clickable="false"
+            android:focusable="false"
+            />
+
+        <!-- SURFACE -->
+
+        <ImageView
+            android:id="@+id/detail_fragment_icon_surface"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_settings_overscan_black_24"
+            app:layout_constraintTop_toBottomOf="@id/detail_fragment_edit_text"
+            android:paddingEnd="@dimen/small_space_between_items"
+            />
+
+        <TextView
+            android:id="@+id/detail_fragment_text_surface"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/detail_fragment_surface"
+            app:layout_constraintTop_toTopOf="@id/detail_fragment_icon_surface"
+            app:layout_constraintBottom_toBottomOf="@id/detail_fragment_icon_surface"
+            app:layout_constraintStart_toEndOf="@id/detail_fragment_icon_surface"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/detail_fragment_surface"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/detail_fragment_text_surface"
+            app:layout_constraintStart_toStartOf="@id/detail_fragment_text_surface"
+            android:paddingTop="@dimen/space_between_elements"
+            android:paddingStart="@dimen/space_between_elements"
+            android:paddingBottom="@dimen/space_between_elements"
+            />
+
+        <!-- NUMBER OF ROOMS -->
+
+        <ImageView
+            android:id="@+id/detail_fragment_icon_rooms"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_home_black_24"
+            app:layout_constraintTop_toBottomOf="@id/detail_fragment_edit_text"
+            app:layout_constraintEnd_toStartOf="@id/detail_fragment_text_rooms"
+            android:paddingEnd="@dimen/small_space_between_items"
+            />
+
+        <TextView
+            android:id="@+id/detail_fragment_text_rooms"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/detail_fragment_rooms"
+            app:layout_constraintTop_toTopOf="@id/detail_fragment_icon_rooms"
+            app:layout_constraintBottom_toBottomOf="@id/detail_fragment_icon_rooms"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/detail_fragment_rooms"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/detail_fragment_text_rooms"
+            app:layout_constraintStart_toStartOf="@id/detail_fragment_text_rooms"
+            android:paddingTop="@dimen/space_between_elements"
+            android:paddingStart="@dimen/space_between_elements"
+            android:paddingBottom="@dimen/space_between_elements"
+            />
+
+        <!-- NUMBER OF BATHROOMS -->
+
+        <ImageView
+            android:id="@+id/detail_fragment_icon_bathrooms"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_hot_tub_black_24"
+            app:layout_constraintTop_toBottomOf="@id/detail_fragment_surface"
+            android:paddingEnd="@dimen/small_space_between_items"
+            />
+
+        <TextView
+            android:id="@+id/detail_fragment_text_bathrooms"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/detail_fragment_bathrooms"
+            app:layout_constraintTop_toTopOf="@id/detail_fragment_icon_bathrooms"
+            app:layout_constraintBottom_toBottomOf="@id/detail_fragment_icon_bathrooms"
+            app:layout_constraintStart_toEndOf="@id/detail_fragment_icon_bathrooms"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/detail_fragment_bathrooms"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/detail_fragment_text_bathrooms"
+            app:layout_constraintStart_toStartOf="@id/detail_fragment_text_bathrooms"
+            android:paddingTop="@dimen/space_between_elements"
+            android:paddingStart="@dimen/space_between_elements"
+            android:paddingBottom="@dimen/space_between_elements"
+            />
+
+        <!-- NUMBER OF BEDROOMS -->
+
+        <ImageView
+            android:id="@+id/detail_fragment_icon_bedrooms"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_airline_seat_individual_suite_black_24"
+            app:layout_constraintTop_toBottomOf="@id/detail_fragment_rooms"
+            app:layout_constraintStart_toStartOf="@id/detail_fragment_icon_rooms"
+            android:paddingEnd="@dimen/small_space_between_items"
+            />
+
+        <TextView
+            android:id="@+id/detail_fragment_text_bedrooms"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/detail_fragment_bedrooms"
+            app:layout_constraintTop_toTopOf="@id/detail_fragment_icon_bedrooms"
+            app:layout_constraintBottom_toBottomOf="@id/detail_fragment_icon_bedrooms"
+            app:layout_constraintStart_toEndOf="@id/detail_fragment_icon_bedrooms"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/detail_fragment_bedrooms"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/detail_fragment_text_bedrooms"
+            app:layout_constraintStart_toStartOf="@id/detail_fragment_text_bedrooms"
+            android:paddingTop="@dimen/space_between_elements"
+            android:paddingStart="@dimen/space_between_elements"
+            android:paddingBottom="@dimen/space_between_elements"
+            />
+
+        <!-- LOCATION -->
+
+        <ImageView
+            android:id="@+id/detail_fragment_icon_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_location_on_black_24"
+            app:layout_constraintTop_toBottomOf="@id/detail_fragment_bathrooms"
+            android:paddingEnd="@dimen/small_space_between_items"
+            />
+
+        <TextView
+            android:id="@+id/detail_fragment_text_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/detail_fragment_location"
+            app:layout_constraintTop_toTopOf="@id/detail_fragment_icon_location"
+            app:layout_constraintBottom_toBottomOf="@id/detail_fragment_icon_location"
+            app:layout_constraintStart_toEndOf="@id/detail_fragment_icon_location"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/detail_fragment_location_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/detail_fragment_text_location"
+            app:layout_constraintStart_toStartOf="@id/detail_fragment_text_location"
+            android:paddingTop="@dimen/space_between_elements"
+            android:paddingStart="@dimen/space_between_elements"
+            android:paddingBottom="@dimen/space_between_elements"
+            />
+
+        <TextView
+            android:id="@+id/detail_fragment_location_add_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/detail_fragment_location_address"
+            app:layout_constraintStart_toStartOf="@id/detail_fragment_text_location"
+            android:paddingTop="@dimen/space_between_elements"
+            android:paddingStart="@dimen/space_between_elements"
+            android:paddingBottom="@dimen/space_between_elements"
+            />
+
+        <TextView
+            android:id="@+id/detail_fragment_location_city"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/detail_fragment_location_add_address"
+            app:layout_constraintStart_toStartOf="@id/detail_fragment_text_location"
+            android:paddingTop="@dimen/space_between_elements"
+            android:paddingStart="@dimen/space_between_elements"
+            android:paddingBottom="@dimen/space_between_elements"
+            />
+
+        <TextView
+            android:id="@+id/detail_fragment_location_zip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/detail_fragment_location_city"
+            app:layout_constraintStart_toStartOf="@id/detail_fragment_text_location"
+            android:paddingTop="@dimen/space_between_elements"
+            android:paddingStart="@dimen/space_between_elements"
+            android:paddingBottom="@dimen/space_between_elements"
+            />
+
+        <TextView
+            android:id="@+id/detail_fragment_location_country"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/detail_fragment_location_zip"
+            app:layout_constraintStart_toStartOf="@id/detail_fragment_text_location"
+            android:paddingTop="@dimen/space_between_elements"
+            android:paddingStart="@dimen/space_between_elements"
+            android:paddingBottom="@dimen/space_between_elements"
+            />
+
+        </android.support.constraint.ConstraintLayout>
+
+    </ScrollView>
+
+</android.support.constraint.ConstraintLayout>

@@ -8,6 +8,7 @@ import android.util.Log
 import com.openclassrooms.realestatemanager.Controller.Repositories.ImageDataRepository
 import com.openclassrooms.realestatemanager.Controller.Repositories.LocationDataRepository
 import com.openclassrooms.realestatemanager.Models.Estate
+import com.openclassrooms.realestatemanager.Models.FullEstate
 import com.openclassrooms.realestatemanager.Models.Image
 import com.openclassrooms.realestatemanager.Models.Location
 import io.reactivex.Scheduler
@@ -27,6 +28,8 @@ class EstateViewModel(private val estateDataRepository: EstateDataRepository,
 
     var lastIdInserted : MutableLiveData<Long> = MutableLiveData()
 
+    var listImagesToSave = ArrayList<Image>()
+
     override fun onCleared() {
         super.onCleared()
         this.disposable.dispose()
@@ -44,8 +47,12 @@ class EstateViewModel(private val estateDataRepository: EstateDataRepository,
     // ESTATE
     // --------------------
 
-    fun getEstates(): LiveData<List<Estate>> {
+    fun getEstates(): LiveData<List<FullEstate>> {
         return estateDataRepository.getEstates()
+    }
+
+    fun getEstatesByID(estateId: Long) : LiveData<FullEstate>{
+        return estateDataRepository.gesEstateByID(estateId)
     }
 
     fun createEstate(estate:Estate) {
@@ -82,8 +89,8 @@ class EstateViewModel(private val estateDataRepository: EstateDataRepository,
     // LOCATION
     // --------------------
 
-    fun getLocation(): LiveData<List<Location>>{
-        return locationDataRepository.getLocation()
+    fun getLocation(estateId: Long): LiveData<List<Location>>{
+        return locationDataRepository.getLocation(estateId)
     }
 
     fun createLocation(location: Location){

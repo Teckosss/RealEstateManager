@@ -2,17 +2,21 @@ package com.openclassrooms.realestatemanager.Controller.Activities
 
 import android.Manifest
 import android.app.DatePickerDialog
+import android.app.Dialog
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.MediaStore
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
-import android.view.View
+import android.view.Window
 import android.widget.PopupMenu
+import android.widget.Toast
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.openclassrooms.realestatemanager.Controller.ViewModel.EstateViewModel
 import com.openclassrooms.realestatemanager.Controller.Views.ActivityAddAdapter
 import com.openclassrooms.realestatemanager.Di.Injection
@@ -23,6 +27,8 @@ import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.Utils.ItemClickSupport
 import com.openclassrooms.realestatemanager.Utils.Utils
 import kotlinx.android.synthetic.main.activity_add.*
+import kotlinx.android.synthetic.main.custom_dialog_overlay.*
+import kotlinx.android.synthetic.main.estate_info.*
 import kotlinx.android.synthetic.main.toolbar.*
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
@@ -39,7 +45,6 @@ class AddActivity : AppCompatActivity(), ActivityAddAdapter.Listener {
     private lateinit var adapter:ActivityAddAdapter
     private lateinit var images:ArrayList<Uri>
     private lateinit var uriImageSelected:Uri
-    private var listImageToSave:ArrayList<Image> = ArrayList()
     private val listImages = ArrayList<Uri>()
 
     private lateinit var estateViewModel:EstateViewModel
@@ -47,7 +52,6 @@ class AddActivity : AppCompatActivity(), ActivityAddAdapter.Listener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add)
-        activity_add_overlay_layout.visibility = View.INVISIBLE
 
         this.estateViewModel = ViewModelProviders.of(this,Injection.provideViewModelFactory(this)).get(EstateViewModel::class.java)
 
@@ -56,7 +60,7 @@ class AddActivity : AppCompatActivity(), ActivityAddAdapter.Listener {
         this.populateWithTodayDate()
         this.configureRecyclerView()
         this.configureOnClickRecyclerView()
-        //this.testRetrieveImageFromDB(2) // TEST FUNCTION
+        //this.testRetrieveImageFromDB(1) // TEST FUNCTION
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -77,7 +81,7 @@ class AddActivity : AppCompatActivity(), ActivityAddAdapter.Listener {
 
     private fun configureRecyclerView() {
         this.images = ArrayList()
-        this.adapter = ActivityAddAdapter(this.images,this)
+        this.adapter = ActivityAddAdapter(estateViewModel.listImagesToSave,this)
         this.add_activity_recycler_view.adapter = this.adapter
         this.add_activity_recycler_view.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
     }
@@ -87,8 +91,6 @@ class AddActivity : AppCompatActivity(), ActivityAddAdapter.Listener {
         add_activity_choose_pic.setOnClickListener{this.onClickAddFile()}
         add_activity_spinner.setOnClickListener{this.displayPopupMenu()}
         add_activity_save.setOnClickListener{this.saveEstateToDatabase()}
-
-        overlay_cancel.setOnClickListener{this.hideOverlayLayout()}
     }
 
     // -------------------
@@ -102,7 +104,7 @@ class AddActivity : AppCompatActivity(), ActivityAddAdapter.Listener {
             images.addAll(results as ArrayList<Uri>)
         }
 
-        adapter.notifyDataSetChanged()
+       adapter.notifyDataSetChanged()
     }
 
     private fun displayDatePicker(){
@@ -145,39 +147,115 @@ class AddActivity : AppCompatActivity(), ActivityAddAdapter.Listener {
         ItemClickSupport.addTo(add_activity_recycler_view, R.layout.activity_add_item)
                 .setOnItemClickListener { recyclerView, position, v ->
                     Log.e("TAG", "Position : $position")
-
-                    activity_add_overlay_layout.visibility = View.VISIBLE
+                    showOverlay(this, estateViewModel.listImagesToSave[position], position)
                 }
     }
 
-    private fun hideOverlayLayout(){
-        activity_add_overlay_layout.visibility = View.INVISIBLE
+    private fun showOverlay(context: Context, image: Image, position: Int){
+        val dialog = Dialog(context)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.custom_dialog_overlay)
+        dialog.setCanceledOnTouchOutside(false)
+        dialog.setCancelable(true)
+
+        val displayMetrics = context.resources.displayMetrics
+        val dialogWidth = (displayMetrics.widthPixels * 0.85).toInt()
+        val dialogHeight = (displayMetrics.heightPixels * 0.85).toInt()
+        dialog.window.setLayout(dialogWidth,dialogHeight)
+
+        dialog.show()
+
+        this.populateDialogWhenOpening(dialog,image)
+
+        dialog.overlay_cancel.setOnClickListener{hideOverlayLayout(dialog)}
+        dialog.overlay_save.setOnClickListener{saveImageDetails(dialog, image, position)}
+    }
+
+    private fun populateDialogWhenOpening(dialog: Dialog, image: Image){
+        Glide.with(this).load(Uri.parse(image.imagePath)).apply(RequestOptions().centerCrop()).into(dialog.overlay_image_view)
+        if(!(image.imageTitle.isNullOrBlank())) dialog.overlay_title.setText(image.imageTitle)
+        if(!(image.imageDesc.isNullOrBlank())) dialog.overlay_desc.setText(image.imageDesc)
+    }
+
+    private fun hideOverlayLayout(dialog: Dialog){
+      dialog.dismiss()
+    }
+
+    private fun saveImageDetails(dialog: Dialog,image: Image, position: Int){
+        val error: Boolean
+        var title:String? = null
+        var desc:String? = null
+
+        when{
+            dialog.overlay_title.text.isNullOrBlank() || dialog.overlay_desc.text.isNullOrBlank() -> {
+                error = true
+                if (dialog.overlay_title.text.isNullOrBlank()) {
+                    dialog.overlay_title_layout.error = resources.getString(R.string.overlay_image_title_error)
+                    title = null
+                }
+                if(dialog.overlay_desc.text.isNullOrBlank()) {
+                    dialog.overlay_desc_layout.error = resources.getString(R.string.overlay_image_desc_error)
+                    desc = null
+                }
+            }
+            else -> {
+                error = false
+                title = dialog.overlay_title.text.toString()
+                dialog.overlay_title_layout.error = null
+                desc = dialog.overlay_desc.text.toString()
+                dialog.overlay_desc_layout.error = null
+            }
+        }
+
+        if(!error){
+            image.imageTitle = title
+            image.imageDesc = desc
+            adapter.imageGetDetails(position)
+            dialog.dismiss()
+            Toast.makeText(this,resources.getString(R.string.overlay_image_details_saved),Toast.LENGTH_SHORT).show()
+        }
+
     }
 
     override fun onClickDeleteButton(position: Int) {
         images.removeAt(position)
+        estateViewModel.listImagesToSave.removeAt(position)
         adapter.notifyDataSetChanged()
     }
 
     private fun saveEstateToDatabase(){
-        val estate = Estate(0,
-                add_activity_spinner.text.toString(),
-                add_activity_price.text.toString().toDoubleOrNull(),
-                add_activity_surface.text.toString().toIntOrNull(),
-                add_activity_room_number.text.toString().toIntOrNull(),
-                add_activity_desc.text.toString(),
-                null,
-                resources.getString(R.string.activity_add_estate_available),
-                Utils.getTodayDate(),
-                null,
-                "Adrien")
+        var canSaveEstate = false
+        for(image in estateViewModel.listImagesToSave){
+            canSaveEstate = image.imageDesc != null && image.imageDesc!!.isNotEmpty() && image.imageTitle != null && image.imageTitle!!.isNotEmpty()
+        }
 
-        this.estateViewModel.createEstate(estate)
+        if (canSaveEstate){
+            val estate = Estate(0,
+                    add_activity_spinner.text.toString(),
+                    add_activity_price.text.toString().toDoubleOrNull(),
+                    add_activity_surface.text.toString().toIntOrNull(),
+                    add_activity_room_number.text.toString().toIntOrNull(),
+                    add_activity_bathroom_number.text.toString().toIntOrNull(),
+                    add_activity_bedroom_number.text.toString().toIntOrNull(),
+                    add_activity_desc.text.toString(),
+                    null,
+                    resources.getString(R.string.activity_add_estate_available),
+                    Utils.getTodayDate(),
+                    null,
+                    "Adrien")
 
-        this.estateViewModel.lastIdInserted.observe(this, Observer<Long>{
-            saveLocationToDatabase(estateViewModel.getLastIdInserted())
-            saveImageToDatabase(estateViewModel.getLastIdInserted())
-        })
+            this.estateViewModel.createEstate(estate)
+
+            this.estateViewModel.lastIdInserted.observe(this, Observer<Long>{
+                saveLocationToDatabase(estateViewModel.getLastIdInserted())
+                saveImageToDatabase(estateViewModel.getLastIdInserted())
+                clearAllFields()
+                Toast.makeText(this, resources.getString(R.string.activity_add_estate_saved), Toast.LENGTH_SHORT).show()
+            })
+        }else{
+            Toast.makeText(this, resources.getString(R.string.activity_add_estate_save_error), Toast.LENGTH_LONG).show()
+        }
+
     }
 
     private fun saveLocationToDatabase(estateId:Long){
@@ -195,11 +273,11 @@ class AddActivity : AppCompatActivity(), ActivityAddAdapter.Listener {
     }
 
     private fun saveImageToDatabase(estateId: Long){
-        Log.e("SaveImageToDatabase","List size : ${listImageToSave.size}")
-        (0 until listImageToSave.size).forEach{
-            listImageToSave[it].estateId = estateId
-            Log.e("SaveImageToDatabase","Image created : ${listImageToSave[it]}")
-            this.estateViewModel.createImage(listImageToSave[it])
+        Log.e("SaveImageToDatabase","List size : ${estateViewModel.listImagesToSave.size}")
+        (0 until estateViewModel.listImagesToSave.size).forEach{
+            estateViewModel.listImagesToSave[it].estateId = estateId
+            Log.e("SaveImageToDatabase","Image created : ${estateViewModel.listImagesToSave[it]}")
+            this.estateViewModel.createImage(estateViewModel.listImagesToSave[it])
         }
 
     }
@@ -213,6 +291,22 @@ class AddActivity : AppCompatActivity(), ActivityAddAdapter.Listener {
             }
             adapter.notifyDataSetChanged()
         })
+    }
+
+    private fun clearAllFields(){
+        add_activity_price.text = null
+        add_activity_surface.text = null
+        add_activity_room_number.text = null
+        add_activity_bathroom_number.text = null
+        add_activity_room_number.text = null
+        add_activity_desc.text = null
+        add_activity_address.text = null
+        add_activity_add_address.text = null
+        add_activity_city_address.text = null
+        add_activity_zip_address.text = null
+        add_activity_country_address.text = null
+        estateViewModel.listImagesToSave.clear()
+        adapter.notifyDataSetChanged()
     }
 
 // --------------------
@@ -236,12 +330,13 @@ class AddActivity : AppCompatActivity(), ActivityAddAdapter.Listener {
         if (requestCode == RC_CHOOSE_PHOTO) {
             if (resultCode == RESULT_OK) { //SUCCESS
                 if (data!!.clipData != null) {
+                    listImages.clear()
                     (0 until data.clipData.itemCount ).forEach {
                         i ->
                         val uri = data.clipData.getItemAt(i).uri
                         listImages.add(uri)
                         val imageToSave = Image(0,uri.toString(),null,null,0)
-                        listImageToSave.add(imageToSave)
+                        estateViewModel.listImagesToSave.add(imageToSave)
                     }
                     Log.e("HandleResponse","ListImages : $listImages")
                     updateUI(listImages)
@@ -249,7 +344,7 @@ class AddActivity : AppCompatActivity(), ActivityAddAdapter.Listener {
                 }else if(data.data != null) {
                     this.uriImageSelected = data.data
                     val imageToSave = Image(0,uriImageSelected.toString(),null,null,0)
-                    listImageToSave.add(imageToSave)
+                    estateViewModel.listImagesToSave.add(imageToSave)
                     updateUI(uriImageSelected)
                     //do something with the image (save it to some directory or whatever you need to do with it here)
                 }

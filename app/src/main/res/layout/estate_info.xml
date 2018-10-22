@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    android:id="@+id/add_activity_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
+    android:padding="@dimen/padding_to_parent"
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/add_activity_spinner_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:hint="@string/activity_add_estate_type_hint"
+        app:layout_constraintStart_toStartOf="parent"
+        android:paddingBottom="@dimen/space_between_elements"
+        app:layout_constraintWidth_percent=".49"
+        >
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/add_activity_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="false"
+            android:inputType="text"
+            android:drawableEnd="@drawable/baseline_arrow_drop_down_black_24"
+            />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/add_activity_price_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:hint="@string/activity_add_estate_price_hint"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_percent=".49"
+        android:paddingBottom="@dimen/space_between_elements"
+        >
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/add_activity_price"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/add_activity_surface_layout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        app:layout_constraintWidth_percent=".49"
+        android:layout_height="wrap_content"
+        android:hint="@string/activity_add_estate_surface_hint"
+        android:paddingBottom="@dimen/space_between_elements"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/add_activity_price_layout"
+
+        >
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/add_activity_surface"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/add_activity_room_number_layout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        app:layout_constraintWidth_percent=".49"
+        android:layout_height="wrap_content"
+        android:hint="@string/activity_add_estate_room_number_hint"
+        android:paddingBottom="@dimen/space_between_elements"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/add_activity_price_layout"
+        >
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/add_activity_room_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/add_activity_bathroom_number_layout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        app:layout_constraintWidth_percent=".49"
+        android:layout_height="wrap_content"
+        android:hint="@string/activity_add_estate_bathroom_number_hint"
+        android:paddingBottom="@dimen/space_between_elements"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/add_activity_surface_layout"
+        >
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/add_activity_bathroom_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/add_activity_bedroom_number_layout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        app:layout_constraintWidth_percent=".49"
+        android:layout_height="wrap_content"
+        android:hint="@string/activity_add_estate_bedroom_number_hint"
+        android:paddingBottom="@dimen/space_between_elements"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/add_activity_room_number_layout"
+        >
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/add_activity_bedroom_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/add_activity_desc_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:hint="@string/activity_add_estate_desc_hint"
+        app:layout_constraintTop_toBottomOf="@id/add_activity_bedroom_number_layout"
+        app:layout_constraintStart_toStartOf="parent"
+        android:paddingBottom="@dimen/space_between_elements"
+        >
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/add_activity_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/add_activity_address_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:hint="@string/activity_add_estate_address_hint"
+        app:layout_constraintTop_toBottomOf="@id/add_activity_desc_layout"
+        app:layout_constraintStart_toStartOf="parent"
+        android:paddingBottom="@dimen/space_between_elements"
+        >
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/add_activity_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/add_activity_add_address_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:hint="@string/activity_add_estate_add_address_hint"
+        app:layout_constraintTop_toBottomOf="@id/add_activity_address_layout"
+        app:layout_constraintStart_toStartOf="parent"
+        android:paddingBottom="@dimen/space_between_elements"
+        >
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/add_activity_add_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/add_activity_city_address_layout"
+        android:layout_width="0dp"
+        app:layout_constraintWidth_percent=".33"
+        android:layout_height="wrap_content"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:hint="@string/activity_add_estate_city_address_hint"
+        app:layout_constraintTop_toBottomOf="@id/add_activity_add_address_layout"
+        app:layout_constraintStart_toStartOf="parent"
+        android:paddingBottom="@dimen/space_between_elements"
+        >
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/add_activity_city_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/add_activity_zip_address_layout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/activity_add_estate_zip_address_hint"
+        android:paddingBottom="@dimen/space_between_elements"
+        app:layout_constraintEnd_toStartOf="@id/add_activity_country_address_layout"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@id/add_activity_city_address_layout"
+        app:layout_constraintTop_toBottomOf="@id/add_activity_add_address_layout"
+        app:layout_constraintWidth_percent=".33">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/add_activity_zip_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/add_activity_country_address_layout"
+        android:layout_width="0dp"
+        app:layout_constraintWidth_percent=".33"
+        android:layout_height="wrap_content"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:hint="@string/activity_add_estate_country_address_hint"
+        app:layout_constraintTop_toBottomOf="@id/add_activity_add_address_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:paddingBottom="@dimen/space_between_elements"
+        >
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/add_activity_country_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/add_activity_date_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:hint="@string/activity_add_estate_date_hint"
+        app:layout_constraintTop_toBottomOf="@id/add_activity_country_address_layout"
+        app:layout_constraintStart_toStartOf="parent"
+        android:paddingBottom="@dimen/space_between_elements"
+        >
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/add_activity_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="date"
+            android:clickable="true"
+            android:focusable="false"
+            android:drawableEnd="@drawable/baseline_arrow_drop_down_black_24"
+            />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/add_activity_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/add_activity_date_layout"
+        android:horizontalSpacing="10dp"
+        android:isScrollContainer="false"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="10dp"
+        >
+
+    </android.support.v7.widget.RecyclerView>
+
+    <Button
+        android:id="@+id/add_activity_choose_pic"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/activity_add_estate_choose_pic"
+
+        app:layout_constraintWidth_percent=".5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/add_activity_recycler_view"
+        android:layout_marginTop="@dimen/space_between_elements"
+        />
+
+    <Button
+        android:id="@+id/add_activity_take_pic"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/activity_add_estate_take_pic"
+
+        app:layout_constraintWidth_percent=".5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/add_activity_recycler_view"
+        android:layout_marginTop="@dimen/space_between_elements"
+        />
+
+    <Button
+        android:id="@+id/add_activity_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/activity_add_estate_save"
+        android:theme="@style/AddActivityButton"
+        app:layout_constraintTop_toBottomOf="@id/add_activity_take_pic"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        />
+
+</android.support.constraint.ConstraintLayout>

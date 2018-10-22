@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    android:id="@+id/overlay_container"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="@dimen/space_between_elements"
+    >
+
+    <ImageView
+        android:id="@+id/overlay_image_view"
+        android:layout_width="@dimen/size_image_width"
+        android:layout_height="@dimen/size_image_height"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/overlay_title_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:hint="@string/overlay_image_title"
+        app:layout_constraintTop_toBottomOf="@id/overlay_image_view"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="@dimen/space_between_elements"
+        app:errorEnabled="true"
+        >
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/overlay_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/overlay_desc_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:hint="@string/overlay_image_desc"
+        app:layout_constraintTop_toBottomOf="@id/overlay_title_layout"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="@dimen/space_between_elements"
+        app:errorEnabled="true"
+        >
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/overlay_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:inputType="textMultiLine"
+            />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <Button
+        android:id="@+id/overlay_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CANCEL"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginEnd="@dimen/space_between_elements"
+        />
+
+    <Button
+        android:id="@+id/overlay_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SAVE"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="@dimen/space_between_elements"
+        />
+
+</android.support.constraint.ConstraintLayout>

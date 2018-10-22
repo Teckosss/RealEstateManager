@@ -14,8 +14,8 @@ import com.openclassrooms.realestatemanager.Models.Location
 @Dao
 interface LocationDao {
 
-    @Query("SELECT * FROM Location")
-    fun getItems(): LiveData<List<Location>>
+    @Query("SELECT * FROM Location WHERE estateId = :index")
+    fun getItems(index:Long): LiveData<List<Location>>
 
     @Insert
     fun insertItem(location: Location) : Long

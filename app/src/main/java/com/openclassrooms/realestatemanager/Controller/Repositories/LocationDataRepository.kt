@@ -12,8 +12,8 @@ class LocationDataRepository(private val database: RealEstateManagerDatabase) {
 
     // --- GET ---
 
-    fun getLocation(): LiveData<List<Location>> {
-        return this.database.locationDao().getItems()
+    fun getLocation(estateId:Long): LiveData<List<Location>> {
+        return this.database.locationDao().getItems(estateId)
     }
 
     // --- CREATE ---

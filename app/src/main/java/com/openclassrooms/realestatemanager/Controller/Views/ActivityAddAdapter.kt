@@ -10,7 +10,9 @@ import com.openclassrooms.realestatemanager.R
 /**
  * Created by Adrien Deguffroy on 10/10/2018.
  */
-class ActivityAddAdapter(private val pictures:List<Uri>, val callback:Listener) : RecyclerView.Adapter<ActivityAddViewHolder>() {
+class ActivityAddAdapter(private val pictures:List<Image>, val callback:Listener) : RecyclerView.Adapter<ActivityAddViewHolder>() {
+
+    var imageDetails:Boolean = false
 
     interface Listener{
         fun onClickDeleteButton(position:Int)
@@ -24,11 +26,17 @@ class ActivityAddAdapter(private val pictures:List<Uri>, val callback:Listener) 
        return pictures.size
     }
 
+    fun imageGetDetails(position: Int){
+        imageDetails = true
+        notifyItemChanged(position)
+    }
+
     fun getImage(position: Int): Image {
         return this.getImage(position)
     }
 
     override fun onBindViewHolder(p0: ActivityAddViewHolder, p1: Int) {
         p0.updateWithData(this.pictures[p1],this.callback)
+        imageDetails = false
     }
 }
