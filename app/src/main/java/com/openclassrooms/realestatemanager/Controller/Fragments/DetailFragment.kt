@@ -5,29 +5,38 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.openclassrooms.realestatemanager.Controller.Activities.EditActivity
 import com.openclassrooms.realestatemanager.Controller.Activities.MainActivity
+import com.openclassrooms.realestatemanager.Controller.Activities.VIEWHOLDER_ACTION_DETAIL
 import com.openclassrooms.realestatemanager.Controller.ViewModel.EstateViewModel
 import com.openclassrooms.realestatemanager.Controller.ViewModel.ViewModelFactory
+import com.openclassrooms.realestatemanager.Controller.Views.ActivityAddAdapter
 import com.openclassrooms.realestatemanager.Di.Injection
 import com.openclassrooms.realestatemanager.Models.Estate
 import com.openclassrooms.realestatemanager.Models.FullEstate
+import com.openclassrooms.realestatemanager.Models.Image
 
 import com.openclassrooms.realestatemanager.R
+import com.openclassrooms.realestatemanager.Utils.ItemClickSupport
 import kotlinx.android.synthetic.main.fragment_detail.*
 
 /**
  * A simple [Fragment] subclass.
  *
  */
-class DetailFragment : Fragment() {
+class DetailFragment : Fragment(), ActivityAddAdapter.Listener {
 
     private lateinit var mViewModel:EstateViewModel
     private var databaseId:Any? = null
+    private lateinit var listImages:ArrayList<Image>
+    private lateinit var adapter:ActivityAddAdapter
+    private lateinit var mainDesc:String
 
     companion object {
         fun newInstance():DetailFragment{
@@ -49,6 +58,9 @@ class DetailFragment : Fragment() {
 
         this.retrieveDatabaseId()
         this.configureFABOnClickListener()
+        this.configureRecyclerView()
+        this.configureOnClickRecyclerView()
+        this.configureRestoreDescButton()
     }
 
     // ---------------------
@@ -56,7 +68,21 @@ class DetailFragment : Fragment() {
     // ---------------------
 
     private fun configureRecyclerView(){
+        this.listImages = ArrayList()
+        this.adapter = ActivityAddAdapter(this.listImages,this, VIEWHOLDER_ACTION_DETAIL)
+        detail_fragment_recycler_view.adapter = this.adapter
+        detail_fragment_recycler_view.layoutManager = LinearLayoutManager(this.context,LinearLayoutManager.HORIZONTAL,false)
+    }
 
+    private fun configureRestoreDescButton(){
+        detail_fragment_restore_desc.setOnClickListener { detail_fragment_desc.text = mainDesc }
+    }
+
+    private fun configureOnClickRecyclerView(){
+        ItemClickSupport.addTo(detail_fragment_recycler_view,R.layout.activity_add_item).setOnItemClickListener{
+            recyclerView: RecyclerView?, position: Int, v: View? ->
+                detail_fragment_desc.text = adapter.getImageDesc(position)
+        }
     }
 
     private fun retrieveDatabaseId(){
@@ -82,11 +108,28 @@ class DetailFragment : Fragment() {
     // UI
     // ---------------------
 
+    override fun onClickDeleteButton(position: Int) {
+    }
+
+    // ---------------------
+    // UI
+    // ---------------------
+
     private fun updateUI(result:FullEstate){
-        detail_fragment_edit_text.setText(result.estate.desc)
+        mainDesc = result.estate.desc!!
+        detail_fragment_desc.text = result.estate.desc
         detail_fragment_surface.text = result.estate.surface.toString()
         detail_fragment_rooms.text = result.estate.roomNumber.toString()
         detail_fragment_bathrooms.text = result.estate.bathroomNumber.toString()
         detail_fragment_bedrooms.text = result.estate.bedroomNumber.toString()
+
+        detail_fragment_location_address.text = result.location.address
+        detail_fragment_location_add_address.text = result.location.additionalAddress
+        detail_fragment_location_city.text = result.location.city
+        detail_fragment_location_zip.text = result.location.zipCode
+        detail_fragment_location_country.text = result.location.country
+
+        listImages.addAll(result.images)
+        adapter.notifyDataSetChanged()
     }
 }

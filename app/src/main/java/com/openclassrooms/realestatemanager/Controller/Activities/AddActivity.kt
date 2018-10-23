@@ -81,7 +81,7 @@ class AddActivity : AppCompatActivity(), ActivityAddAdapter.Listener {
 
     private fun configureRecyclerView() {
         this.images = ArrayList()
-        this.adapter = ActivityAddAdapter(estateViewModel.listImagesToSave,this)
+        this.adapter = ActivityAddAdapter(estateViewModel.listImagesToSave,this, VIEWHOLDER_ACTION_ADD)
         this.add_activity_recycler_view.adapter = this.adapter
         this.add_activity_recycler_view.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
     }
@@ -210,7 +210,7 @@ class AddActivity : AppCompatActivity(), ActivityAddAdapter.Listener {
         if(!error){
             image.imageTitle = title
             image.imageDesc = desc
-            adapter.imageGetDetails(position)
+            adapter.notifyItemChanged(position)
             dialog.dismiss()
             Toast.makeText(this,resources.getString(R.string.overlay_image_details_saved),Toast.LENGTH_SHORT).show()
         }
@@ -298,7 +298,7 @@ class AddActivity : AppCompatActivity(), ActivityAddAdapter.Listener {
         add_activity_surface.text = null
         add_activity_room_number.text = null
         add_activity_bathroom_number.text = null
-        add_activity_room_number.text = null
+        add_activity_bedroom_number.text = null
         add_activity_desc.text = null
         add_activity_address.text = null
         add_activity_add_address.text = null

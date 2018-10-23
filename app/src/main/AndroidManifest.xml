@@ -24,7 +24,9 @@
             android:label="@string/activity_add_title"
             android:parentActivityName=".Controller.Activities.MainActivity" />
 
-        <activity android:name=".Controller.Activities.EditActivity" />
+        <activity android:name=".Controller.Activities.EditActivity"
+            android:label="@string/activity_edit_title"
+            />
 
         <activity android:name=".Controller.Activities.SearchActivity"></activity>
     </application>

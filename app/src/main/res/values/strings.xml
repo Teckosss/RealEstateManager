@@ -11,6 +11,7 @@
 
     <!-- ACTIVITY/FRAGMENT TITLE -->
     <string name="activity_add_title">New estate</string>
+    <string name="activity_edit_title">Edit estate</string>
 
     <!-- ADD ACTIVITY -->
     <string name="activity_add_estate_type_hint">Estate type</string>

@@ -16,6 +16,9 @@ import com.openclassrooms.realestatemanager.Controller.Fragments.ListFragment
 import com.openclassrooms.realestatemanager.R
 import kotlinx.android.synthetic.main.toolbar.*
 
+const val VIEWHOLDER_ACTION_ADD = "ADD"
+const val VIEWHOLDER_ACTION_EDIT = "EDIT"
+const val VIEWHOLDER_ACTION_DETAIL = "DETAIL"
 
 class MainActivity : AppCompatActivity() {
 
