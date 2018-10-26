@@ -4,13 +4,13 @@ import android.app.Dialog
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.TextInputEditText
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.text.Editable
 import android.util.Log
 import android.view.View
 import android.view.Window
@@ -25,18 +25,22 @@ import com.openclassrooms.realestatemanager.Di.Injection
 import com.openclassrooms.realestatemanager.Models.Estate
 import com.openclassrooms.realestatemanager.Models.FullEstate
 import com.openclassrooms.realestatemanager.Models.Image
+import com.openclassrooms.realestatemanager.Models.Location
 import com.openclassrooms.realestatemanager.R
+import com.openclassrooms.realestatemanager.Utils.Constants
 import com.openclassrooms.realestatemanager.Utils.ItemClickSupport
+import com.openclassrooms.realestatemanager.Utils.Utils
 import kotlinx.android.synthetic.main.custom_dialog_overlay.*
 import kotlinx.android.synthetic.main.estate_info.*
-import kotlinx.android.synthetic.main.fragment_list_item.*
 import kotlinx.android.synthetic.main.toolbar.*
 
-class EditActivity : AppCompatActivity(), ActivityAddAdapter.Listener {
+class EditActivity : BaseActivity(), ActivityAddAdapter.Listener {
 
     private lateinit var mViewModel: EstateViewModel
-    private lateinit var listImages:ArrayList<Image>
+    private lateinit var listImages:ArrayList<Any>
+    private var listImagesToDeleteFromDB = ArrayList<Image>()
     private lateinit var adapter:ActivityAddAdapter
+    private var databaseId:Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,23 +50,19 @@ class EditActivity : AppCompatActivity(), ActivityAddAdapter.Listener {
 
         this.configureToolbar()
         this.retrieveDatabaseId()
+        this.setOnClickListener()
         this.configureRecyclerView()
         this.configureOnClickRecyclerView()
+        this.populateWithTodayDate()
     }
 
     // ---------------------
     // CONFIGURATION
     // ---------------------
 
-    private fun configureToolbar(){
-        setSupportActionBar(simple_toolbar)
-        val ab = supportActionBar
-        ab!!.setDisplayHomeAsUpEnabled(true)
-    }
-
     private fun configureRecyclerView(){
         this.listImages = ArrayList()
-        this.adapter = ActivityAddAdapter(this.listImages,this, VIEWHOLDER_ACTION_EDIT)
+        this.adapter = ActivityAddAdapter(mViewModel.listImagesToSave,this, Constants.VIEW_HOLDER_ACTION_EDIT)
         add_activity_recycler_view.adapter = this.adapter
         add_activity_recycler_view.layoutManager = LinearLayoutManager(this,LinearLayout.HORIZONTAL,false)
     }
@@ -70,46 +70,16 @@ class EditActivity : AppCompatActivity(), ActivityAddAdapter.Listener {
     private fun configureOnClickRecyclerView(){
         ItemClickSupport.addTo(add_activity_recycler_view,R.layout.activity_add_item).setOnItemClickListener{
             recyclerView: RecyclerView?, position: Int, v: View? ->
-            showOverlay(this,listImages[position],position)
+            showOverlay(this, mViewModel.listImagesToSave[position], position,adapter)
         }
     }
 
     private fun retrieveDatabaseId(){
-        val databaseId = intent.extras[DATABASE_ID] as Long
+        databaseId = intent.extras[DATABASE_ID] as Long
         Log.e("EDIT_ACTIVITY","Extra : $databaseId")
         if (databaseId > 0){
             mViewModel.getEstatesByID(databaseId).observe(this, Observer { updateUI(it!!) })
         }
-    }
-
-    private fun showOverlay(context: Context, image: Image, position: Int){
-        val dialog = Dialog(context)
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setContentView(R.layout.custom_dialog_overlay)
-        dialog.setCanceledOnTouchOutside(false)
-        dialog.setCancelable(true)
-
-        val displayMetrics = context.resources.displayMetrics
-        val dialogWidth = (displayMetrics.widthPixels * 0.85).toInt()
-        val dialogHeight = (displayMetrics.heightPixels * 0.85).toInt()
-        dialog.window.setLayout(dialogWidth,dialogHeight)
-
-        dialog.show()
-
-        this.populateDialogWhenOpening(dialog,image)
-
-        dialog.overlay_cancel.setOnClickListener{hideOverlayLayout(dialog)}
-        dialog.overlay_save.setOnClickListener{}
-    }
-
-    private fun populateDialogWhenOpening(dialog: Dialog, image: Image){
-        Glide.with(this).load(Uri.parse(image.imagePath)).apply(RequestOptions().centerCrop()).into(dialog.overlay_image_view)
-        if(!(image.imageTitle.isNullOrBlank())) dialog.overlay_title.setText(image.imageTitle)
-        if(!(image.imageDesc.isNullOrBlank())) dialog.overlay_desc.setText(image.imageDesc)
-    }
-
-    private fun hideOverlayLayout(dialog: Dialog){
-        dialog.dismiss()
     }
 
     // ---------------------
@@ -117,31 +87,100 @@ class EditActivity : AppCompatActivity(), ActivityAddAdapter.Listener {
     // ---------------------
 
     override fun onClickDeleteButton(position: Int) {
-        listImages.removeAt(position)
+        listImagesToDeleteFromDB.add(mViewModel.listImagesToSave[position])
+        mViewModel.listImagesToSave.removeAt(position)
         adapter.notifyDataSetChanged()
+    }
+
+    override fun saveEstateToDatabase() {
+        var canSaveEstate = false
+        for (image in mViewModel.listImagesToSave) {
+            canSaveEstate = image.imageDesc != null && image.imageDesc!!.isNotEmpty() && image.imageTitle != null && image.imageTitle!!.isNotEmpty()
+        }
+
+        if (canSaveEstate) {
+            val estate = Estate(databaseId,
+                    add_activity_spinner.text.toString(),
+                    add_activity_price.text.toString().toDoubleOrNull(),
+                    add_activity_surface.text.toString().toIntOrNull(),
+                    add_activity_room_number.text.toString().toIntOrNull(),
+                    add_activity_bathroom_number.text.toString().toIntOrNull(),
+                    add_activity_bedroom_number.text.toString().toIntOrNull(),
+                    add_activity_desc.text.toString(),
+                    null,
+                    resources.getString(R.string.activity_add_estate_available),
+                    Utils.getTodayDate(),
+                    null,
+                    "Adrien")
+
+            this.mViewModel.updateEstate(estate)
+            this.mViewModel.getLocationId(databaseId)
+            this.mViewModel.locationId.observe(this, Observer<Long> {
+                saveLocationToDatabase(databaseId, mViewModel.getLocationId())
+                saveImageToDatabase()
+            })
+        }
+    }
+
+    private fun saveLocationToDatabase(estateId:Long, locationId:Long){
+        Log.e("EDIT_ACTIVITY","EstateId is : $estateId")
+        Log.e("EDIT_ACTIVITY","LocationId is : $locationId")
+
+        val location = Location(locationId,
+                add_activity_address.text.toString(),
+                add_activity_add_address.text.toString(),
+                add_activity_city_address.text.toString(),
+                add_activity_zip_address.text.toString(),
+                add_activity_country_address.text.toString(),
+                estateId)
+
+        this.mViewModel.updateLocation(location)
+    }
+
+    private fun saveImageToDatabase(){
+        Log.e("EDIT_ACTIVITY","Images List : ${mViewModel.listImagesToSave}")
+        (0 until mViewModel.listImagesToSave.size).forEach{
+            if(mViewModel.listImagesToSave[it].id.toInt() != 0){
+                mViewModel.updateImage(mViewModel.listImagesToSave[it])
+            }else{
+                mViewModel.createImage(mViewModel.listImagesToSave[it])
+            }
+        }
+
+        (0 until listImagesToDeleteFromDB.size).forEach{
+            mViewModel.deleteImage(listImagesToDeleteFromDB[it])
+        }
+        listImagesToDeleteFromDB.clear()
     }
 
     // ---------------------
     // UI
     // ---------------------
 
-    private fun updateUI(result:FullEstate){
-        this.retrieveTextAndPopulateEditText(add_activity_spinner,result.estate.estateType)
-        this.retrieveTextAndPopulateEditText(add_activity_price,result.estate.price.toString())
-        this.retrieveTextAndPopulateEditText(add_activity_surface,result.estate.surface.toString())
-        this.retrieveTextAndPopulateEditText(add_activity_room_number,result.estate.roomNumber.toString())
-        this.retrieveTextAndPopulateEditText(add_activity_bathroom_number,result.estate.bathroomNumber.toString())
-        this.retrieveTextAndPopulateEditText(add_activity_bedroom_number,result.estate.bedroomNumber.toString())
-        this.retrieveTextAndPopulateEditText(add_activity_desc,result.estate.desc)
-        this.retrieveTextAndPopulateEditText(add_activity_date,result.estate.entryDate)
+    private fun <T> updateUI(result:T){
+        if (result is FullEstate){
+            mViewModel.listImagesToSave.clear()
+            this.retrieveTextAndPopulateEditText(add_activity_spinner,result.estate.estateType)
+            this.retrieveTextAndPopulateEditText(add_activity_price,result.estate.price.toString())
+            this.retrieveTextAndPopulateEditText(add_activity_surface,result.estate.surface.toString())
+            this.retrieveTextAndPopulateEditText(add_activity_room_number,result.estate.roomNumber.toString())
+            this.retrieveTextAndPopulateEditText(add_activity_bathroom_number,result.estate.bathroomNumber.toString())
+            this.retrieveTextAndPopulateEditText(add_activity_bedroom_number,result.estate.bedroomNumber.toString())
+            this.retrieveTextAndPopulateEditText(add_activity_desc,result.estate.desc)
+            this.retrieveTextAndPopulateEditText(add_activity_date,result.estate.entryDate)
 
-        this.retrieveTextAndPopulateEditText(add_activity_address,result.location.address)
-        this.retrieveTextAndPopulateEditText(add_activity_add_address,result.location.additionalAddress)
-        this.retrieveTextAndPopulateEditText(add_activity_city_address,result.location.city)
-        this.retrieveTextAndPopulateEditText(add_activity_zip_address,result.location.zipCode)
-        this.retrieveTextAndPopulateEditText(add_activity_country_address,result.location.country)
+            this.retrieveTextAndPopulateEditText(add_activity_address,result.location.address)
+            this.retrieveTextAndPopulateEditText(add_activity_add_address,result.location.additionalAddress)
+            this.retrieveTextAndPopulateEditText(add_activity_city_address,result.location.city)
+            this.retrieveTextAndPopulateEditText(add_activity_zip_address,result.location.zipCode)
+            this.retrieveTextAndPopulateEditText(add_activity_country_address,result.location.country)
 
-        listImages.addAll(result.images)
+            mViewModel.listImagesToSave.addAll(result.images)
+
+        }else if (result is Uri){
+            listImages.add(result)
+        }
+
         adapter.notifyDataSetChanged()
     }
 
@@ -152,6 +191,37 @@ class EditActivity : AppCompatActivity(), ActivityAddAdapter.Listener {
         }else{
             view.setText("",TextView.BufferType.EDITABLE)
         }
+    }
 
+    // ---------------------
+    // FILE MANAGEMENT
+    // ---------------------
+
+    override fun handleResponse(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == Constants.RC_CHOOSE_PHOTO) {
+            if (resultCode == RESULT_OK) { //SUCCESS
+                if (data!!.clipData != null) {
+                    listImages.clear()
+                    (0 until data.clipData.itemCount ).forEach {
+                        i ->
+                        val uri = data.clipData.getItemAt(i).uri
+                        listImages.add(uri)
+                        val imageToSave = Image(0,uri.toString(),null,null,databaseId)
+                        mViewModel.listImagesToSave.add(imageToSave)
+                    }
+                    Log.e("HandleResponse","ListImages : $listImages")
+                    updateUI(listImages)
+                    //do something with the image (save it to some directory or whatever you need to do with it here)
+                }else if(data.data != null) {
+                    val uriImageSelected = data.data
+                    val imageToSave = Image(0,uriImageSelected.toString(),null,null,databaseId)
+                    mViewModel.listImagesToSave.add(imageToSave)
+                    updateUI(uriImageSelected)
+                    //do something with the image (save it to some directory or whatever you need to do with it here)
+                }
+            }
+        } else {
+            Log.e("TAG","No pic choose")
+        }
     }
 }

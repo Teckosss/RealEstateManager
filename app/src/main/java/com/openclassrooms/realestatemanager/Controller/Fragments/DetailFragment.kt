@@ -1,6 +1,5 @@
 package com.openclassrooms.realestatemanager.Controller.Fragments
 
-
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
@@ -13,16 +12,14 @@ import android.view.View
 import android.view.ViewGroup
 import com.openclassrooms.realestatemanager.Controller.Activities.EditActivity
 import com.openclassrooms.realestatemanager.Controller.Activities.MainActivity
-import com.openclassrooms.realestatemanager.Controller.Activities.VIEWHOLDER_ACTION_DETAIL
 import com.openclassrooms.realestatemanager.Controller.ViewModel.EstateViewModel
-import com.openclassrooms.realestatemanager.Controller.ViewModel.ViewModelFactory
 import com.openclassrooms.realestatemanager.Controller.Views.ActivityAddAdapter
 import com.openclassrooms.realestatemanager.Di.Injection
-import com.openclassrooms.realestatemanager.Models.Estate
 import com.openclassrooms.realestatemanager.Models.FullEstate
 import com.openclassrooms.realestatemanager.Models.Image
 
 import com.openclassrooms.realestatemanager.R
+import com.openclassrooms.realestatemanager.Utils.Constants
 import com.openclassrooms.realestatemanager.Utils.ItemClickSupport
 import kotlinx.android.synthetic.main.fragment_detail.*
 
@@ -69,7 +66,7 @@ class DetailFragment : Fragment(), ActivityAddAdapter.Listener {
 
     private fun configureRecyclerView(){
         this.listImages = ArrayList()
-        this.adapter = ActivityAddAdapter(this.listImages,this, VIEWHOLDER_ACTION_DETAIL)
+        this.adapter = ActivityAddAdapter(this.listImages,this, Constants.VIEW_HOLDER_ACTION_DETAIL)
         detail_fragment_recycler_view.adapter = this.adapter
         detail_fragment_recycler_view.layoutManager = LinearLayoutManager(this.context,LinearLayoutManager.HORIZONTAL,false)
     }
@@ -116,6 +113,7 @@ class DetailFragment : Fragment(), ActivityAddAdapter.Listener {
     // ---------------------
 
     private fun updateUI(result:FullEstate){
+        listImages.clear()
         mainDesc = result.estate.desc!!
         detail_fragment_desc.text = result.estate.desc
         detail_fragment_surface.text = result.estate.surface.toString()

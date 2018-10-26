@@ -16,10 +16,6 @@ import com.openclassrooms.realestatemanager.Controller.Fragments.ListFragment
 import com.openclassrooms.realestatemanager.R
 import kotlinx.android.synthetic.main.toolbar.*
 
-const val VIEWHOLDER_ACTION_ADD = "ADD"
-const val VIEWHOLDER_ACTION_EDIT = "EDIT"
-const val VIEWHOLDER_ACTION_DETAIL = "DETAIL"
-
 class MainActivity : AppCompatActivity() {
 
     private var detailFragment: DetailFragment? = null
@@ -75,11 +71,11 @@ class MainActivity : AppCompatActivity() {
     private fun showFragment(newFragment: Fragment){
         val transaction = supportFragmentManager.beginTransaction()
 
-        if (isTablet()){
+        /*if (isTablet()){
             detailFragment = DetailFragment.newInstance()
             transaction.add(R.id.fragment_view_detail, detailFragment as DetailFragment)
         }
-
+*/
         transaction.replace(R.id.fragment_view, newFragment)
         transaction.addToBackStack(null)
         transaction.commit()

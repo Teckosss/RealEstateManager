@@ -28,6 +28,8 @@ class EstateViewModel(private val estateDataRepository: EstateDataRepository,
 
     var lastIdInserted : MutableLiveData<Long> = MutableLiveData()
 
+    var locationId : MutableLiveData<Long> = MutableLiveData()
+
     var listImagesToSave = ArrayList<Image>()
 
     override fun onCleared() {
@@ -41,6 +43,14 @@ class EstateViewModel(private val estateDataRepository: EstateDataRepository,
 
     fun getLastIdInserted():Long{
         return lastIdInserted.value!!
+    }
+
+    fun updateLocationId(newId:Long){
+        locationId.value = newId
+    }
+
+    fun getLocationId():Long{
+        return locationId.value!!
     }
 
     // --------------------
@@ -66,6 +76,17 @@ class EstateViewModel(private val estateDataRepository: EstateDataRepository,
         )
     }
 
+    fun updateEstate(estate: Estate){
+        this.disposable.add(estateDataRepository.updateEstate(estate)
+                .observeOn(observerOn)
+                .subscribeOn(subscriberOn)
+                .subscribe(
+                        { Log.e("UPDATE_ESTATE","OnNext")},
+                        {e -> Log.e("UPDATE_ESTATE","OnError : ${e.localizedMessage}")}
+                )
+        )
+    }
+
     // --------------------
     // IMAGE
     // --------------------
@@ -85,6 +106,28 @@ class EstateViewModel(private val estateDataRepository: EstateDataRepository,
         )
     }
 
+    fun updateImage(image: Image){
+        this.disposable.add(imageDataRepository.updateImage(image)
+                .observeOn(observerOn)
+                .subscribeOn(subscriberOn)
+                .subscribe(
+                        {Log.e("UPDATE_IMAGE","OnNext")},
+                        {e -> Log.e("UPDATE_IMAGE","OnError : ${e.localizedMessage}")}
+                )
+        )
+    }
+
+    fun deleteImage(image: Image){
+        this.disposable.add(imageDataRepository.deleteImage(image)
+                .observeOn(observerOn)
+                .subscribeOn(subscriberOn)
+                .subscribe(
+                        {Log.e("DELETE_IMAGE","OnNext")},
+                        {e -> Log.e("DELETE_IMAGE","OnError : ${e.localizedMessage}")}
+                )
+        )
+    }
+
     // --------------------
     // LOCATION
     // --------------------
@@ -93,11 +136,33 @@ class EstateViewModel(private val estateDataRepository: EstateDataRepository,
         return locationDataRepository.getLocation(estateId)
     }
 
+    fun getLocationId(estateId: Long){
+        this.disposable.add(locationDataRepository.getLocationId(estateId)
+                .observeOn(observerOn)
+                .subscribeOn(subscriberOn)
+                .subscribe(
+                        {id -> updateLocationId(id);Log.e("GET_LOCATION_ID","OnNext")},
+                        {e -> Log.e("GET_LOCATION_ID","OnError : ${e.localizedMessage}")})
+        )
+    }
+
     fun createLocation(location: Location){
         this.disposable.add(locationDataRepository.createLocation(location)
                 .observeOn(observerOn)
                 .subscribeOn(subscriberOn)
-                .subscribe({Log.e("CREATE_LOCATION","OnNext")},{e -> Log.e("CREATE_LOCATION","OnError : ${e.localizedMessage}")})
+                .subscribe(
+                        {Log.e("CREATE_LOCATION","OnNext")},
+                        {e -> Log.e("CREATE_LOCATION","OnError : ${e.localizedMessage}")})
+        )
+    }
+
+    fun updateLocation(location: Location){
+        this.disposable.add(locationDataRepository.updateLocation(location)
+                .observeOn(observerOn)
+                .subscribeOn(subscriberOn)
+                .subscribe(
+                        {Log.e("UPDATE_LOCATION","OnNext")},
+                        {e -> Log.e("UPDATE_LOCATION","OnError : ${e.localizedMessage}")})
         )
     }
 }

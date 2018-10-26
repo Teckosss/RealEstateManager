@@ -19,16 +19,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".Controller.Activities.AddActivity"
+        <activity
+            android:name=".Controller.Activities.AddActivity"
             android:label="@string/activity_add_title"
             android:parentActivityName=".Controller.Activities.MainActivity" />
-
-        <activity android:name=".Controller.Activities.EditActivity"
-            android:label="@string/activity_edit_title"
-            />
-
-        <activity android:name=".Controller.Activities.SearchActivity"></activity>
+        <activity
+            android:name=".Controller.Activities.EditActivity"
+            android:label="@string/activity_edit_title" />
+        <activity android:name=".Controller.Activities.SearchActivity" />
+        <activity android:name=".Controller.Activities.BaseActivity"></activity>
     </application>
 
 </manifest>

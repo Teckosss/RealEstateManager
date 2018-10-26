@@ -194,7 +194,7 @@
     <android.support.design.widget.TextInputLayout
         android:id="@+id/add_activity_city_address_layout"
         android:layout_width="0dp"
-        app:layout_constraintWidth_percent=".33"
+        app:layout_constraintWidth_percent=".32"
         android:layout_height="wrap_content"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:hint="@string/activity_add_estate_city_address_hint"
@@ -219,10 +219,9 @@
         android:hint="@string/activity_add_estate_zip_address_hint"
         android:paddingBottom="@dimen/space_between_elements"
         app:layout_constraintEnd_toStartOf="@id/add_activity_country_address_layout"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@id/add_activity_city_address_layout"
         app:layout_constraintTop_toBottomOf="@id/add_activity_add_address_layout"
-        app:layout_constraintWidth_percent=".33">
+        app:layout_constraintWidth_percent=".32">
 
         <android.support.design.widget.TextInputEditText
             android:id="@+id/add_activity_zip_address"
@@ -234,7 +233,7 @@
     <android.support.design.widget.TextInputLayout
         android:id="@+id/add_activity_country_address_layout"
         android:layout_width="0dp"
-        app:layout_constraintWidth_percent=".33"
+        app:layout_constraintWidth_percent=".32"
         android:layout_height="wrap_content"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:hint="@string/activity_add_estate_country_address_hint"

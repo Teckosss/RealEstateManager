@@ -22,4 +22,7 @@ interface ImageDao {
 
     @Update
     fun updateItem(image: Image)
+
+    @Query("DELETE FROM Image WHERE id = :index")
+    fun deleteItem(index: Long)
 }

@@ -1,22 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="@dimen/space_between_elements"
+    >
 
-    <TextView
-        android:id="@+id/test_estate_type"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/space_between_elements"
+    <ImageView
+        android:id="@+id/list_item_main_pic"
+        android:layout_width="@dimen/size_image_width"
+        android:layout_height="@dimen/size_image_height"
         />
 
     <TextView
-        android:id="@+id/test_estate_price"
+        android:id="@+id/list_item_type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/test_estate_type"
         android:paddingBottom="@dimen/space_between_elements"
+        android:textColor="@color/colorBlack"
+        android:textStyle="bold"
+        android:textSize="@dimen/size_text_normal"
+        android:layout_marginStart="@dimen/padding_to_parent"
+        app:layout_constraintStart_toEndOf="@id/list_item_main_pic"
+        app:layout_constraintBottom_toTopOf="@id/list_item_city"
+        />
+
+    <TextView
+        android:id="@+id/list_item_city"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/space_between_elements"
+        android:textColor="@color/colorGrey"
+        android:layout_marginStart="@dimen/padding_to_parent"
+        app:layout_constraintStart_toEndOf="@id/list_item_main_pic"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/list_item_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/size_text_big"
+        android:layout_marginStart="@dimen/padding_to_parent"
+        app:layout_constraintStart_toEndOf="@id/list_item_main_pic"
+        app:layout_constraintTop_toBottomOf="@id/list_item_city"
         />
 
 </android.support.constraint.ConstraintLayout>

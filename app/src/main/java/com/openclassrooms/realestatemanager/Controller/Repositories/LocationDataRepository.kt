@@ -16,9 +16,19 @@ class LocationDataRepository(private val database: RealEstateManagerDatabase) {
         return this.database.locationDao().getItems(estateId)
     }
 
+    fun getLocationId(estateId:Long): Observable<Long> {
+        return Observable.fromCallable{database.locationDao().getItemId(estateId)}
+    }
+
     // --- CREATE ---
 
     fun createLocation(location: Location) : Observable<Long> {
         return Observable.fromCallable{database.locationDao().insertItem(location)}
+    }
+
+    // --- UPDATE ---
+
+    fun updateLocation(location: Location): Observable<Any>{
+        return Observable.fromCallable{database.locationDao().updateItem(location)}
     }
 }

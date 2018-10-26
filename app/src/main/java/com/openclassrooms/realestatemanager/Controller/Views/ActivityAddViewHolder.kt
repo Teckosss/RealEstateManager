@@ -4,19 +4,14 @@ import android.graphics.Color
 import android.graphics.LightingColorFilter
 import android.graphics.drawable.Drawable
 import android.net.Uri
-import android.opengl.Visibility
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.View
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.request.RequestOptions
-import com.openclassrooms.realestatemanager.Controller.Activities.VIEWHOLDER_ACTION_ADD
-import com.openclassrooms.realestatemanager.Controller.Activities.VIEWHOLDER_ACTION_DETAIL
-import com.openclassrooms.realestatemanager.Controller.Activities.VIEWHOLDER_ACTION_EDIT
-import com.openclassrooms.realestatemanager.Controller.Fragments.DetailFragment
 import com.openclassrooms.realestatemanager.Models.Image
 import com.openclassrooms.realestatemanager.R
+import com.openclassrooms.realestatemanager.Utils.Constants
 import kotlinx.android.synthetic.main.activity_add_item.view.*
 import java.lang.ref.WeakReference
 
@@ -35,7 +30,7 @@ class ActivityAddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) 
 
         glide.load(Uri.parse(image.imagePath)).apply(RequestOptions().centerCrop()).into(itemView.horizontal_item_view_image)
 
-        if (action == VIEWHOLDER_ACTION_ADD || action == VIEWHOLDER_ACTION_EDIT){
+        if (action == Constants.VIEW_HOLDER_ACTION_ADD || action == Constants.VIEW_HOLDER_ACTION_EDIT){
             itemView.horizontal_image_title.visibility = View.GONE
             itemView.horizontal_item_statute.visibility = View.VISIBLE
             itemView.horizontal_item_delete.visibility = View.VISIBLE
@@ -48,7 +43,7 @@ class ActivityAddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) 
             }
             icon.colorFilter = filter
             itemView.horizontal_item_statute.background = icon
-        }else if(action == VIEWHOLDER_ACTION_DETAIL){
+        }else if(action == Constants.VIEW_HOLDER_ACTION_DETAIL){
             itemView.horizontal_image_title.visibility = View.VISIBLE
             itemView.horizontal_item_statute.visibility = View.GONE
             itemView.horizontal_item_delete.visibility = View.GONE

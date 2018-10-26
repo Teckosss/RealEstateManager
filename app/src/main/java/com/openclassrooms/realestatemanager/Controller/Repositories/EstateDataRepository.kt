@@ -34,8 +34,8 @@ class EstateDataRepository(private val database: RealEstateManagerDatabase) {
     }
 
     // --- UPDATE ---
-    fun updateEstate(estate: Estate) {
-        database.estateDao().updateItem(estate)
+    fun updateEstate(estate: Estate) : Observable<Any> {
+      return Observable.fromCallable{database.estateDao().updateItem(estate)}
     }
 
 }
