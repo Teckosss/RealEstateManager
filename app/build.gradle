@@ -59,4 +59,5 @@ dependencies {
 
     // STETHO
     implementation 'com.facebook.stetho:stetho:1.5.0'
+    implementation 'com.google.android.gms:play-services-maps:16.0.0'
 }

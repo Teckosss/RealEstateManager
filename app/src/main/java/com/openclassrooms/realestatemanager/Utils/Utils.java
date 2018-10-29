@@ -23,13 +23,15 @@ public class Utils {
         return (int) Math.round(dollars * 0.812);
     }
 
+    public static int convertEuroToDollar(int euro){ return (int) Math.round(euro * 1.142);}
+
     /**
      * Conversion de la date d'aujourd'hui en un format plus approprié
      * NOTE : NE PAS SUPPRIMER, A MONTRER DURANT LA SOUTENANCE
      * @return
      */
     public static String getTodayDate(){
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         return dateFormat.format(new Date());
     }
 
@@ -40,7 +42,7 @@ public class Utils {
      * @return
      */
     public static Boolean isInternetAvailable(Context context){
-        WifiManager wifi = (WifiManager)context.getSystemService(Context.WIFI_SERVICE);
+        WifiManager wifi = (WifiManager)context.getSystemService(context.getApplicationContext().WIFI_SERVICE);
         return wifi.isWifiEnabled();
     }
 }

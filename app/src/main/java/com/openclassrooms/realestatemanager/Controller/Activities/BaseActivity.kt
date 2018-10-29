@@ -19,6 +19,7 @@ import com.openclassrooms.realestatemanager.Utils.Constants
 import com.openclassrooms.realestatemanager.Utils.Constants.PERMS
 import com.openclassrooms.realestatemanager.Utils.Constants.RC_IMAGE_PERMS
 import com.openclassrooms.realestatemanager.Utils.Utils
+import kotlinx.android.synthetic.main.activity_add.*
 import kotlinx.android.synthetic.main.custom_dialog_overlay.*
 import kotlinx.android.synthetic.main.estate_info.*
 import kotlinx.android.synthetic.main.toolbar.*

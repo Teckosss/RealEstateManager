@@ -5,10 +5,14 @@
     <dimen name="small_space_between_items">5dp</dimen>
 
     <!-- Images -->
-    <dimen name="size_image_width">200dp</dimen>
+    <dimen name="size_image_width">180dp</dimen>
     <dimen name="size_image_height">@dimen/size_image_width</dimen>
 
+    <dimen name="size_image_width_small">120dp</dimen>
+    <dimen name="size_image_height_small">@dimen/size_image_width_small</dimen>
+
     <!-- Text Size -->
+    <dimen name="size_text_small">15sp</dimen>
     <dimen name="size_text_normal">20sp</dimen>
     <dimen name="size_text_big">25sp</dimen>
 </resources>

@@ -12,7 +12,7 @@ import android.arch.persistence.room.PrimaryKey
 @Entity(foreignKeys = [ForeignKey(entity = Estate::class,
         parentColumns = ["id"],
         childColumns = ["estateId"])])
-data class Location(@PrimaryKey(autoGenerate = true) @ColumnInfo(name = "locationId") val id:Long,
+data class Location(@PrimaryKey(autoGenerate = true) @ColumnInfo(name = "locationId") var id:Long,
                     var address:String?,
                     var additionalAddress:String?,
                     var city:String?,

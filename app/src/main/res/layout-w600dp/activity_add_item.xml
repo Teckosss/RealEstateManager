@@ -28,6 +28,7 @@
             android:textColor="@color/colorWhite"
             android:background="@color/colorBlackBackground"
             android:padding="@dimen/small_space_between_items"
+            android:textSize="@dimen/size_text_normal"
             />
 
     </android.support.constraint.ConstraintLayout>

@@ -9,8 +9,8 @@
 
     <ImageView
         android:id="@+id/list_item_main_pic"
-        android:layout_width="@dimen/size_image_width"
-        android:layout_height="@dimen/size_image_height"
+        android:layout_width="@dimen/size_image_width_small"
+        android:layout_height="@dimen/size_image_height_small"
         />
 
     <TextView
@@ -48,5 +48,7 @@
         app:layout_constraintStart_toEndOf="@id/list_item_main_pic"
         app:layout_constraintTop_toBottomOf="@id/list_item_city"
         />
+
+
 
 </android.support.constraint.ConstraintLayout>

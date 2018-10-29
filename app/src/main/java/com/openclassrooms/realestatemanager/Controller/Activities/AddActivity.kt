@@ -92,8 +92,12 @@ class AddActivity : BaseActivity(), ActivityAddAdapter.Listener {
 
     override fun saveEstateToDatabase(){
         var canSaveEstate = false
-        for(image in estateViewModel.listImagesToSave){
-            canSaveEstate = image.imageDesc != null && image.imageDesc!!.isNotEmpty() && image.imageTitle != null && image.imageTitle!!.isNotEmpty()
+        if (estateViewModel.listImagesToSave.isNotEmpty()){
+            for(image in estateViewModel.listImagesToSave){
+                canSaveEstate = image.imageDesc != null && image.imageDesc!!.isNotEmpty() && image.imageTitle != null && image.imageTitle!!.isNotEmpty()
+            }
+        }else{
+            canSaveEstate = true
         }
 
         if (canSaveEstate){
@@ -111,40 +115,18 @@ class AddActivity : BaseActivity(), ActivityAddAdapter.Listener {
                     null,
                     "Adrien")
 
-            this.estateViewModel.createEstate(estate)
+            val location = Location(0,
+                    add_activity_address.text.toString(),
+                    add_activity_add_address.text.toString(),
+                    add_activity_city_address.text.toString(),
+                    add_activity_zip_address.text.toString(),
+                    add_activity_country_address.text.toString(),
+                    0)
 
-            this.estateViewModel.lastIdInserted.observe(this, Observer<Long>{
-                saveLocationToDatabase(estateViewModel.getLastIdInserted())
-                saveImageToDatabase(estateViewModel.getLastIdInserted())
-                clearAllFields()
-                Toast.makeText(this, resources.getString(R.string.activity_add_estate_saved), Toast.LENGTH_SHORT).show()
-            })
+            this.estateViewModel.createEstate(estate, location,applicationContext, estateViewModel.listImagesToSave.toList())
+            this.clearAllFields()
         }else{
             Toast.makeText(this, resources.getString(R.string.activity_add_estate_save_error), Toast.LENGTH_LONG).show()
-        }
-
-    }
-
-    private fun saveLocationToDatabase(estateId:Long){
-        Log.e("ADD_ACTIVITY","Id Inserted is : $estateId")
-
-        val location = Location(0,
-                add_activity_address.text.toString(),
-                add_activity_add_address.text.toString(),
-                add_activity_city_address.text.toString(),
-                add_activity_zip_address.text.toString(),
-                add_activity_country_address.text.toString(),
-                estateId)
-
-        this.estateViewModel.createLocation(location)
-    }
-
-    private fun saveImageToDatabase(estateId: Long){
-        Log.e("SaveImageToDatabase","List size : ${estateViewModel.listImagesToSave.size}")
-        (0 until estateViewModel.listImagesToSave.size).forEach{
-            estateViewModel.listImagesToSave[it].estateId = estateId
-            Log.e("SaveImageToDatabase","Image created : ${estateViewModel.listImagesToSave[it]}")
-            this.estateViewModel.createImage(estateViewModel.listImagesToSave[it])
         }
 
     }

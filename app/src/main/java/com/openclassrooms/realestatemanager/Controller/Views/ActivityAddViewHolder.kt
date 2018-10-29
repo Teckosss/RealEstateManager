@@ -43,6 +43,7 @@ class ActivityAddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) 
             }
             icon.colorFilter = filter
             itemView.horizontal_item_statute.background = icon
+
         }else if(action == Constants.VIEW_HOLDER_ACTION_DETAIL){
             itemView.horizontal_image_title.visibility = View.VISIBLE
             itemView.horizontal_item_statute.visibility = View.GONE

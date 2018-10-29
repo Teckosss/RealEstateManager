@@ -23,4 +23,15 @@
 
     </ScrollView>
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/add_activity_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/baseline_save_white_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="@dimen/space_between_elements"
+        android:layout_marginBottom="@dimen/space_between_elements"
+        />
+
 </android.support.constraint.ConstraintLayout>

@@ -40,7 +40,6 @@ class MainActivity : AppCompatActivity() {
         val id = item!!.itemId
         when(id){
             R.id.menu_add -> launchActivity(this,AddActivity::class.java, null)
-            R.id.menu_edit -> launchActivity(this,EditActivity::class.java,null)
             R.id.menu_search -> launchActivity(this,SearchActivity::class.java,null)
         }
         return super.onOptionsItemSelected(item)
@@ -77,7 +76,7 @@ class MainActivity : AppCompatActivity() {
         }
 */
         transaction.replace(R.id.fragment_view, newFragment)
-        transaction.addToBackStack(null)
+        //transaction.addToBackStack(null)
         transaction.commit()
     }
 

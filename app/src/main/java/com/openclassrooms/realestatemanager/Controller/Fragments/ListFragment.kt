@@ -1,9 +1,11 @@
 package com.openclassrooms.realestatemanager.Controller.Fragments
 
+import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.LayoutInflater
@@ -18,6 +20,7 @@ import com.openclassrooms.realestatemanager.Models.Estate
 import com.openclassrooms.realestatemanager.Models.FullEstate
 
 import com.openclassrooms.realestatemanager.R
+import com.openclassrooms.realestatemanager.Utils.DividerItemDecoration
 import com.openclassrooms.realestatemanager.Utils.ItemClickSupport
 import kotlinx.android.synthetic.main.fragment_detail.*
 import kotlinx.android.synthetic.main.fragment_list.*
@@ -66,11 +69,15 @@ class ListFragment : Fragment() {
         this.adapter = FragmentListAdapter(this.listEstate)
         this.fragment_list_recycler_view.adapter = this.adapter
         this.fragment_list_recycler_view.layoutManager = LinearLayoutManager(activity)
+        fragment_list_recycler_view.addItemDecoration(DividerItemDecoration(activity as Activity,0, 0))
     }
 
     private fun configureOnClickRecyclerView(){
         ItemClickSupport.addTo(fragment_list_recycler_view, R.layout.fragment_list_item)
                 .setOnItemClickListener{recyclerView, position, v ->
+                    if ((activity as MainActivity).isTablet()){
+                        adapter.setBackgroundColorItemClicked(position)
+                    }
                     this.launchDetailFragment(adapter.getEstateInfos(position).estate.id)
         }
     }

@@ -16,6 +16,7 @@ import android.view.View
 import android.view.Window
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.openclassrooms.realestatemanager.Controller.Fragments.DATABASE_ID
@@ -38,7 +39,6 @@ class EditActivity : BaseActivity(), ActivityAddAdapter.Listener {
 
     private lateinit var mViewModel: EstateViewModel
     private lateinit var listImages:ArrayList<Any>
-    private var listImagesToDeleteFromDB = ArrayList<Image>()
     private lateinit var adapter:ActivityAddAdapter
     private var databaseId:Long = 0
 
@@ -76,7 +76,7 @@ class EditActivity : BaseActivity(), ActivityAddAdapter.Listener {
 
     private fun retrieveDatabaseId(){
         databaseId = intent.extras[DATABASE_ID] as Long
-        Log.e("EDIT_ACTIVITY","Extra : $databaseId")
+        //Log.e("EDIT_ACTIVITY","Extra : $databaseId")
         if (databaseId > 0){
             mViewModel.getEstatesByID(databaseId).observe(this, Observer { updateUI(it!!) })
         }
@@ -87,15 +87,19 @@ class EditActivity : BaseActivity(), ActivityAddAdapter.Listener {
     // ---------------------
 
     override fun onClickDeleteButton(position: Int) {
-        listImagesToDeleteFromDB.add(mViewModel.listImagesToSave[position])
+        mViewModel.listImagesToDeleteFromDB.add(mViewModel.listImagesToSave[position])
         mViewModel.listImagesToSave.removeAt(position)
         adapter.notifyDataSetChanged()
     }
 
     override fun saveEstateToDatabase() {
         var canSaveEstate = false
-        for (image in mViewModel.listImagesToSave) {
-            canSaveEstate = image.imageDesc != null && image.imageDesc!!.isNotEmpty() && image.imageTitle != null && image.imageTitle!!.isNotEmpty()
+        if(mViewModel.listImagesToSave.isNotEmpty() ){
+            for (image in mViewModel.listImagesToSave) {
+                canSaveEstate = image.imageDesc != null && image.imageDesc!!.isNotEmpty() && image.imageTitle != null && image.imageTitle!!.isNotEmpty()
+            }
+        }else{
+            canSaveEstate = true
         }
 
         if (canSaveEstate) {
@@ -113,44 +117,18 @@ class EditActivity : BaseActivity(), ActivityAddAdapter.Listener {
                     null,
                     "Adrien")
 
-            this.mViewModel.updateEstate(estate)
-            this.mViewModel.getLocationId(databaseId)
-            this.mViewModel.locationId.observe(this, Observer<Long> {
-                saveLocationToDatabase(databaseId, mViewModel.getLocationId())
-                saveImageToDatabase()
-            })
+            val location = Location(0,
+                    add_activity_address.text.toString(),
+                    add_activity_add_address.text.toString(),
+                    add_activity_city_address.text.toString(),
+                    add_activity_zip_address.text.toString(),
+                    add_activity_country_address.text.toString(),
+                    databaseId)
+
+            this.mViewModel.updateEstate(estate, location, applicationContext, mViewModel.listImagesToSave.toList(), mViewModel.listImagesToDeleteFromDB)
+        }else{
+            Toast.makeText(this, resources.getString(R.string.activity_add_estate_save_error), Toast.LENGTH_LONG).show()
         }
-    }
-
-    private fun saveLocationToDatabase(estateId:Long, locationId:Long){
-        Log.e("EDIT_ACTIVITY","EstateId is : $estateId")
-        Log.e("EDIT_ACTIVITY","LocationId is : $locationId")
-
-        val location = Location(locationId,
-                add_activity_address.text.toString(),
-                add_activity_add_address.text.toString(),
-                add_activity_city_address.text.toString(),
-                add_activity_zip_address.text.toString(),
-                add_activity_country_address.text.toString(),
-                estateId)
-
-        this.mViewModel.updateLocation(location)
-    }
-
-    private fun saveImageToDatabase(){
-        Log.e("EDIT_ACTIVITY","Images List : ${mViewModel.listImagesToSave}")
-        (0 until mViewModel.listImagesToSave.size).forEach{
-            if(mViewModel.listImagesToSave[it].id.toInt() != 0){
-                mViewModel.updateImage(mViewModel.listImagesToSave[it])
-            }else{
-                mViewModel.createImage(mViewModel.listImagesToSave[it])
-            }
-        }
-
-        (0 until listImagesToDeleteFromDB.size).forEach{
-            mViewModel.deleteImage(listImagesToDeleteFromDB[it])
-        }
-        listImagesToDeleteFromDB.clear()
     }
 
     // ---------------------
@@ -174,6 +152,7 @@ class EditActivity : BaseActivity(), ActivityAddAdapter.Listener {
             this.retrieveTextAndPopulateEditText(add_activity_city_address,result.location.city)
             this.retrieveTextAndPopulateEditText(add_activity_zip_address,result.location.zipCode)
             this.retrieveTextAndPopulateEditText(add_activity_country_address,result.location.country)
+
 
             mViewModel.listImagesToSave.addAll(result.images)
 

@@ -4,13 +4,17 @@ import android.arch.lifecycle.ViewModel
 import com.openclassrooms.realestatemanager.Controller.Repositories.EstateDataRepository
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
+import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import com.openclassrooms.realestatemanager.Controller.Repositories.ImageDataRepository
 import com.openclassrooms.realestatemanager.Controller.Repositories.LocationDataRepository
 import com.openclassrooms.realestatemanager.Models.Estate
 import com.openclassrooms.realestatemanager.Models.FullEstate
 import com.openclassrooms.realestatemanager.Models.Image
 import com.openclassrooms.realestatemanager.Models.Location
+import com.openclassrooms.realestatemanager.R
+import io.reactivex.Observable
 import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable
 
@@ -31,6 +35,8 @@ class EstateViewModel(private val estateDataRepository: EstateDataRepository,
     var locationId : MutableLiveData<Long> = MutableLiveData()
 
     var listImagesToSave = ArrayList<Image>()
+
+    var listImagesToDeleteFromDB = ArrayList<Image>()
 
     override fun onCleared() {
         super.onCleared()
@@ -65,23 +71,31 @@ class EstateViewModel(private val estateDataRepository: EstateDataRepository,
         return estateDataRepository.gesEstateByID(estateId)
     }
 
-    fun createEstate(estate:Estate) {
+    fun createEstate(estate:Estate, location: Location,context: Context, listImages:List<Image>) {
         this.disposable.add(estateDataRepository.createEstate(estate)
+                .map { location.apply { location.estateId = it }}
+                .flatMap { locationDataRepository.createLocation(location) }
+                .map { listImages.forEach { it.estateId = location.estateId ; this.createImage(it) } }
                 .observeOn(observerOn)
                 .subscribeOn(subscriberOn)
                 .subscribe(
-                        {id -> updateLastIdInserted(id); Log.e("CREATE_ESTATE","OnNext")},
+                        {Toast.makeText(context, context.resources.getString(R.string.activity_add_estate_saved), Toast.LENGTH_SHORT).show(); Log.e("CREATE_ESTATE","OnNext")},
                         {e -> Log.e("CREATE_ESTATE","OnError : ${e.localizedMessage}")}
                 )
         )
     }
 
-    fun updateEstate(estate: Estate){
+    fun updateEstate(estate: Estate, location: Location, context: Context, listImage:List<Image>, listImageToDelete:ArrayList<Image>){
         this.disposable.add(estateDataRepository.updateEstate(estate)
+                .flatMap { locationDataRepository.getLocationId(estate.id) }
+                .map { location.apply { id = it } }
+                .flatMap { locationDataRepository.updateLocation(it) }
+                .map {listImage.forEach{if(it.id.toInt() != 0){ this.updateImage(it) }else{ this.createImage(it) }} }
+                .map { listImageToDelete.forEach { this.deleteImage(it) } }
                 .observeOn(observerOn)
                 .subscribeOn(subscriberOn)
                 .subscribe(
-                        { Log.e("UPDATE_ESTATE","OnNext")},
+                        { Toast.makeText(context, context.resources.getString(R.string.activity_add_estate_saved), Toast.LENGTH_SHORT).show();Log.e("UPDATE_ESTATE","OnNext")},
                         {e -> Log.e("UPDATE_ESTATE","OnError : ${e.localizedMessage}")}
                 )
         )

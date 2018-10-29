@@ -26,11 +26,15 @@
     <string name="activity_add_estate_add_address_hint">Additional address</string>
     <string name="activity_add_estate_city_address_hint">City</string>
     <string name="activity_add_estate_zip_address_hint">Zip Code</string>
-    <string name="activity_add_estate_country_address_hint">Country</string>
+    <string name="activity_add_estate_country_address_hint">State</string>
 
     <string name="activity_add_estate_choose_pic">Choose picture</string>
     <string name="activity_add_estate_take_pic">Take picture</string>
     <string name="activity_add_estate_save">Save</string>
+
+    <string name="activity_add_title_estate">Estate information</string>
+    <string name="activity_add_title_address">Address information</string>
+    <string name="activity_add_title_media">Media</string>
 
     <string name="activity_add_estate_saved">Estate successfully saved in database</string>
     <string name="activity_add_estate_save_error">You must provide title and description for each picture before saving estate</string>
@@ -73,6 +77,14 @@
     <string name="detail_fragment_bathrooms">Bathroom</string>
     <string name="detail_fragment_bedrooms">Bedrooms</string>
     <string name="detail_fragment_location">Location</string>
+
+    <string name="detail_fragment_not_specified">Not specified</string>
+    <string name="detail_fragment_no_desc">This estate has no description yet</string>
+
+    <!-- ESTATE LIST FRAGMENT-->
+    <string name="list_fragment_no_type">Type not know</string>
+    <string name="list_fragment_no_city">City not know</string>
+    <string name="list_fragment_no_price">Price not know</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->
