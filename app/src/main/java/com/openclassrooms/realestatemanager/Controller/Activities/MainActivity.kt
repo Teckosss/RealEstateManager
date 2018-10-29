@@ -10,10 +10,9 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.FrameLayout
 import com.facebook.stetho.Stetho
-import com.openclassrooms.realestatemanager.Controller.Fragments.DATABASE_ID
-import com.openclassrooms.realestatemanager.Controller.Fragments.DetailFragment
-import com.openclassrooms.realestatemanager.Controller.Fragments.ListFragment
+import com.openclassrooms.realestatemanager.Controller.Fragments.*
 import com.openclassrooms.realestatemanager.R
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar.*
 
 class MainActivity : AppCompatActivity() {
@@ -26,6 +25,7 @@ class MainActivity : AppCompatActivity() {
         Stetho.initializeWithDefaults(this)
 
         this.configureToolbar()
+        this.configureBottomNavigationView()
 
         this.showFragment(ListFragment.newInstance())
     }
@@ -40,7 +40,6 @@ class MainActivity : AppCompatActivity() {
         val id = item!!.itemId
         when(id){
             R.id.menu_add -> launchActivity(this,AddActivity::class.java, null)
-            R.id.menu_search -> launchActivity(this,SearchActivity::class.java,null)
         }
         return super.onOptionsItemSelected(item)
     }
@@ -52,6 +51,23 @@ class MainActivity : AppCompatActivity() {
     private fun configureToolbar(){
         setSupportActionBar(simple_toolbar)
     }
+
+    private fun configureBottomNavigationView(){
+        bottom_navigation_view.setOnNavigationItemSelectedListener {
+            when(it.itemId){
+                R.id.nav_menu_list -> showFragment(ListFragment.newInstance())
+                R.id.nav_menu_map -> showFragment(MapFragment.newInstance())
+                R.id.nav_menu_search -> showFragment(SearchFragment.newInstance())
+                R.id.nav_menu_sim -> showFragment(LoanFragment.newInstance())
+            }
+            return@setOnNavigationItemSelectedListener true
+        }
+
+    }
+
+    // ---------------------
+    // ACTIVITY
+    // ---------------------
 
     fun <T>launchActivity(context: Context, mClass:Class<T>, extra:Any?){
         val intent = Intent(context, mClass)

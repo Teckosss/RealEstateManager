@@ -14,6 +14,8 @@
     <string name="activity_edit_title">Edit estate</string>
 
     <!-- ADD ACTIVITY -->
+    <string name="activity_add_estate_sold_checkbox">This estate is sold?</string>
+    <string name="activity_add_estate_sold_date">Sale date</string>
     <string name="activity_add_estate_type_hint">Estate type</string>
     <string name="activity_add_estate_price_hint">Estate price</string>
     <string name="activity_add_estate_surface_hint">Estate surface</string>
@@ -86,6 +88,11 @@
     <string name="list_fragment_no_city">City not know</string>
     <string name="list_fragment_no_price">Price not know</string>
 
+    <!-- BOTTOM NAVIGATION VIEW TITLE-->
+    <string name="nav_view_list">List</string>
+    <string name="nav_view_search">Search</string>
+    <string name="nav_view_map">Map</string>
+    <string name="nav_view_sim">Loan</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

@@ -49,6 +49,11 @@
         app:layout_constraintTop_toBottomOf="@id/list_item_city"
         />
 
-
+    <ImageView
+        android:id="@+id/image_sold"
+        android:layout_width="@dimen/size_image_width_small"
+        android:layout_height="@dimen/size_image_height_small"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
 
 </android.support.constraint.ConstraintLayout>

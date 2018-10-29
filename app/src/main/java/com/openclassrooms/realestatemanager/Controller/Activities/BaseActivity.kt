@@ -7,8 +7,10 @@ import android.content.Intent
 import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.design.widget.TextInputEditText
 import android.view.Window
 import android.widget.PopupMenu
+import android.widget.TextView
 import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -51,7 +53,7 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     fun setOnClickListener(){
-        add_activity_date.setOnClickListener{this.displayDatePicker()}
+        add_activity_date.setOnClickListener{this.displayDatePicker(add_activity_date)}
         add_activity_choose_pic.setOnClickListener{this.onClickAddFile()}
         add_activity_spinner.setOnClickListener{this.displayPopupMenu()}
         add_activity_save.setOnClickListener{saveEstateToDatabase()}
@@ -164,7 +166,7 @@ abstract class BaseActivity : AppCompatActivity() {
     // UI
     // ---------------------
 
-    private fun displayDatePicker(){
+    fun displayDatePicker(mView:TextInputEditText){
         val sdf = SimpleDateFormat("dd/MM/yyyy")
         val calendar: Calendar = Calendar.getInstance()
         val mYear = calendar.get(Calendar.YEAR)
@@ -172,7 +174,7 @@ abstract class BaseActivity : AppCompatActivity() {
         val mDay = calendar.get(Calendar.DAY_OF_MONTH)
 
         val datePickerDialog = DatePickerDialog(this, DatePickerDialog.OnDateSetListener{ view, year, monthOfYear, dayOfMonth ->
-            add_activity_date.setText(sdf.format(Date(year - 1900,monthOfYear,dayOfMonth)))
+            mView.setText(sdf.format(Date(year - 1900,monthOfYear,dayOfMonth)), TextView.BufferType.EDITABLE)
 
         }, mYear,mMonth,mDay)
         datePickerDialog.show()
@@ -185,5 +187,5 @@ abstract class BaseActivity : AppCompatActivity() {
         popupMenu.show()
     }
 
-    fun populateWithTodayDate(){add_activity_date.setText(Utils.getTodayDate())}
+    fun populateWithTodayDate(mView: TextInputEditText){mView.setText(Utils.getTodayDate(), TextView.BufferType.EDITABLE)}
 }

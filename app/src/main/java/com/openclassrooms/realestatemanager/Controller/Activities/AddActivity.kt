@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import com.openclassrooms.realestatemanager.Controller.ViewModel.EstateViewModel
 import com.openclassrooms.realestatemanager.Controller.Views.ActivityAddAdapter
@@ -43,7 +44,10 @@ class AddActivity : BaseActivity(), ActivityAddAdapter.Listener {
         this.setOnClickListener()
         this.configureRecyclerView()
         this.configureOnClickRecyclerView()
-        this.populateWithTodayDate()
+        this.populateWithTodayDate(add_activity_date)
+
+        add_activity_check_sold.visibility = View.GONE
+
         //this.testRetrieveImageFromDB(1) // TEST FUNCTION
     }
 
@@ -143,6 +147,7 @@ class AddActivity : BaseActivity(), ActivityAddAdapter.Listener {
     }
 
     private fun clearAllFields(){
+        add_activity_spinner.text = null
         add_activity_price.text = null
         add_activity_surface.text = null
         add_activity_room_number.text = null

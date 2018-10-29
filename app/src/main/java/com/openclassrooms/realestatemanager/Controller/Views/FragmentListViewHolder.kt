@@ -40,6 +40,9 @@ class FragmentListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
             glide.load(R.drawable.ic_no_image_available).apply(RequestOptions().centerCrop()).into(itemView.list_item_main_pic)
         }
 
+        if(estate.estate.estateStatute == itemView.resources.getString(R.string.activity_add_estate_sold))
+            glide.load(R.drawable.ic_sold).apply(RequestOptions().centerCrop()).into(itemView.image_sold)
+
         if (estate.estate.estateType.isNullOrEmpty()){
             itemView.list_item_type.text = itemView.resources.getString(R.string.list_fragment_no_type)
         }else{

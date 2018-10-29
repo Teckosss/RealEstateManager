@@ -53,12 +53,25 @@ class EditActivity : BaseActivity(), ActivityAddAdapter.Listener {
         this.setOnClickListener()
         this.configureRecyclerView()
         this.configureOnClickRecyclerView()
-        this.populateWithTodayDate()
+        this.populateWithTodayDate(add_activity_date)
+        this.configureSoldLayout()
     }
 
     // ---------------------
     // CONFIGURATION
     // ---------------------
+
+    private fun configureSoldLayout(){
+        add_activity_check_sold.setOnClickListener {
+            if (add_activity_check_sold.isChecked){
+                add_activity_date_sold_layout.visibility = View.VISIBLE
+                this.populateWithTodayDate(add_activity_date_sold)
+                add_activity_date_sold.setOnClickListener { displayDatePicker(add_activity_date_sold) }
+            }else{
+                add_activity_date_sold_layout.visibility = View.GONE
+            }
+        }
+    }
 
     private fun configureRecyclerView(){
         this.listImages = ArrayList()
@@ -103,6 +116,8 @@ class EditActivity : BaseActivity(), ActivityAddAdapter.Listener {
         }
 
         if (canSaveEstate) {
+            val soldDate = if(add_activity_check_sold.isChecked && !add_activity_date_sold.text.toString().isEmpty()) add_activity_date_sold.text.toString() else null
+            val available = if (soldDate != null) resources.getString(R.string.activity_add_estate_sold) else resources.getString(R.string.activity_add_estate_available)
             val estate = Estate(databaseId,
                     add_activity_spinner.text.toString(),
                     add_activity_price.text.toString().toDoubleOrNull(),
@@ -112,9 +127,9 @@ class EditActivity : BaseActivity(), ActivityAddAdapter.Listener {
                     add_activity_bedroom_number.text.toString().toIntOrNull(),
                     add_activity_desc.text.toString(),
                     null,
-                    resources.getString(R.string.activity_add_estate_available),
+                    available,
                     Utils.getTodayDate(),
-                    null,
+                    soldDate,
                     "Adrien")
 
             val location = Location(0,
@@ -138,6 +153,11 @@ class EditActivity : BaseActivity(), ActivityAddAdapter.Listener {
     private fun <T> updateUI(result:T){
         if (result is FullEstate){
             mViewModel.listImagesToSave.clear()
+            if (result.estate.estateStatute == resources.getString(R.string.activity_add_estate_sold)){
+                add_activity_check_sold.isChecked = true
+                add_activity_date_sold_layout.visibility = View.VISIBLE
+                this.retrieveTextAndPopulateEditText(add_activity_date_sold, result.estate.soldDate)
+            }
             this.retrieveTextAndPopulateEditText(add_activity_spinner,result.estate.estateType)
             this.retrieveTextAndPopulateEditText(add_activity_price,result.estate.price.toString())
             this.retrieveTextAndPopulateEditText(add_activity_surface,result.estate.surface.toString())
