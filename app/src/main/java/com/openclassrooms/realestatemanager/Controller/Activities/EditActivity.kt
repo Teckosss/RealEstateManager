@@ -1,5 +1,6 @@
 package com.openclassrooms.realestatemanager.Controller.Activities
 
+import android.app.Activity
 import android.app.Dialog
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
@@ -201,26 +202,31 @@ class EditActivity : BaseActivity(), ActivityAddAdapter.Listener {
             if (resultCode == RESULT_OK) { //SUCCESS
                 if (data!!.clipData != null) {
                     listImages.clear()
-                    (0 until data.clipData.itemCount ).forEach {
-                        i ->
+                    (0 until data.clipData.itemCount).forEach { i ->
                         val uri = data.clipData.getItemAt(i).uri
                         listImages.add(uri)
-                        val imageToSave = Image(0,uri.toString(),null,null,databaseId)
+                        val imageToSave = Image(0, uri.toString(), null, null, databaseId)
                         mViewModel.listImagesToSave.add(imageToSave)
                     }
-                    Log.e("HandleResponse","ListImages : $listImages")
+                    Log.e("HandleResponse", "ListImages : $listImages")
                     updateUI(listImages)
                     //do something with the image (save it to some directory or whatever you need to do with it here)
-                }else if(data.data != null) {
+                } else if (data.data != null) {
                     val uriImageSelected = data.data
-                    val imageToSave = Image(0,uriImageSelected.toString(),null,null,databaseId)
+                    val imageToSave = Image(0, uriImageSelected.toString(), null, null, databaseId)
                     mViewModel.listImagesToSave.add(imageToSave)
                     updateUI(uriImageSelected)
                     //do something with the image (save it to some directory or whatever you need to do with it here)
                 }
             }
-        } else {
-            Log.e("TAG","No pic choose")
+        } else if (requestCode == Constants.RC_TAKE_PHOTO) {
+            if (resultCode == Activity.RESULT_OK) {
+                val imageToSave = Image(0, photoURI.toString(), null, null, databaseId)
+                mViewModel.listImagesToSave.add(imageToSave)
+                updateUI(photoURI)
+            } else {
+                Log.e("TAG", "No pic choose")
+            }
         }
     }
 }

@@ -142,8 +142,8 @@ class DetailFragment : Fragment(), ActivityAddAdapter.Listener, OnMapReadyCallba
 
     private fun checkAndDisplayResultData(result: FullEstate){
         if(result.estate.desc.isNullOrEmpty()){
-            mainDesc = resources.getString(R.string.detail_fragment_not_specified)
-            detail_fragment_desc.text = resources.getString(R.string.detail_fragment_not_specified)
+            mainDesc = resources.getString(R.string.detail_fragment_no_desc)
+            detail_fragment_desc.text = resources.getString(R.string.detail_fragment_no_desc)
         }else{
             mainDesc = result.estate.desc!!
             detail_fragment_desc.text = result.estate.desc

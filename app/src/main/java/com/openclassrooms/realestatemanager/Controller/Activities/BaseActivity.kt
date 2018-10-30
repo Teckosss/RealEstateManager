@@ -7,6 +7,7 @@ import android.content.Intent
 import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Environment
 import android.support.design.widget.TextInputEditText
 import android.view.Window
 import android.widget.PopupMenu
@@ -14,6 +15,7 @@ import android.widget.TextView
 import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.livinglifetechway.quickpermissions_kotlin.runWithPermissions
 import com.openclassrooms.realestatemanager.Controller.Views.ActivityAddAdapter
 import com.openclassrooms.realestatemanager.Models.Image
 import com.openclassrooms.realestatemanager.R
@@ -29,8 +31,18 @@ import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.jar.Manifest
+import android.provider.MediaStore
+import android.support.v4.content.FileProvider
+import android.util.Log
+import java.io.File
+import java.io.IOException
+
 
 abstract class BaseActivity : AppCompatActivity() {
+
+    lateinit var photoURI:Uri
+    lateinit var photoFilePath:String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,6 +67,7 @@ abstract class BaseActivity : AppCompatActivity() {
     fun setOnClickListener(){
         add_activity_date.setOnClickListener{this.displayDatePicker(add_activity_date)}
         add_activity_choose_pic.setOnClickListener{this.onClickAddFile()}
+        add_activity_take_pic.setOnClickListener { this.onClickTakePic() }
         add_activity_spinner.setOnClickListener{this.displayPopupMenu()}
         add_activity_save.setOnClickListener{saveEstateToDatabase()}
     }
@@ -70,6 +83,10 @@ abstract class BaseActivity : AppCompatActivity() {
             return
         }else
             this.chooseImageFromPhone()
+    }
+
+    private fun onClickTakePic() = runWithPermissions(Constants.PERM_CAMERA,Constants.PERM_WRITE_EXT){
+        this.takePhotoFromCamera()
     }
 
     fun showOverlay(context: Context, image: Image, position: Int, adapter:ActivityAddAdapter){
@@ -160,6 +177,39 @@ abstract class BaseActivity : AppCompatActivity() {
         intent.type = "image/*" //allows any image file type. Change * to specific extension to limit it
         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), Constants.RC_CHOOSE_PHOTO)
+    }
+
+    private fun takePhotoFromCamera(){
+        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+            takePictureIntent.resolveActivity(packageManager)?.also {
+                val photoFile:File? = try {
+                    createImageFile()
+                }catch (ex:IOException){
+                    null
+                }
+                photoFile?.also {
+                    photoURI = FileProvider.getUriForFile(this,"com.example.android.fileprovider",it)
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI )
+                    startActivityForResult(takePictureIntent, Constants.RC_TAKE_PHOTO)
+                }
+
+            }
+        }
+    }
+
+    @Throws(IOException::class)
+    private fun createImageFile(): File {
+        // Create an image file name
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val storageDir: File = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        return File.createTempFile(
+                "JPEG_${timeStamp}_", /* prefix */
+                ".jpg", /* suffix */
+                storageDir /* directory */
+        ).apply {
+            // Save a file: path for use with ACTION_VIEW intents
+            photoFilePath = absolutePath
+        }
     }
 
     // ---------------------

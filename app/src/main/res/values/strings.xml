@@ -87,6 +87,33 @@
     <string name="list_fragment_no_type">Type not know</string>
     <string name="list_fragment_no_city">City not know</string>
     <string name="list_fragment_no_price">Price not know</string>
+    
+    <!-- LOAN SIMULATOR -->
+    <string name="loan_amount">Loan amount</string>
+    <string name="loan_term">Loan term (years)</string>
+    <string name="loan_interest">Interest rate (%)</string>
+    <string name="loan_insurance">Insurance rate(%)</string>
+    <string name="loan_down_payment">Down payment</string>
+    <string name="loan_monthly_pay">Monthly pay</string>
+    <string name="loan_total_cost">Interest total cost</string>
+    <string name="loan_calculate">Calculate</string>
+
+    <string name="loan_error">This field can\'t be empty</string>
+
+    <!-- LOAN TERM VALUES -->
+    <string-array name="loan_term_values">
+        <item>@string/loan_term_10</item>
+        <item>@string/loan_term_15</item>
+        <item>@string/loan_term_20</item>
+        <item>@string/loan_term_25</item>
+        <item>@string/loan_term_30</item>
+    </string-array>
+
+    <string name="loan_term_10">10</string>
+    <string name="loan_term_15">15</string>
+    <string name="loan_term_20">20</string>
+    <string name="loan_term_25">25</string>
+    <string name="loan_term_30">30</string>
 
     <!-- BOTTOM NAVIGATION VIEW TITLE-->
     <string name="nav_view_list">List</string>

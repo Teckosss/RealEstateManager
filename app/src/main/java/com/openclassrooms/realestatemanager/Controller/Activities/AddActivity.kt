@@ -1,11 +1,15 @@
 package com.openclassrooms.realestatemanager.Controller.Activities
 
+import android.app.Activity
 import android.app.Dialog
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
+import android.support.v4.content.FileProvider
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.View
@@ -19,10 +23,16 @@ import com.openclassrooms.realestatemanager.Models.Location
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.Utils.Constants
 import com.openclassrooms.realestatemanager.Utils.Constants.RC_CHOOSE_PHOTO
+import com.openclassrooms.realestatemanager.Utils.Constants.RC_TAKE_PHOTO
 import com.openclassrooms.realestatemanager.Utils.ItemClickSupport
 import com.openclassrooms.realestatemanager.Utils.Utils
 import kotlinx.android.synthetic.main.custom_dialog_overlay.*
 import kotlinx.android.synthetic.main.estate_info.*
+import java.io.File
+import java.io.IOException
+import java.net.URI
+import java.text.SimpleDateFormat
+import java.util.*
 import kotlin.collections.ArrayList
 
 class AddActivity : BaseActivity(), ActivityAddAdapter.Listener {
@@ -89,7 +99,7 @@ class AddActivity : BaseActivity(), ActivityAddAdapter.Listener {
     }
 
     override fun onClickDeleteButton(position: Int) {
-        images.removeAt(position)
+        //images.removeAt(position)
         estateViewModel.listImagesToSave.removeAt(position)
         adapter.notifyDataSetChanged()
     }
@@ -180,18 +190,22 @@ class AddActivity : BaseActivity(), ActivityAddAdapter.Listener {
                         val imageToSave = Image(0,uri.toString(),null,null,0)
                         estateViewModel.listImagesToSave.add(imageToSave)
                     }
-                    Log.e("HandleResponse","ListImages : $listImages")
                     updateUI(listImages)
-                    //do something with the image (save it to some directory or whatever you need to do with it here)
                 }else if(data.data != null) {
                     this.uriImageSelected = data.data
                     val imageToSave = Image(0,uriImageSelected.toString(),null,null,0)
                     estateViewModel.listImagesToSave.add(imageToSave)
                     updateUI(uriImageSelected)
-                    //do something with the image (save it to some directory or whatever you need to do with it here)
                 }
             }
-        } else {
+        }else if(requestCode == Constants.RC_TAKE_PHOTO) {
+            if (resultCode == Activity.RESULT_OK) {
+                val imageToSave = Image(0,photoURI.toString(),null,null,0)
+                estateViewModel.listImagesToSave.add(imageToSave)
+                updateUI(photoURI)
+            }
+
+        }else {
             Log.e("TAG","No pic choose")
         }
     }

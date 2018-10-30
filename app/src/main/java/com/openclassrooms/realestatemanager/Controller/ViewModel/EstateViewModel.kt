@@ -90,7 +90,7 @@ class EstateViewModel(private val estateDataRepository: EstateDataRepository,
                 .flatMap { locationDataRepository.getLocationId(estate.id) }
                 .map { location.apply { id = it } }
                 .flatMap { locationDataRepository.updateLocation(it) }
-                .map {listImage.forEach{if(it.id.toInt() != 0){ this.updateImage(it) }else{ this.createImage(it) }} }
+                .map {listImage.forEach{if(it.id.toInt() != 0){ this.updateImage(it) }else{Log.e("UPDATE_ESTATE","CURRENT IMAGE : $it"); this.createImage(it) }} }
                 .map { listImageToDelete.forEach { this.deleteImage(it) } }
                 .observeOn(observerOn)
                 .subscribeOn(subscriberOn)

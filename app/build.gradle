@@ -56,6 +56,9 @@ dependencies {
     // EASY PERMISSIONS
     implementation 'pub.devrel:easypermissions:1.1.1'
 
+    // QUICK PERMISSIONS
+    implementation 'com.github.quickpermissions:quickpermissions-kotlin:0.3.0'
+
     // STETHO
     implementation 'com.facebook.stetho:stetho:1.5.0'
     implementation 'com.google.android.gms:play-services-maps:16.0.0'
