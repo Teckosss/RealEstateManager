@@ -208,6 +208,123 @@
             android:paddingBottom="@dimen/space_between_elements"
             />
 
+            <!-- VICINITY -->
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/detail_fragment_vicinity_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/detail_fragment_bathrooms"
+                android:paddingBottom="@dimen/space_between_elements"
+                >
+
+                <ImageView
+                    android:id="@+id/detail_fragment_icon_vicinity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/baseline_location_city_black_24"
+                    android:paddingEnd="@dimen/small_space_between_items"
+                    />
+
+                <TextView
+                    android:id="@+id/vicinity_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/detail_fragment_vicinity"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/detail_fragment_icon_vicinity"
+                    app:layout_constraintStart_toEndOf="@+id/detail_fragment_icon_vicinity"
+                    app:layout_constraintTop_toTopOf="@+id/detail_fragment_icon_vicinity" />
+
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/space_between_elements"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/vicinity_text"
+                    app:layout_constraintTop_toBottomOf="@+id/vicinity_text">
+
+                    <!-- PARK -->
+
+                    <TextView
+                        android:id="@+id/vicinity_parks"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/activity_add_estate_parks" />
+
+                    <ImageView
+                        android:id="@+id/park_image"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingRight="@dimen/space_between_elements"
+                        app:layout_constraintBottom_toBottomOf="@id/vicinity_parks"
+                        app:layout_constraintStart_toEndOf="@id/vicinity_parks"
+                         />
+
+                    <!-- SHOP -->
+
+                    <TextView
+                        android:id="@+id/vicinity_shops"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/activity_add_estate_shops"
+                        app:layout_constraintBottom_toBottomOf="@id/park_image"
+                        app:layout_constraintStart_toEndOf="@id/park_image"
+                         />
+
+                    <ImageView
+                        android:id="@+id/shop_image"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingRight="@dimen/space_between_elements"
+                        app:layout_constraintBottom_toBottomOf="@id/vicinity_shops"
+                        app:layout_constraintStart_toEndOf="@id/vicinity_shops"
+                         />
+
+                    <!-- SCHOOL -->
+
+                    <TextView
+                        android:id="@+id/vicinity_schools"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/activity_add_estate_schools"
+                        app:layout_constraintBottom_toBottomOf="@id/shop_image"
+                        app:layout_constraintStart_toEndOf="@id/shop_image"
+                        />
+
+                    <ImageView
+                        android:id="@+id/school_image"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingRight="@dimen/space_between_elements"
+                        app:layout_constraintBottom_toBottomOf="@id/vicinity_schools"
+                        app:layout_constraintStart_toEndOf="@id/vicinity_schools"
+                       />
+
+                    <!-- HIGHWAY -->
+
+                    <TextView
+                        android:id="@+id/vicinity_highway"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/activity_add_estate_highway"
+                        app:layout_constraintBottom_toBottomOf="@id/school_image"
+                        app:layout_constraintStart_toEndOf="@id/school_image"
+                        />
+
+                    <ImageView
+                        android:id="@+id/highway_image"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintBottom_toBottomOf="@id/vicinity_highway"
+                        app:layout_constraintStart_toEndOf="@id/vicinity_highway"
+                       />
+
+                </android.support.constraint.ConstraintLayout>
+
+            </android.support.constraint.ConstraintLayout>
+
+
         <!-- LOCATION -->
 
         <ImageView
@@ -215,7 +332,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/baseline_location_on_black_24"
-            app:layout_constraintTop_toBottomOf="@id/detail_fragment_bathrooms"
+            app:layout_constraintTop_toBottomOf="@id/detail_fragment_vicinity_container"
             android:paddingEnd="@dimen/small_space_between_items"
             />
 

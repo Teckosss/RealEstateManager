@@ -127,7 +127,10 @@ class EditActivity : BaseActivity(), ActivityAddAdapter.Listener {
                     add_activity_bathroom_number.text.toString().toIntOrNull(),
                     add_activity_bedroom_number.text.toString().toIntOrNull(),
                     add_activity_desc.text.toString(),
-                    null,
+                    nearby_parks.isChecked,
+                    nearby_shops.isChecked,
+                    nearby_schools.isChecked,
+                    nearby_highway.isChecked,
                     available,
                     Utils.getTodayDate(),
                     soldDate,
@@ -136,6 +139,7 @@ class EditActivity : BaseActivity(), ActivityAddAdapter.Listener {
             val location = Location(0,
                     add_activity_address.text.toString(),
                     add_activity_add_address.text.toString(),
+                    add_activity_sector_address.text.toString(),
                     add_activity_city_address.text.toString(),
                     add_activity_zip_address.text.toString(),
                     add_activity_country_address.text.toString(),
@@ -159,6 +163,12 @@ class EditActivity : BaseActivity(), ActivityAddAdapter.Listener {
                 add_activity_date_sold_layout.visibility = View.VISIBLE
                 this.retrieveTextAndPopulateEditText(add_activity_date_sold, result.estate.soldDate)
             }
+
+            if (result.estate.parks) nearby_parks.isChecked = true
+            if (result.estate.shops) nearby_shops.isChecked = true
+            if (result.estate.schools) nearby_schools.isChecked = true
+            if (result.estate.highway) nearby_highway.isChecked = true
+
             this.retrieveTextAndPopulateEditText(add_activity_spinner,result.estate.estateType)
             this.retrieveTextAndPopulateEditText(add_activity_price,result.estate.price.toString())
             this.retrieveTextAndPopulateEditText(add_activity_surface,result.estate.surface.toString())
@@ -170,6 +180,7 @@ class EditActivity : BaseActivity(), ActivityAddAdapter.Listener {
 
             this.retrieveTextAndPopulateEditText(add_activity_address,result.location.address)
             this.retrieveTextAndPopulateEditText(add_activity_add_address,result.location.additionalAddress)
+            this.retrieveTextAndPopulateEditText(add_activity_sector_address,result.location.sector)
             this.retrieveTextAndPopulateEditText(add_activity_city_address,result.location.city)
             this.retrieveTextAndPopulateEditText(add_activity_zip_address,result.location.zipCode)
             this.retrieveTextAndPopulateEditText(add_activity_country_address,result.location.country)

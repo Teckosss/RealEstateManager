@@ -2,6 +2,10 @@ package com.openclassrooms.realestatemanager.Controller.Fragments
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
+import android.graphics.Color
+import android.graphics.LightingColorFilter
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -10,6 +14,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -27,6 +32,9 @@ import com.openclassrooms.realestatemanager.R.id.detail_fragment_map
 import com.openclassrooms.realestatemanager.Utils.Constants
 import com.openclassrooms.realestatemanager.Utils.ItemClickSupport
 import kotlinx.android.synthetic.main.fragment_detail.*
+import android.os.Build
+import android.support.v4.content.ContextCompat
+
 
 /**
  * A simple [Fragment] subclass.
@@ -185,6 +193,11 @@ class DetailFragment : Fragment(), ActivityAddAdapter.Listener, OnMapReadyCallba
             detail_fragment_map.visibility = View.GONE
         }
 
+        setImage(context!!, park_image,result.estate.parks)
+        setImage(context!!, shop_image,result.estate.shops)
+        setImage(context!!, school_image,result.estate.schools)
+        setImage(context!!, highway_image,result.estate.highway)
+
 
         listImages.addAll(result.images)
     }
@@ -194,4 +207,35 @@ class DetailFragment : Fragment(), ActivityAddAdapter.Listener, OnMapReadyCallba
                     !result.location.city.isNullOrEmpty() &&
                     !result.location.zipCode.isNullOrEmpty() &&
                     !result.location.country.isNullOrEmpty()
+
+    private fun setImage(context: Context, imageView: ImageView, result:Boolean){
+          try {
+              lateinit var icon:Drawable
+              lateinit var filter:LightingColorFilter
+              val colorGreen = ContextCompat.getColor(context, R.color.colorGreen)
+              val colorRed = ContextCompat.getColor(context, R.color.colorRed)
+
+              if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                  if (result){
+                      icon = context.resources.getDrawable(R.drawable.baseline_check_black_18, context.applicationContext.theme)
+                      filter = LightingColorFilter(colorGreen, colorGreen)
+                  }else{
+                      icon = context.resources.getDrawable(R.drawable.baseline_clear_black_18, context.applicationContext.theme)
+                      filter = LightingColorFilter(colorRed, colorRed)
+                  }
+              } else {
+                  if (result){
+                      icon = context.resources.getDrawable(R.drawable.baseline_check_black_18)
+                      filter = LightingColorFilter(colorGreen, colorGreen)
+                  } else{
+                      icon = context.resources.getDrawable(R.drawable.baseline_clear_black_18)
+                      filter = LightingColorFilter(colorRed, colorRed)
+                  }
+              }
+              icon.colorFilter = filter
+              imageView.setImageDrawable(icon)
+          } catch (e: Exception) {
+              e.printStackTrace()
+          }
+    }
 }

@@ -123,7 +123,10 @@ class AddActivity : BaseActivity(), ActivityAddAdapter.Listener {
                     add_activity_bathroom_number.text.toString().toIntOrNull(),
                     add_activity_bedroom_number.text.toString().toIntOrNull(),
                     add_activity_desc.text.toString(),
-                    null,
+                    nearby_parks.isChecked,
+                    nearby_shops.isChecked,
+                    nearby_schools.isChecked,
+                    nearby_highway.isChecked,
                     resources.getString(R.string.activity_add_estate_available),
                     Utils.getTodayDate(),
                     null,
@@ -132,6 +135,7 @@ class AddActivity : BaseActivity(), ActivityAddAdapter.Listener {
             val location = Location(0,
                     add_activity_address.text.toString(),
                     add_activity_add_address.text.toString(),
+                    add_activity_sector_address.text.toString(),
                     add_activity_city_address.text.toString(),
                     add_activity_zip_address.text.toString(),
                     add_activity_country_address.text.toString(),
@@ -164,11 +168,18 @@ class AddActivity : BaseActivity(), ActivityAddAdapter.Listener {
         add_activity_bathroom_number.text = null
         add_activity_bedroom_number.text = null
         add_activity_desc.text = null
+
         add_activity_address.text = null
         add_activity_add_address.text = null
+        add_activity_sector_address.text = null
         add_activity_city_address.text = null
         add_activity_zip_address.text = null
         add_activity_country_address.text = null
+
+        nearby_parks.isChecked = false
+        nearby_shops.isChecked = false
+        nearby_schools.isChecked = false
+        nearby_highway.isChecked = false
         estateViewModel.listImagesToSave.clear()
         adapter.notifyDataSetChanged()
     }

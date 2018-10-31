@@ -26,9 +26,15 @@
     <string name="activity_add_estate_date_hint">Estate market entry date</string>
     <string name="activity_add_estate_address_hint">Address</string>
     <string name="activity_add_estate_add_address_hint">Additional address</string>
+    <string name="activity_add_estate_sector_address_hint">Sector</string>
     <string name="activity_add_estate_city_address_hint">City</string>
     <string name="activity_add_estate_zip_address_hint">Zip Code</string>
     <string name="activity_add_estate_country_address_hint">State</string>
+
+    <string name="activity_add_estate_parks">Parks</string>
+    <string name="activity_add_estate_shops">Shops</string>
+    <string name="activity_add_estate_schools">Schools</string>
+    <string name="activity_add_estate_highway">Highway</string>
 
     <string name="activity_add_estate_choose_pic">Choose picture</string>
     <string name="activity_add_estate_take_pic">Take picture</string>
@@ -36,6 +42,7 @@
 
     <string name="activity_add_title_estate">Estate information</string>
     <string name="activity_add_title_address">Address information</string>
+    <string name="activity_add_title_nearby">Nearby points of interest</string>
     <string name="activity_add_title_media">Media</string>
 
     <string name="activity_add_estate_saved">Estate successfully saved in database</string>
@@ -78,6 +85,7 @@
     <string name="detail_fragment_rooms">Number of rooms</string>
     <string name="detail_fragment_bathrooms">Bathroom</string>
     <string name="detail_fragment_bedrooms">Bedrooms</string>
+    <string name="detail_fragment_vicinity">Vicinity</string>
     <string name="detail_fragment_location">Location</string>
 
     <string name="detail_fragment_not_specified">Not specified</string>

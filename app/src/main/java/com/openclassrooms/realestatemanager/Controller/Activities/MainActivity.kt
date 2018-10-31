@@ -91,7 +91,12 @@ class MainActivity : AppCompatActivity() {
             transaction.add(R.id.fragment_view_detail, detailFragment as DetailFragment)
         }
 */
-        transaction.replace(R.id.fragment_view, newFragment)
+        if(isTablet() && newFragment !is ListFragment){
+            transaction.replace(R.id.fragment_view_detail, newFragment)
+        }else{
+            transaction.replace(R.id.fragment_view, newFragment)
+        }
+
         //transaction.addToBackStack(null)
         transaction.commit()
     }
