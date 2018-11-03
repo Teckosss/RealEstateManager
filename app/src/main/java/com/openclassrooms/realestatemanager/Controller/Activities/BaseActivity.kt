@@ -20,21 +20,15 @@ import com.openclassrooms.realestatemanager.Controller.Views.ActivityAddAdapter
 import com.openclassrooms.realestatemanager.Models.Image
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.Utils.Constants
-import com.openclassrooms.realestatemanager.Utils.Constants.PERMS
-import com.openclassrooms.realestatemanager.Utils.Constants.RC_IMAGE_PERMS
 import com.openclassrooms.realestatemanager.Utils.Utils
 import kotlinx.android.synthetic.main.activity_add.*
 import kotlinx.android.synthetic.main.custom_dialog_overlay.*
 import kotlinx.android.synthetic.main.estate_info.*
 import kotlinx.android.synthetic.main.toolbar.*
-import pub.devrel.easypermissions.AfterPermissionGranted
-import pub.devrel.easypermissions.EasyPermissions
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.jar.Manifest
 import android.provider.MediaStore
 import android.support.v4.content.FileProvider
-import android.util.Log
 import java.io.File
 import java.io.IOException
 
@@ -76,13 +70,8 @@ abstract class BaseActivity : AppCompatActivity() {
     // ACTION
     // ---------------------
 
-    @AfterPermissionGranted(Constants.RC_IMAGE_PERMS)
-    private fun onClickAddFile() {
-        if (!EasyPermissions.hasPermissions(this,PERMS)) {
-            EasyPermissions.requestPermissions(this, getString(R.string.popup_title_permission_files_access), RC_IMAGE_PERMS, PERMS)
-            return
-        }else
-            this.chooseImageFromPhone()
+    private fun onClickAddFile() = runWithPermissions(Constants.PERMS){
+        this.chooseImageFromPhone()
     }
 
     private fun onClickTakePic() = runWithPermissions(Constants.PERM_CAMERA,Constants.PERM_WRITE_EXT){
@@ -168,10 +157,6 @@ abstract class BaseActivity : AppCompatActivity() {
     // ---------------------
 
     private fun chooseImageFromPhone() {
-        if (!EasyPermissions.hasPermissions(this, PERMS)) {
-            EasyPermissions.requestPermissions(this, getString(R.string.popup_title_permission_files_access), RC_IMAGE_PERMS, PERMS)
-            return
-        }
         // Launch an "Selection Image" Activity
         val intent = Intent(Intent.ACTION_GET_CONTENT)
         intent.type = "image/*" //allows any image file type. Change * to specific extension to limit it

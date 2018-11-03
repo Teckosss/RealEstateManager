@@ -2,6 +2,7 @@ package com.openclassrooms.realestatemanager.Controller.Repositories
 
 import android.app.Application
 import android.arch.lifecycle.LiveData
+import android.arch.persistence.db.SimpleSQLiteQuery
 import android.os.AsyncTask
 import android.util.Log
 import com.openclassrooms.realestatemanager.Database.Dao.EstateDao
@@ -21,6 +22,10 @@ class EstateDataRepository(private val database: RealEstateManagerDatabase) {
 
     fun getEstates(): LiveData<List<FullEstate>> {
         return this.database.estateDao().getItems()
+    }
+
+    fun gesEstatesBySearch(query:SimpleSQLiteQuery) : LiveData<List<FullEstate>>{
+        return this.database.estateDao().getItemsBySearch(query)
     }
 
     fun gesEstateByID(estateID:Long) : LiveData<FullEstate>{

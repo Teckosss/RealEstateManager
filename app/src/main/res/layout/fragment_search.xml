@@ -1,14 +1,391 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Controller.Fragments.SearchFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-</FrameLayout>
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/padding_to_parent">
+
+            <TextView
+                android:id="@+id/title_estate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/activity_add_title_estate"
+                android:textColor="@color/colorGreyTitle"
+                android:textSize="@dimen/size_text_big"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/divider_estate"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorGrey"
+                app:layout_constraintTop_toBottomOf="@id/title_estate"
+
+                />
+
+            <!-- ESTATE TYPE -->
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/search_fragment_spinner_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_between_elements"
+                android:hint="@string/activity_add_estate_type_hint"
+                android:paddingBottom="@dimen/space_between_elements"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/divider_estate"
+                app:layout_constraintWidth_percent=".49">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/search_fragment_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:drawableEnd="@drawable/baseline_arrow_drop_down_black_24"
+                    android:focusable="false"
+                    android:inputType="text" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <!-- ESTATE STATUTE -->
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/search_fragment_statute_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_between_elements"
+                android:hint="@string/search_statute"
+                android:paddingBottom="@dimen/space_between_elements"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/divider_estate"
+                app:layout_constraintWidth_percent=".49">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/search_fragment_statute"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:drawableEnd="@drawable/baseline_arrow_drop_down_black_24"
+                    android:focusable="false"
+                    android:inputType="text" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <!-- ESTATE PRICE MIN -->
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/search_fragment_price_min_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="@string/search_price_min"
+                android:paddingBottom="@dimen/space_between_elements"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/search_fragment_spinner_layout"
+                app:layout_constraintWidth_percent=".49">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/search_fragment_price_min"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <!-- ESTATE PRICE MAX -->
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/search_fragment_price_max_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="@string/search_price_max"
+                android:paddingBottom="@dimen/space_between_elements"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/search_fragment_spinner_layout"
+                app:layout_constraintWidth_percent=".49">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/search_fragment_price_max"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <!-- ESTATE SURFACE MIN -->
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/search_fragment_surface_min_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="@string/search_surface_min"
+                android:paddingBottom="@dimen/space_between_elements"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/search_fragment_price_min_layout"
+                app:layout_constraintWidth_percent=".49">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/search_fragment_surface_min"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <!-- ESTATE SURFACE MAX -->
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/search_fragment_surface_max_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="@string/search_surface_max"
+                android:paddingBottom="@dimen/space_between_elements"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/search_fragment_price_max_layout"
+                app:layout_constraintWidth_percent=".49">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/search_fragment_surface_max"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <!-- ESTATE BEDROOMS NUMBER MIN -->
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/search_fragment_bedrooms_min_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="@string/search_bedrooms_min"
+                android:paddingBottom="@dimen/space_between_elements"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/search_fragment_surface_min_layout"
+                app:layout_constraintWidth_percent=".49">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/search_fragment_bedrooms_min"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <!-- ESTATE BEDROOMS NUMBER MAX -->
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/search_fragment_bedrooms_max_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="@string/search_bedrooms_max"
+                android:paddingBottom="@dimen/space_between_elements"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/search_fragment_surface_max_layout"
+                app:layout_constraintWidth_percent=".49">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/search_fragment_bedrooms_max"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <TextView
+                android:id="@+id/title_nearby"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/activity_add_title_nearby"
+                android:textColor="@color/colorGreyTitle"
+                android:textSize="@dimen/size_text_big"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/search_fragment_bedrooms_max_layout" />
+
+            <View
+                android:id="@+id/nearby_separator"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorGrey"
+                android:paddingBottom="@dimen/space_between_elements"
+                app:layout_constraintTop_toBottomOf="@id/title_nearby" />
+
+            <!-- ESTATE SECTOR -->
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/search_fragment_sector_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_between_elements"
+                android:hint="@string/activity_add_estate_sector_address_hint"
+                android:paddingBottom="@dimen/space_between_elements"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/nearby_separator">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/search_fragment_sector"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:drawableEnd="@drawable/baseline_arrow_drop_down_black_24"
+                    android:focusable="false"
+                    android:inputType="text" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <!-- ESTATE VICINITY -->
+
+            <CheckBox
+                android:id="@+id/search_fragment_nearby_parks"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/activity_add_estate_parks"
+                android:textSize="@dimen/size_text_big"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/search_fragment_sector_layout"
+                app:layout_constraintWidth_percent=".49" />
+
+            <CheckBox
+                android:id="@+id/search_fragment_nearby_shops"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/activity_add_estate_shops"
+                android:textSize="@dimen/size_text_big"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/search_fragment_sector_layout"
+                app:layout_constraintWidth_percent=".49" />
+
+            <CheckBox
+                android:id="@+id/search_fragment_nearby_schools"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/activity_add_estate_schools"
+                android:textSize="@dimen/size_text_big"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/search_fragment_nearby_parks"
+                app:layout_constraintWidth_percent=".49" />
+
+            <CheckBox
+                android:id="@+id/search_fragment_nearby_highway"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/activity_add_estate_highway"
+                android:textSize="@dimen/size_text_big"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/search_fragment_nearby_shops"
+                app:layout_constraintWidth_percent=".49" />
+
+            <!-- ESTATE FROM DATE -->
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/search_fragment_from_date_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="@string/search_from_date"
+                android:paddingBottom="@dimen/small_space_between_items"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/search_fragment_nearby_schools"
+                app:layout_constraintWidth_percent=".49">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/search_fragment_from_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:drawableEnd="@drawable/baseline_arrow_drop_down_black_24"
+                    android:focusable="false"
+                    android:inputType="date" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <!-- ESTATE TO DATE -->
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/search_fragment_to_date_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="@string/search_to_date"
+                android:paddingBottom="@dimen/small_space_between_items"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/search_fragment_nearby_schools"
+                app:layout_constraintWidth_percent=".49">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/search_fragment_to_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:drawableEnd="@drawable/baseline_arrow_drop_down_black_24"
+                    android:focusable="false"
+                    android:inputType="date" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <!-- ESTATE MEDIA MIN -->
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/search_fragment_media_min_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/search_media_min"
+                android:paddingBottom="@dimen/space_between_elements"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/search_fragment_from_date_layout"
+                >
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/search_fragment_media_min"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number" />
+
+            </android.support.design.widget.TextInputLayout>
+
+        </android.support.constraint.ConstraintLayout>
+
+    </ScrollView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/search_fragment_FAB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/baseline_search_white_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_margin="@dimen/space_between_elements"
+        />
+
+</android.support.constraint.ConstraintLayout>

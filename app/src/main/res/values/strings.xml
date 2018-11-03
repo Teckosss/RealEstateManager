@@ -129,6 +129,36 @@
     <string name="nav_view_map">Map</string>
     <string name="nav_view_sim">Loan</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- SEARCH FRAGMENT -->
+    <string name="search_statute">Estate statute</string>
+    <string name="search_price_min">Price min</string>
+    <string name="search_price_max">Price max</string>
+    <string name="search_surface_min">Surface min</string>
+    <string name="search_surface_max">Surface max</string>
+    <string name="search_bedrooms_min">Bedroom min</string>
+    <string name="search_bedrooms_max">Bedroom max</string>
+    <string name="search_from_date">From date</string>
+    <string name="search_to_date">To date</string>
+    <string name="search_media_min">Photo min</string>
+
+    <!-- ESTATE SEARCH TYPE -->
+    <string-array name="search_type_array">
+        <item>@string/activity_add_estate_flat</item>
+        <item>@string/activity_add_estate_house</item>
+        <item>@string/activity_add_estate_duplex</item>
+        <item>@string/activity_add_estate_penthouse</item>
+        <item>@string/search_type_all</item>
+    </string-array>
+
+    <string name="search_type_all">ALL</string>
+
+    <!-- ESTATE STATUTE -->
+    <string-array name="search_statute_array">
+        <item>@string/activity_add_estate_available</item>
+        <item>@string/activity_add_estate_sold</item>
+        <item>@string/search_statute_all</item>
+    </string-array>
+
+    <string name="search_statute_all">ALL</string>
+
 </resources>

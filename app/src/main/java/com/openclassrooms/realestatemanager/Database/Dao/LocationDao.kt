@@ -20,6 +20,9 @@ interface LocationDao {
     @Query("SELECT * FROM Location WHERE estateId = :index")
     fun getItemId(index:Long): Long
 
+    @Query("SELECT DISTINCT sector FROM Location WHERE NOT sector = '' ")
+    fun getSectorList() : List<String>
+
     @Insert
     fun insertItem(location: Location) : Long
 

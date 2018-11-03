@@ -3,6 +3,7 @@ package com.openclassrooms.realestatemanager.Database
 import android.arch.persistence.room.Database
 import android.arch.persistence.room.Room
 import android.arch.persistence.room.RoomDatabase
+import android.arch.persistence.room.TypeConverters
 import android.content.Context
 import com.openclassrooms.realestatemanager.Database.Dao.EstateDao
 import com.openclassrooms.realestatemanager.Database.Dao.ImageDao

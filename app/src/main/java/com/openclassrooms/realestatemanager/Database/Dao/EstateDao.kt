@@ -1,10 +1,8 @@
 package com.openclassrooms.realestatemanager.Database.Dao
 
-import android.arch.persistence.room.Dao
 import android.arch.lifecycle.LiveData
-import android.arch.persistence.room.Insert
-import android.arch.persistence.room.Query
-import android.arch.persistence.room.Update
+import android.arch.persistence.db.SupportSQLiteQuery
+import android.arch.persistence.room.*
 import com.openclassrooms.realestatemanager.Models.Estate
 import com.openclassrooms.realestatemanager.Models.FullEstate
 
@@ -18,6 +16,9 @@ interface EstateDao {
 
     @Query("SELECT Estate.*,Location.* FROM Estate INNER JOIN Location ON Estate.id = Location.estateId ")
     fun getItems(): LiveData<List<FullEstate>>
+
+    @RawQuery
+    fun getItemsBySearch(query:SupportSQLiteQuery) : LiveData<List<FullEstate>>
 
     @Query("SELECT Estate.*,Location.* FROM Estate INNER JOIN Location ON Estate.id = Location.estateId  WHERE Estate.id = :index")
     fun getItemsByID(index:Long) : LiveData<FullEstate>

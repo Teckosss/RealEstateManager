@@ -31,6 +31,8 @@ import kotlinx.android.synthetic.main.estate_info.*
 import java.io.File
 import java.io.IOException
 import java.net.URI
+import java.sql.Date
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -57,8 +59,6 @@ class AddActivity : BaseActivity(), ActivityAddAdapter.Listener {
         this.populateWithTodayDate(add_activity_date)
 
         add_activity_check_sold.visibility = View.GONE
-
-        //this.testRetrieveImageFromDB(1) // TEST FUNCTION
     }
 
     // ---------------------
@@ -128,7 +128,7 @@ class AddActivity : BaseActivity(), ActivityAddAdapter.Listener {
                     nearby_schools.isChecked,
                     nearby_highway.isChecked,
                     resources.getString(R.string.activity_add_estate_available),
-                    Utils.getTodayDate(),
+                    add_activity_date.text.toString(),
                     null,
                     "Adrien")
 
@@ -146,18 +146,6 @@ class AddActivity : BaseActivity(), ActivityAddAdapter.Listener {
         }else{
             Toast.makeText(this, resources.getString(R.string.activity_add_estate_save_error), Toast.LENGTH_LONG).show()
         }
-
-    }
-
-    private fun testRetrieveImageFromDB(estateId:Long){
-        estateViewModel.getImages(estateId).observe(this,Observer<List<Image>>{
-            for (image in it!!){
-                Log.e("testRetrieveImageFromDB", "Image : ${image.imagePath}")
-                val imagePath = image.imagePath
-                updateUI(Uri.parse(imagePath))
-            }
-            adapter.notifyDataSetChanged()
-        })
     }
 
     private fun clearAllFields(){

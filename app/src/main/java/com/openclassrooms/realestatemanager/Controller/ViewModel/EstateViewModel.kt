@@ -4,9 +4,11 @@ import android.arch.lifecycle.ViewModel
 import com.openclassrooms.realestatemanager.Controller.Repositories.EstateDataRepository
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
+import android.arch.persistence.db.SimpleSQLiteQuery
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
+import com.openclassrooms.realestatemanager.Controller.Fragments.SearchFragment
 import com.openclassrooms.realestatemanager.Controller.Repositories.ImageDataRepository
 import com.openclassrooms.realestatemanager.Controller.Repositories.LocationDataRepository
 import com.openclassrooms.realestatemanager.Models.Estate
@@ -17,6 +19,7 @@ import com.openclassrooms.realestatemanager.R
 import io.reactivex.Observable
 import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable
+import java.sql.Array
 
 
 /**
@@ -38,9 +41,19 @@ class EstateViewModel(private val estateDataRepository: EstateDataRepository,
 
     var listImagesToDeleteFromDB = ArrayList<Image>()
 
+    var listSector : MutableLiveData<List<String>> = MutableLiveData()
+
     override fun onCleared() {
         super.onCleared()
         this.disposable.dispose()
+    }
+
+    private fun updateListSector(list:List<String>){
+        listSector.value= list
+    }
+
+    fun getListSector(): List<String> {
+        return listSector.value!!
     }
 
     fun updateLastIdInserted(newId:Long){
@@ -65,6 +78,13 @@ class EstateViewModel(private val estateDataRepository: EstateDataRepository,
 
     fun getEstates(): LiveData<List<FullEstate>> {
         return estateDataRepository.getEstates()
+    }
+
+    fun getEstatesBySearch(queryToConvert:String, args:ArrayList<Any>) : LiveData<List<FullEstate>>{
+        val query = SimpleSQLiteQuery(queryToConvert,args.toArray())
+        Log.e("GET_ESTATES_BY_SEARCH","Query to execute : ${query.sql}")
+        Log.e("GET_ESTATES_BY_SEARCH","Args : $args")
+        return estateDataRepository.gesEstatesBySearch(query)
     }
 
     fun getEstatesByID(estateId: Long) : LiveData<FullEstate>{
@@ -150,12 +170,22 @@ class EstateViewModel(private val estateDataRepository: EstateDataRepository,
         return locationDataRepository.getLocation(estateId)
     }
 
+    fun getSectorList(){
+        this.disposable.add(locationDataRepository.getSectorList()
+                .observeOn(observerOn)
+                .subscribeOn(subscriberOn)
+                .subscribe(
+                        { updateListSector(it);Log.e("GET_SECTOR_LIST","OnNext")},
+                        {e -> Log.e("GET_SECTOR_LIST","OnError : ${e.localizedMessage}")})
+        )
+    }
+
     fun getLocationId(estateId: Long){
         this.disposable.add(locationDataRepository.getLocationId(estateId)
                 .observeOn(observerOn)
                 .subscribeOn(subscriberOn)
                 .subscribe(
-                        {id -> updateLocationId(id);Log.e("GET_LOCATION_ID","OnNext")},
+                        {Log.e("GET_LOCATION_ID","OnNext")},
                         {e -> Log.e("GET_LOCATION_ID","OnError : ${e.localizedMessage}")})
         )
     }

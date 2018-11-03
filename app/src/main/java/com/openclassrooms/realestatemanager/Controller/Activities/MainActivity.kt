@@ -10,8 +10,10 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.FrameLayout
 import com.facebook.stetho.Stetho
+import com.livinglifetechway.quickpermissions_kotlin.runWithPermissions
 import com.openclassrooms.realestatemanager.Controller.Fragments.*
 import com.openclassrooms.realestatemanager.R
+import com.openclassrooms.realestatemanager.Utils.Constants
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar.*
 
@@ -56,11 +58,20 @@ class MainActivity : AppCompatActivity() {
         bottom_navigation_view.setOnNavigationItemSelectedListener {
             when(it.itemId){
                 R.id.nav_menu_list -> showFragment(ListFragment.newInstance())
-                R.id.nav_menu_map -> showFragment(MapFragment.newInstance())
+                R.id.nav_menu_map -> runWithPermissions(Constants.PERM_FINE_LOCATION,Constants.PERM_COARSE_LOCATION){showFragment(MapFragment.newInstance())}
                 R.id.nav_menu_search -> showFragment(SearchFragment.newInstance())
                 R.id.nav_menu_sim -> showFragment(LoanFragment.newInstance())
             }
             return@setOnNavigationItemSelectedListener true
+        }
+    }
+
+    private fun setBottomItemSelected(newFragment: Fragment){
+        when(newFragment){
+            ListFragment.newInstance() ->bottom_navigation_view.selectedItemId = (R.id.nav_menu_list)
+            SearchFragment.newInstance() -> bottom_navigation_view.selectedItemId = (R.id.nav_menu_search)
+            MapFragment.newInstance() -> bottom_navigation_view.selectedItemId = (R.id.nav_menu_map)
+            LoanFragment.newInstance() -> bottom_navigation_view.selectedItemId = (R.id.nav_menu_sim)
         }
 
     }
@@ -83,21 +94,27 @@ class MainActivity : AppCompatActivity() {
     // FRAGMENTS
     // ---------------------
 
-    private fun showFragment(newFragment: Fragment){
+    fun showFragment(newFragment: Fragment){
+        //this.setBottomItemSelected(newFragment)
+
         val transaction = supportFragmentManager.beginTransaction()
 
-        /*if (isTablet()){
-            detailFragment = DetailFragment.newInstance()
-            transaction.add(R.id.fragment_view_detail, detailFragment as DetailFragment)
+        if(isTablet()){
+            val previousFragment = supportFragmentManager.fragments
+            if (previousFragment.isNotEmpty()){
+                (0 until previousFragment.size).forEach{
+                    if (previousFragment[it] !is ListFragment)
+                        transaction.remove(previousFragment[it])
+                }
+            }
+
         }
-*/
         if(isTablet() && newFragment !is ListFragment){
             transaction.replace(R.id.fragment_view_detail, newFragment)
         }else{
             transaction.replace(R.id.fragment_view, newFragment)
         }
 
-        //transaction.addToBackStack(null)
         transaction.commit()
     }
 

@@ -4,6 +4,8 @@ import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.support.design.internal.BottomNavigationItemView
+import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
@@ -20,8 +22,10 @@ import com.openclassrooms.realestatemanager.Models.Estate
 import com.openclassrooms.realestatemanager.Models.FullEstate
 
 import com.openclassrooms.realestatemanager.R
+import com.openclassrooms.realestatemanager.Utils.Constants
 import com.openclassrooms.realestatemanager.Utils.DividerItemDecoration
 import com.openclassrooms.realestatemanager.Utils.ItemClickSupport
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_detail.*
 import kotlinx.android.synthetic.main.fragment_list.*
 
@@ -49,13 +53,20 @@ class ListFragment : Fragment() {
         Log.e("ListFragment", "Displaying fragment...")
         mViewModel = ViewModelProviders.of(this,Injection.provideViewModelFactory(this.context!!)).get(EstateViewModel::class.java)
 
-        mViewModel.getEstates().observe(this, Observer<List<FullEstate>> { t -> updateUI(t!!) })
-
         return inflater.inflate(R.layout.fragment_list, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val bundle = arguments?.size()
+        if (bundle != null) {
+            val query = arguments?.getString("QUERY")
+            val args = arguments?.getStringArrayList("ARGS") as ArrayList<Any>
+            mViewModel.getEstatesBySearch(query!!,args).observe(this, Observer { updateUI(it!!) })
+        }else{
+            mViewModel.getEstates().observe(this, Observer<List<FullEstate>> { updateUI(it!!) })
+        }
 
         this.configureRecyclerView()
         this.configureOnClickRecyclerView()

@@ -133,13 +133,6 @@ class DetailFragment : Fragment(), ActivityAddAdapter.Listener, OnMapReadyCallba
     // UI
     // ---------------------
 
-    override fun onClickDeleteButton(position: Int) {
-    }
-
-    // ---------------------
-    // UI
-    // ---------------------
-
     private fun updateUI(result:FullEstate){
         listImages.clear()
 
@@ -238,4 +231,8 @@ class DetailFragment : Fragment(), ActivityAddAdapter.Listener, OnMapReadyCallba
               e.printStackTrace()
           }
     }
+
+    override fun onClickDeleteButton(position: Int) {
+    }
+
 }

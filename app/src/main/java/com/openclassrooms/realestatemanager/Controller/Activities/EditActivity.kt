@@ -9,6 +9,7 @@ import android.content.Intent
 import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.UserManager
 import android.support.design.widget.TextInputEditText
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -35,6 +36,7 @@ import com.openclassrooms.realestatemanager.Utils.Utils
 import kotlinx.android.synthetic.main.custom_dialog_overlay.*
 import kotlinx.android.synthetic.main.estate_info.*
 import kotlinx.android.synthetic.main.toolbar.*
+import java.sql.Date
 
 class EditActivity : BaseActivity(), ActivityAddAdapter.Listener {
 
@@ -132,7 +134,7 @@ class EditActivity : BaseActivity(), ActivityAddAdapter.Listener {
                     nearby_schools.isChecked,
                     nearby_highway.isChecked,
                     available,
-                    Utils.getTodayDate(),
+                    add_activity_date.text.toString(),
                     soldDate,
                     "Adrien")
 
@@ -176,7 +178,7 @@ class EditActivity : BaseActivity(), ActivityAddAdapter.Listener {
             this.retrieveTextAndPopulateEditText(add_activity_bathroom_number,result.estate.bathroomNumber.toString())
             this.retrieveTextAndPopulateEditText(add_activity_bedroom_number,result.estate.bedroomNumber.toString())
             this.retrieveTextAndPopulateEditText(add_activity_desc,result.estate.desc)
-            this.retrieveTextAndPopulateEditText(add_activity_date,result.estate.entryDate)
+            this.retrieveTextAndPopulateEditText(add_activity_date,result.estate.entryDate.toString())
 
             this.retrieveTextAndPopulateEditText(add_activity_address,result.location.address)
             this.retrieveTextAndPopulateEditText(add_activity_add_address,result.location.additionalAddress)

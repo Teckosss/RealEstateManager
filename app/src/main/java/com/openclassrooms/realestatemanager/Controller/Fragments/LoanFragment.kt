@@ -14,8 +14,11 @@ import android.view.ViewGroup
 import android.widget.PopupMenu
 import android.widget.SeekBar
 import android.widget.TextView
+import com.openclassrooms.realestatemanager.Controller.Activities.MainActivity
 
 import com.openclassrooms.realestatemanager.R
+import com.openclassrooms.realestatemanager.Utils.Constants
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.estate_info.*
 import kotlinx.android.synthetic.main.fragment_loan.*
 
@@ -34,6 +37,7 @@ class LoanFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_loan, container, false)
     }
 

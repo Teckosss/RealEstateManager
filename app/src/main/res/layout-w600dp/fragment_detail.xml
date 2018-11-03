@@ -227,6 +227,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/baseline_location_city_black_24"
+                    android:paddingEnd="@dimen/small_space_between_items"
                     />
 
                 <TextView
@@ -235,6 +236,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/detail_fragment_vicinity"
                     android:textStyle="bold"
+                    android:textColor="@color/colorGreyTitle"
                     app:layout_constraintBottom_toBottomOf="@+id/detail_fragment_icon_vicinity"
                     app:layout_constraintStart_toEndOf="@+id/detail_fragment_icon_vicinity"
                     app:layout_constraintTop_toTopOf="@+id/detail_fragment_icon_vicinity" />
