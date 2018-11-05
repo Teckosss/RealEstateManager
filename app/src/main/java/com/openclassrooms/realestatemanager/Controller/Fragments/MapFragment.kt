@@ -102,9 +102,7 @@ class MapFragment : Fragment(), GoogleApiClient.OnConnectionFailedListener, Goog
     // CONFIGURATION
     // -----------------
 
-    override fun onConnectionFailed(p0: ConnectionResult) {
-
-    }
+    override fun onConnectionFailed(p0: ConnectionResult) { Log.e("MAP_FRAGMENT","Connection result : $p0") }
 
     @SuppressLint("MissingPermission")
     override fun onConnected(p0: Bundle?) {
@@ -116,10 +114,7 @@ class MapFragment : Fragment(), GoogleApiClient.OnConnectionFailedListener, Goog
             }
         }
     }
-
-    override fun onConnectionSuspended(p0: Int) {
-
-    }
+    override fun onConnectionSuspended(p0: Int) {}
 
     @SuppressLint("MissingPermission")
     private fun configureMap() {

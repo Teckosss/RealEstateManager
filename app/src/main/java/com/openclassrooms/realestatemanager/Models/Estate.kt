@@ -4,6 +4,7 @@ import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.Utils.Utils
+import java.util.*
 
 /**
  * Created by Adrien Deguffroy on 05/10/2018.
@@ -23,6 +24,6 @@ data class Estate(@PrimaryKey(autoGenerate = true) val id: Long,
                   var schools:Boolean,
                   var highway:Boolean,
                   var estateStatute: String?,
-                  var entryDate: String = Utils.getTodayDate(),
+                  var entryDate: Date,
                   var soldDate: String?,
                   var estateAgent: String?)

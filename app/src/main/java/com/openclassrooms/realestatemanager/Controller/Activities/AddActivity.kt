@@ -21,11 +21,9 @@ import com.openclassrooms.realestatemanager.Models.Estate
 import com.openclassrooms.realestatemanager.Models.Image
 import com.openclassrooms.realestatemanager.Models.Location
 import com.openclassrooms.realestatemanager.R
-import com.openclassrooms.realestatemanager.Utils.Constants
+import com.openclassrooms.realestatemanager.Utils.*
 import com.openclassrooms.realestatemanager.Utils.Constants.RC_CHOOSE_PHOTO
 import com.openclassrooms.realestatemanager.Utils.Constants.RC_TAKE_PHOTO
-import com.openclassrooms.realestatemanager.Utils.ItemClickSupport
-import com.openclassrooms.realestatemanager.Utils.Utils
 import kotlinx.android.synthetic.main.custom_dialog_overlay.*
 import kotlinx.android.synthetic.main.estate_info.*
 import java.io.File
@@ -128,7 +126,7 @@ class AddActivity : BaseActivity(), ActivityAddAdapter.Listener {
                     nearby_schools.isChecked,
                     nearby_highway.isChecked,
                     resources.getString(R.string.activity_add_estate_available),
-                    add_activity_date.text.toString(),
+                    add_activity_date.text.toString().toFRDate(),
                     null,
                     "Adrien")
 

@@ -22,6 +22,7 @@ import com.openclassrooms.realestatemanager.Models.FullEstate
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.Utils.Constants
 import com.openclassrooms.realestatemanager.Utils.Utils
+import com.openclassrooms.realestatemanager.Utils.toFRDate
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_search.*
 import java.text.SimpleDateFormat
@@ -118,11 +119,11 @@ class SearchFragment : Fragment() {
         val estateSector = search_fragment_sector.text.toString()
         val estatePark = search_fragment_nearby_parks.isChecked ; val estateShop = search_fragment_nearby_shops.isChecked
         val estateSchool = search_fragment_nearby_schools.isChecked ; val estateHighway = search_fragment_nearby_highway.isChecked
-        val estateFromDate = search_fragment_from_date.text.toString()
-        val estateToDate = search_fragment_to_date.text.toString()
-        val estatePhoto = search_fragment_media_min.text.toString().toIntOrNull()
+        val estateFromDate = try { search_fragment_from_date.text.toString().toFRDate() }catch (e:Exception){ null }
+        val estateToDate = try { search_fragment_to_date.text.toString().toFRDate() }catch (e:Exception){ null }
+        val estatePhoto = search_fragment_media_min.text.toString().toIntOrNull()?: 0
 
-        var query = "SELECT * FROM Estate INNER JOIN Location ON Estate.id = Location.estateId"
+        var query = "SELECT DISTINCT * FROM Estate,(SELECT * FROM Image,Estate WHERE Image.estateId = Estate.id) AS images INNER JOIN Location ON Estate.id = Location.estateId"
         val args = arrayListOf<Any>()
         var conditions = false
 
@@ -204,23 +205,23 @@ class SearchFragment : Fragment() {
             args.add(estateHighway)
         }
 
-       /* if (estateFromDate != ""){
+        if (estateFromDate != null){
             query += if (conditions) " AND " else " WHERE "; conditions = true
             query += "entryDate >= ?"
-            args.add(formatDate(estateFromDate))
+            args.add(estateFromDate.time)
         }
 
-        if (estateToDate != ""){
+       /* if (estateToDate != null){
             query += if (conditions) " AND " else " WHERE "; conditions = true
             query += "entryDate <= ?"
-            args.add(estateToDate)
-        }
+            args.add(estateToDate.time)
+        }*/
 
         if (estatePhoto != null) {
-            query += if (conditions) " AND " else " WHERE "; conditions = true
-            query += "Image.id IN ( SELECT * FROM IMAGE WHERE Estate.id = Image.estateId )"
-            args.add(estatePhoto)
-        }*/
+            //query += if (conditions) " AND " else " WHERE "; conditions = true
+            query += " GROUP BY Estate.id"
+            //args.add(estatePhoto)
+        }
 
         this.launchListFragment(query,args)
 

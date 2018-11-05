@@ -5,6 +5,7 @@ import android.arch.persistence.room.Room
 import android.arch.persistence.room.RoomDatabase
 import android.arch.persistence.room.TypeConverters
 import android.content.Context
+import com.openclassrooms.realestatemanager.Database.Converters.Converters
 import com.openclassrooms.realestatemanager.Database.Dao.EstateDao
 import com.openclassrooms.realestatemanager.Database.Dao.ImageDao
 import com.openclassrooms.realestatemanager.Database.Dao.LocationDao
@@ -17,6 +18,7 @@ import com.openclassrooms.realestatemanager.Models.Location
  */
 
 @Database(entities = [(Estate::class), (Image::class), (Location::class)],version = 1, exportSchema = false)
+@TypeConverters(Converters::class)
 abstract class RealEstateManagerDatabase : RoomDatabase() {
 
     abstract fun estateDao():EstateDao

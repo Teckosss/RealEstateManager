@@ -30,9 +30,7 @@ import com.openclassrooms.realestatemanager.Models.FullEstate
 import com.openclassrooms.realestatemanager.Models.Image
 import com.openclassrooms.realestatemanager.Models.Location
 import com.openclassrooms.realestatemanager.R
-import com.openclassrooms.realestatemanager.Utils.Constants
-import com.openclassrooms.realestatemanager.Utils.ItemClickSupport
-import com.openclassrooms.realestatemanager.Utils.Utils
+import com.openclassrooms.realestatemanager.Utils.*
 import kotlinx.android.synthetic.main.custom_dialog_overlay.*
 import kotlinx.android.synthetic.main.estate_info.*
 import kotlinx.android.synthetic.main.toolbar.*
@@ -134,7 +132,7 @@ class EditActivity : BaseActivity(), ActivityAddAdapter.Listener {
                     nearby_schools.isChecked,
                     nearby_highway.isChecked,
                     available,
-                    add_activity_date.text.toString(),
+                    add_activity_date.text.toString().toFRDate(),
                     soldDate,
                     "Adrien")
 
@@ -178,7 +176,7 @@ class EditActivity : BaseActivity(), ActivityAddAdapter.Listener {
             this.retrieveTextAndPopulateEditText(add_activity_bathroom_number,result.estate.bathroomNumber.toString())
             this.retrieveTextAndPopulateEditText(add_activity_bedroom_number,result.estate.bedroomNumber.toString())
             this.retrieveTextAndPopulateEditText(add_activity_desc,result.estate.desc)
-            this.retrieveTextAndPopulateEditText(add_activity_date,result.estate.entryDate.toString())
+            this.retrieveTextAndPopulateEditText(add_activity_date,result.estate.entryDate.toFRString())
 
             this.retrieveTextAndPopulateEditText(add_activity_address,result.location.address)
             this.retrieveTextAndPopulateEditText(add_activity_add_address,result.location.additionalAddress)

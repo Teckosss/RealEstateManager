@@ -121,6 +121,7 @@ class ListFragment : Fragment() {
     // ---------------------
 
     private fun updateUI(results:List<FullEstate>){
+        results.forEach{ Log.e("LIST_UPDATE_UI","Estate ID : ${it.estate.estateType}" + it.images.toString())}
         this.listEstate.clear()
         this.listEstate.addAll(results)
         adapter.notifyDataSetChanged()
