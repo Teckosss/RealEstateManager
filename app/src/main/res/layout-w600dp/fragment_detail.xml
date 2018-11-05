@@ -36,6 +36,27 @@
                 android:textColor="@color/colorGreyTitle"
                 />
 
+            <TextView
+                android:id="@+id/detail_fragment_added_on"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="italic"
+                android:textColor="@color/colorGrey"
+                android:textSize="@dimen/size_text_small"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
+
+            <TextView
+                android:id="@+id/detail_fragment_sold_on"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorGrey"
+                android:textSize="@dimen/size_text_small"
+                android:textStyle="italic"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/detail_fragment_added_on" />
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/detail_fragment_recycler_view"
                 android:layout_width="match_parent"

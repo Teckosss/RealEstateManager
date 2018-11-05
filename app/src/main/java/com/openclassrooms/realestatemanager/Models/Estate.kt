@@ -25,5 +25,5 @@ data class Estate(@PrimaryKey(autoGenerate = true) val id: Long,
                   var highway:Boolean,
                   var estateStatute: String?,
                   var entryDate: Date,
-                  var soldDate: String?,
+                  var soldDate: Date?,
                   var estateAgent: String?)

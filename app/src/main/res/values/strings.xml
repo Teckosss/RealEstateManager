@@ -87,6 +87,8 @@
     <string name="detail_fragment_bedrooms">Bedrooms</string>
     <string name="detail_fragment_vicinity">Vicinity</string>
     <string name="detail_fragment_location">Location</string>
+    <string name="detail_fragment_added_on">Estate added on %1s</string>
+    <string name="detail_fragment_sold_on">Estate sold on %1s</string>
 
     <string name="detail_fragment_not_specified">Not specified</string>
     <string name="detail_fragment_no_desc">This estate has no description yet</string>
@@ -140,6 +142,8 @@
     <string name="search_from_date">From date</string>
     <string name="search_to_date">To date</string>
     <string name="search_media_min">Photo min</string>
+
+    <string name="search_empty_result">There is no estate matching your search</string>
 
     <!-- ESTATE SEARCH TYPE -->
     <string-array name="search_type_array">

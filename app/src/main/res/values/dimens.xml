@@ -10,6 +10,7 @@
     <dimen name="size_image_height">@dimen/size_image_width</dimen>
 
     <!-- Text Size -->
+    <dimen name="size_text_small">10sp</dimen>
     <dimen name="size_text_normal">16sp</dimen>
     <dimen name="size_text_big">18sp</dimen>
 </resources>

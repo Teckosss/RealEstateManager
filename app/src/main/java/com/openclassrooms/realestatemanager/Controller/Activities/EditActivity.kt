@@ -133,7 +133,7 @@ class EditActivity : BaseActivity(), ActivityAddAdapter.Listener {
                     nearby_highway.isChecked,
                     available,
                     add_activity_date.text.toString().toFRDate(),
-                    soldDate,
+                    soldDate?.toFRDate(),
                     "Adrien")
 
             val location = Location(0,
@@ -161,7 +161,7 @@ class EditActivity : BaseActivity(), ActivityAddAdapter.Listener {
             if (result.estate.estateStatute == resources.getString(R.string.activity_add_estate_sold)){
                 add_activity_check_sold.isChecked = true
                 add_activity_date_sold_layout.visibility = View.VISIBLE
-                this.retrieveTextAndPopulateEditText(add_activity_date_sold, result.estate.soldDate)
+                this.retrieveTextAndPopulateEditText(add_activity_date_sold, result.estate.soldDate?.toFRString())
             }
 
             if (result.estate.parks) nearby_parks.isChecked = true

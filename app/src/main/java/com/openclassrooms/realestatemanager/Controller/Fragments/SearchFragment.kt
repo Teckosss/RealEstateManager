@@ -14,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import android.widget.TextView
+import android.widget.Toast
 import com.openclassrooms.realestatemanager.Controller.Activities.MainActivity
 import com.openclassrooms.realestatemanager.Controller.ViewModel.EstateViewModel
 import com.openclassrooms.realestatemanager.Di.Injection
@@ -121,9 +122,9 @@ class SearchFragment : Fragment() {
         val estateSchool = search_fragment_nearby_schools.isChecked ; val estateHighway = search_fragment_nearby_highway.isChecked
         val estateFromDate = try { search_fragment_from_date.text.toString().toFRDate() }catch (e:Exception){ null }
         val estateToDate = try { search_fragment_to_date.text.toString().toFRDate() }catch (e:Exception){ null }
-        val estatePhoto = search_fragment_media_min.text.toString().toIntOrNull()?: 0
+        val estatePhoto = search_fragment_media_min.text.toString().toIntOrNull() ?: 0
 
-        var query = "SELECT DISTINCT * FROM Estate,(SELECT * FROM Image,Estate WHERE Image.estateId = Estate.id) AS images INNER JOIN Location ON Estate.id = Location.estateId"
+        var query = "SELECT *,(SELECT COUNT(*) FROM Image WHERE Image.estateId = Estate.id) AS count_images FROM Estate INNER JOIN Location ON Estate.id = Location.estateId"
         val args = arrayListOf<Any>()
         var conditions = false
 
@@ -211,31 +212,26 @@ class SearchFragment : Fragment() {
             args.add(estateFromDate.time)
         }
 
-       /* if (estateToDate != null){
-            query += if (conditions) " AND " else " WHERE "; conditions = true
+        if (estateToDate != null){
+            query += if (conditions) " AND " else " WHERE "
             query += "entryDate <= ?"
             args.add(estateToDate.time)
-        }*/
-
-        if (estatePhoto != null) {
-            //query += if (conditions) " AND " else " WHERE "; conditions = true
-            query += " GROUP BY Estate.id"
-            //args.add(estatePhoto)
         }
 
-        this.launchListFragment(query,args)
+        query += " AND count_images >= ?"
+        args.add(estatePhoto)
+
+
 
         mViewModel.getEstatesBySearch(query,args).observe(this, Observer {
-            describeResult(it!!)
+            if(it!!.isNotEmpty()){
+                this.launchListFragment(query,args)
+            }else{
+                Toast.makeText(this.context!!,resources.getString(R.string.search_empty_result), Toast.LENGTH_SHORT).show()
+            }
+
         })
     }
-
-    private fun describeResult(result:List<FullEstate>){
-        (0 until result.size).forEach {
-            Log.e("RESULT_FROM_SEARCH","RESULT : ${result[it].estate}")
-        }
-    }
-
     // ---------------------
     // ACTION
     // ---------------------

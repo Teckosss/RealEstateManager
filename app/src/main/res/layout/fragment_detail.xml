@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".Controller.Fragments.DetailFragment"
-    android:padding="@dimen/padding_to_parent">
+    android:padding="@dimen/padding_to_parent"
+    tools:context=".Controller.Fragments.DetailFragment">
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/detail_fragment_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/baseline_edit_white_24"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -25,188 +23,192 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/detail_fragment_text_media"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/detail_fragment_media"
-            android:textStyle="bold"
-            android:textSize="@dimen/size_text_big"
-            android:paddingBottom="@dimen/space_between_elements"
-            />
+            <TextView
+                android:id="@+id/detail_fragment_text_media"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/space_between_elements"
+                android:text="@string/detail_fragment_media"
+                android:textSize="@dimen/size_text_big"
+                android:textStyle="bold" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/detail_fragment_recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/detail_fragment_text_media"
-            >
-        </android.support.v7.widget.RecyclerView>
+            <TextView
+                android:id="@+id/detail_fragment_added_on"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorGrey"
+                android:textSize="@dimen/size_text_small"
+                android:textStyle="italic"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/detail_fragment_text_desc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/detail_fragment_desc"
-            app:layout_constraintTop_toBottomOf="@id/detail_fragment_recycler_view"
-            android:textStyle="bold"
-            android:textSize="@dimen/size_text_big"
-            android:paddingTop="@dimen/space_between_elements"
-            android:paddingBottom="@dimen/space_between_elements"
-            />
+            <TextView
+                android:id="@+id/detail_fragment_sold_on"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorGrey"
+                android:textSize="@dimen/size_text_small"
+                android:textStyle="italic"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/detail_fragment_added_on" />
 
-        <ImageButton
-            android:id="@+id/detail_fragment_restore_desc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/baseline_settings_backup_restore_black_24"
-            app:layout_constraintStart_toEndOf="@id/detail_fragment_text_desc"
-            app:layout_constraintTop_toTopOf="@id/detail_fragment_text_desc"
-            app:layout_constraintBottom_toBottomOf="@id/detail_fragment_text_desc"
-            android:layout_marginStart="@dimen/space_between_elements"
-            />
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/detail_fragment_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/detail_fragment_text_media">
 
-        <TextView
-            android:id="@+id/detail_fragment_desc"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/detail_fragment_text_desc"
-            android:paddingBottom="@dimen/space_between_elements"
-            />
+            </android.support.v7.widget.RecyclerView>
 
-        <!-- SURFACE -->
+            <TextView
+                android:id="@+id/detail_fragment_text_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/space_between_elements"
+                android:paddingTop="@dimen/space_between_elements"
+                android:text="@string/detail_fragment_desc"
+                android:textSize="@dimen/size_text_big"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/detail_fragment_recycler_view" />
 
-        <ImageView
-            android:id="@+id/detail_fragment_icon_surface"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/baseline_settings_overscan_black_24"
-            app:layout_constraintTop_toBottomOf="@id/detail_fragment_desc"
-            android:paddingEnd="@dimen/small_space_between_items"
-            />
+            <ImageButton
+                android:id="@+id/detail_fragment_restore_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_between_elements"
+                android:background="@drawable/baseline_settings_backup_restore_black_24"
+                app:layout_constraintBottom_toBottomOf="@id/detail_fragment_text_desc"
+                app:layout_constraintStart_toEndOf="@id/detail_fragment_text_desc"
+                app:layout_constraintTop_toTopOf="@id/detail_fragment_text_desc" />
 
-        <TextView
-            android:id="@+id/detail_fragment_text_surface"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/detail_fragment_surface"
-            app:layout_constraintTop_toTopOf="@id/detail_fragment_icon_surface"
-            app:layout_constraintBottom_toBottomOf="@id/detail_fragment_icon_surface"
-            app:layout_constraintStart_toEndOf="@id/detail_fragment_icon_surface"
-            android:textStyle="bold"
-            />
+            <TextView
+                android:id="@+id/detail_fragment_desc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/space_between_elements"
+                app:layout_constraintTop_toBottomOf="@id/detail_fragment_text_desc" />
 
-        <TextView
-            android:id="@+id/detail_fragment_surface"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/detail_fragment_text_surface"
-            app:layout_constraintStart_toStartOf="@id/detail_fragment_text_surface"
-            android:paddingTop="@dimen/space_between_elements"
-            android:paddingStart="@dimen/space_between_elements"
-            android:paddingBottom="@dimen/space_between_elements"
-            />
+            <!-- SURFACE -->
 
-        <!-- NUMBER OF ROOMS -->
+            <ImageView
+                android:id="@+id/detail_fragment_icon_surface"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingEnd="@dimen/small_space_between_items"
+                android:src="@drawable/baseline_settings_overscan_black_24"
+                app:layout_constraintTop_toBottomOf="@id/detail_fragment_desc" />
 
-        <ImageView
-            android:id="@+id/detail_fragment_icon_rooms"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/baseline_home_black_24"
-            app:layout_constraintTop_toBottomOf="@id/detail_fragment_desc"
-            app:layout_constraintEnd_toStartOf="@id/detail_fragment_text_rooms"
-            android:paddingEnd="@dimen/small_space_between_items"
-            />
+            <TextView
+                android:id="@+id/detail_fragment_text_surface"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/detail_fragment_surface"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@id/detail_fragment_icon_surface"
+                app:layout_constraintStart_toEndOf="@id/detail_fragment_icon_surface"
+                app:layout_constraintTop_toTopOf="@id/detail_fragment_icon_surface" />
 
-        <TextView
-            android:id="@+id/detail_fragment_text_rooms"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/detail_fragment_rooms"
-            app:layout_constraintTop_toTopOf="@id/detail_fragment_icon_rooms"
-            app:layout_constraintBottom_toBottomOf="@id/detail_fragment_icon_rooms"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:textStyle="bold"
-            />
+            <TextView
+                android:id="@+id/detail_fragment_surface"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/space_between_elements"
+                android:paddingStart="@dimen/space_between_elements"
+                android:paddingTop="@dimen/space_between_elements"
+                app:layout_constraintStart_toStartOf="@id/detail_fragment_text_surface"
+                app:layout_constraintTop_toBottomOf="@id/detail_fragment_text_surface" />
 
-        <TextView
-            android:id="@+id/detail_fragment_rooms"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/detail_fragment_text_rooms"
-            app:layout_constraintStart_toStartOf="@id/detail_fragment_text_rooms"
-            android:paddingTop="@dimen/space_between_elements"
-            android:paddingStart="@dimen/space_between_elements"
-            android:paddingBottom="@dimen/space_between_elements"
-            />
+            <!-- NUMBER OF ROOMS -->
 
-        <!-- NUMBER OF BATHROOMS -->
+            <ImageView
+                android:id="@+id/detail_fragment_icon_rooms"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingEnd="@dimen/small_space_between_items"
+                android:src="@drawable/baseline_home_black_24"
+                app:layout_constraintEnd_toStartOf="@id/detail_fragment_text_rooms"
+                app:layout_constraintTop_toBottomOf="@id/detail_fragment_desc" />
 
-        <ImageView
-            android:id="@+id/detail_fragment_icon_bathrooms"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/baseline_hot_tub_black_24"
-            app:layout_constraintTop_toBottomOf="@id/detail_fragment_surface"
-            android:paddingEnd="@dimen/small_space_between_items"
-            />
+            <TextView
+                android:id="@+id/detail_fragment_text_rooms"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/detail_fragment_rooms"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@id/detail_fragment_icon_rooms"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/detail_fragment_icon_rooms" />
 
-        <TextView
-            android:id="@+id/detail_fragment_text_bathrooms"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/detail_fragment_bathrooms"
-            app:layout_constraintTop_toTopOf="@id/detail_fragment_icon_bathrooms"
-            app:layout_constraintBottom_toBottomOf="@id/detail_fragment_icon_bathrooms"
-            app:layout_constraintStart_toEndOf="@id/detail_fragment_icon_bathrooms"
-            android:textStyle="bold"
-            />
+            <TextView
+                android:id="@+id/detail_fragment_rooms"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/space_between_elements"
+                android:paddingStart="@dimen/space_between_elements"
+                android:paddingTop="@dimen/space_between_elements"
+                app:layout_constraintStart_toStartOf="@id/detail_fragment_text_rooms"
+                app:layout_constraintTop_toBottomOf="@id/detail_fragment_text_rooms" />
 
-        <TextView
-            android:id="@+id/detail_fragment_bathrooms"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/detail_fragment_text_bathrooms"
-            app:layout_constraintStart_toStartOf="@id/detail_fragment_text_bathrooms"
-            android:paddingTop="@dimen/space_between_elements"
-            android:paddingStart="@dimen/space_between_elements"
-            android:paddingBottom="@dimen/space_between_elements"
-            />
+            <!-- NUMBER OF BATHROOMS -->
 
-        <!-- NUMBER OF BEDROOMS -->
+            <ImageView
+                android:id="@+id/detail_fragment_icon_bathrooms"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingEnd="@dimen/small_space_between_items"
+                android:src="@drawable/baseline_hot_tub_black_24"
+                app:layout_constraintTop_toBottomOf="@id/detail_fragment_surface" />
 
-        <ImageView
-            android:id="@+id/detail_fragment_icon_bedrooms"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/baseline_airline_seat_individual_suite_black_24"
-            app:layout_constraintTop_toBottomOf="@id/detail_fragment_rooms"
-            app:layout_constraintStart_toStartOf="@id/detail_fragment_icon_rooms"
-            android:paddingEnd="@dimen/small_space_between_items"
-            />
+            <TextView
+                android:id="@+id/detail_fragment_text_bathrooms"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/detail_fragment_bathrooms"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@id/detail_fragment_icon_bathrooms"
+                app:layout_constraintStart_toEndOf="@id/detail_fragment_icon_bathrooms"
+                app:layout_constraintTop_toTopOf="@id/detail_fragment_icon_bathrooms" />
 
-        <TextView
-            android:id="@+id/detail_fragment_text_bedrooms"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/detail_fragment_bedrooms"
-            app:layout_constraintTop_toTopOf="@id/detail_fragment_icon_bedrooms"
-            app:layout_constraintBottom_toBottomOf="@id/detail_fragment_icon_bedrooms"
-            app:layout_constraintStart_toEndOf="@id/detail_fragment_icon_bedrooms"
-            android:textStyle="bold"
-            />
+            <TextView
+                android:id="@+id/detail_fragment_bathrooms"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/space_between_elements"
+                android:paddingStart="@dimen/space_between_elements"
+                android:paddingTop="@dimen/space_between_elements"
+                app:layout_constraintStart_toStartOf="@id/detail_fragment_text_bathrooms"
+                app:layout_constraintTop_toBottomOf="@id/detail_fragment_text_bathrooms" />
 
-        <TextView
-            android:id="@+id/detail_fragment_bedrooms"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/detail_fragment_text_bedrooms"
-            app:layout_constraintStart_toStartOf="@id/detail_fragment_text_bedrooms"
-            android:paddingTop="@dimen/space_between_elements"
-            android:paddingStart="@dimen/space_between_elements"
-            android:paddingBottom="@dimen/space_between_elements"
-            />
+            <!-- NUMBER OF BEDROOMS -->
+
+            <ImageView
+                android:id="@+id/detail_fragment_icon_bedrooms"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingEnd="@dimen/small_space_between_items"
+                android:src="@drawable/baseline_airline_seat_individual_suite_black_24"
+                app:layout_constraintStart_toStartOf="@id/detail_fragment_icon_rooms"
+                app:layout_constraintTop_toBottomOf="@id/detail_fragment_rooms" />
+
+            <TextView
+                android:id="@+id/detail_fragment_text_bedrooms"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/detail_fragment_bedrooms"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@id/detail_fragment_icon_bedrooms"
+                app:layout_constraintStart_toEndOf="@id/detail_fragment_icon_bedrooms"
+                app:layout_constraintTop_toTopOf="@id/detail_fragment_icon_bedrooms" />
+
+            <TextView
+                android:id="@+id/detail_fragment_bedrooms"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/space_between_elements"
+                android:paddingStart="@dimen/space_between_elements"
+                android:paddingTop="@dimen/space_between_elements"
+                app:layout_constraintStart_toStartOf="@id/detail_fragment_text_bedrooms"
+                app:layout_constraintTop_toBottomOf="@id/detail_fragment_text_bedrooms" />
 
             <!-- VICINITY -->
 
@@ -214,17 +216,15 @@
                 android:id="@+id/detail_fragment_vicinity_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/detail_fragment_bathrooms"
                 android:paddingBottom="@dimen/space_between_elements"
-                >
+                app:layout_constraintTop_toBottomOf="@id/detail_fragment_bathrooms">
 
                 <ImageView
                     android:id="@+id/detail_fragment_icon_vicinity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/baseline_location_city_black_24"
                     android:paddingEnd="@dimen/small_space_between_items"
-                    />
+                    android:src="@drawable/baseline_location_city_black_24" />
 
                 <TextView
                     android:id="@+id/vicinity_text"
@@ -258,8 +258,7 @@
                         android:layout_height="wrap_content"
                         android:paddingRight="@dimen/space_between_elements"
                         app:layout_constraintBottom_toBottomOf="@id/vicinity_parks"
-                        app:layout_constraintStart_toEndOf="@id/vicinity_parks"
-                         />
+                        app:layout_constraintStart_toEndOf="@id/vicinity_parks" />
 
                     <!-- SHOP -->
 
@@ -269,8 +268,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/activity_add_estate_shops"
                         app:layout_constraintBottom_toBottomOf="@id/park_image"
-                        app:layout_constraintStart_toEndOf="@id/park_image"
-                         />
+                        app:layout_constraintStart_toEndOf="@id/park_image" />
 
                     <ImageView
                         android:id="@+id/shop_image"
@@ -278,8 +276,7 @@
                         android:layout_height="wrap_content"
                         android:paddingRight="@dimen/space_between_elements"
                         app:layout_constraintBottom_toBottomOf="@id/vicinity_shops"
-                        app:layout_constraintStart_toEndOf="@id/vicinity_shops"
-                         />
+                        app:layout_constraintStart_toEndOf="@id/vicinity_shops" />
 
                     <!-- SCHOOL -->
 
@@ -289,8 +286,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/activity_add_estate_schools"
                         app:layout_constraintBottom_toBottomOf="@id/shop_image"
-                        app:layout_constraintStart_toEndOf="@id/shop_image"
-                        />
+                        app:layout_constraintStart_toEndOf="@id/shop_image" />
 
                     <ImageView
                         android:id="@+id/school_image"
@@ -298,8 +294,7 @@
                         android:layout_height="wrap_content"
                         android:paddingRight="@dimen/space_between_elements"
                         app:layout_constraintBottom_toBottomOf="@id/vicinity_schools"
-                        app:layout_constraintStart_toEndOf="@id/vicinity_schools"
-                       />
+                        app:layout_constraintStart_toEndOf="@id/vicinity_schools" />
 
                     <!-- HIGHWAY -->
 
@@ -309,43 +304,39 @@
                         android:layout_height="wrap_content"
                         android:text="@string/activity_add_estate_highway"
                         app:layout_constraintBottom_toBottomOf="@id/school_image"
-                        app:layout_constraintStart_toEndOf="@id/school_image"
-                        />
+                        app:layout_constraintStart_toEndOf="@id/school_image" />
 
                     <ImageView
                         android:id="@+id/highway_image"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:layout_constraintBottom_toBottomOf="@id/vicinity_highway"
-                        app:layout_constraintStart_toEndOf="@id/vicinity_highway"
-                       />
+                        app:layout_constraintStart_toEndOf="@id/vicinity_highway" />
 
                 </android.support.constraint.ConstraintLayout>
 
             </android.support.constraint.ConstraintLayout>
 
 
-        <!-- LOCATION -->
+            <!-- LOCATION -->
 
-        <ImageView
-            android:id="@+id/detail_fragment_icon_location"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/baseline_location_on_black_24"
-            app:layout_constraintTop_toBottomOf="@id/detail_fragment_vicinity_container"
-            android:paddingEnd="@dimen/small_space_between_items"
-            />
+            <ImageView
+                android:id="@+id/detail_fragment_icon_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingEnd="@dimen/small_space_between_items"
+                android:src="@drawable/baseline_location_on_black_24"
+                app:layout_constraintTop_toBottomOf="@id/detail_fragment_vicinity_container" />
 
-        <TextView
-            android:id="@+id/detail_fragment_text_location"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/detail_fragment_location"
-            app:layout_constraintTop_toTopOf="@id/detail_fragment_icon_location"
-            app:layout_constraintBottom_toBottomOf="@id/detail_fragment_icon_location"
-            app:layout_constraintStart_toEndOf="@id/detail_fragment_icon_location"
-            android:textStyle="bold"
-            />
+            <TextView
+                android:id="@+id/detail_fragment_text_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/detail_fragment_location"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@id/detail_fragment_icon_location"
+                app:layout_constraintStart_toEndOf="@id/detail_fragment_icon_location"
+                app:layout_constraintTop_toTopOf="@id/detail_fragment_icon_location" />
 
             <TextView
                 android:id="@+id/detail_fragment_location_address"
@@ -388,21 +379,20 @@
                 app:layout_constraintStart_toEndOf="@+id/detail_fragment_location_zip"
                 app:layout_constraintTop_toTopOf="@+id/detail_fragment_location_city" />
 
-            <com.google.android.gms.maps.MapView
-                xmlns:android="http://schemas.android.com/apk/res/android"
+            <com.google.android.gms.maps.MapView xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:map="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/detail_fragment_map"
-                android:visibility="gone"
+                android:name="com.google.android.gms.maps.MapFragment"
                 android:layout_width="0dp"
                 android:layout_height="200dp"
                 android:layout_marginTop="@dimen/space_between_elements"
+                android:clickable="false"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                map:cameraZoom="17"
                 map:layout_constraintStart_toStartOf="parent"
                 map:layout_constraintTop_toBottomOf="@id/detail_fragment_location_city"
-                android:name="com.google.android.gms.maps.MapFragment"
-                map:cameraZoom="17"
-                android:clickable="false"
                 map:liteMode="true" />
 
         </android.support.constraint.ConstraintLayout>

@@ -16,10 +16,13 @@ import com.openclassrooms.realestatemanager.Models.FullEstate
 import com.openclassrooms.realestatemanager.Models.Image
 import com.openclassrooms.realestatemanager.Models.Location
 import com.openclassrooms.realestatemanager.R
+import com.openclassrooms.realestatemanager.Utils.toFRDate
 import io.reactivex.Observable
 import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable
 import java.sql.Array
+import java.sql.Date
+import java.text.SimpleDateFormat
 
 
 /**
@@ -83,7 +86,10 @@ class EstateViewModel(private val estateDataRepository: EstateDataRepository,
     fun getEstatesBySearch(queryToConvert:String, args:ArrayList<Any>) : LiveData<List<FullEstate>>{
         val query = SimpleSQLiteQuery(queryToConvert,args.toArray())
         Log.e("GET_ESTATES_BY_SEARCH","Query to execute : ${query.sql}")
-        Log.e("GET_ESTATES_BY_SEARCH","Args : $args")
+        args.forEach {
+            if (it is Long) Log.e("GET_ESTATES_BY_SEARCH", "Args : ${SimpleDateFormat("dd/MM/yyyy").format(Date(it))}")
+            else Log.e("GET_ESTATES_BY_SEARCH", "Args : $it")
+        }
         return estateDataRepository.gesEstatesBySearch(query)
     }
 

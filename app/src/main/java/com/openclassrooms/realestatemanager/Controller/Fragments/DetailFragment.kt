@@ -34,6 +34,7 @@ import com.openclassrooms.realestatemanager.Utils.ItemClickSupport
 import kotlinx.android.synthetic.main.fragment_detail.*
 import android.os.Build
 import android.support.v4.content.ContextCompat
+import com.openclassrooms.realestatemanager.Utils.toFRString
 
 
 /**
@@ -149,6 +150,9 @@ class DetailFragment : Fragment(), ActivityAddAdapter.Listener, OnMapReadyCallba
             mainDesc = result.estate.desc!!
             detail_fragment_desc.text = result.estate.desc
         }
+
+        detail_fragment_added_on.text = resources.getString(R.string.detail_fragment_added_on,result.estate.entryDate.toFRString())
+        if(result.estate.soldDate != null ) detail_fragment_sold_on.text = resources.getString(R.string.detail_fragment_sold_on, result.estate.soldDate!!.toFRString())
 
         if (result.estate.surface.toString() == "null"){
             detail_fragment_surface.text = resources.getString(R.string.detail_fragment_not_specified)
