@@ -16,6 +16,7 @@ import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.*
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.openclassrooms.realestatemanager.Controller.Activities.MainActivity
 import com.openclassrooms.realestatemanager.Controller.ViewModel.EstateViewModel
 import com.openclassrooms.realestatemanager.Di.Injection
@@ -25,7 +26,16 @@ import com.openclassrooms.realestatemanager.Utils.Constants
 import kotlinx.android.synthetic.main.activity_main.*
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
+import com.google.gson.GsonBuilder
+import com.google.maps.GeoApiContext
+import com.google.maps.GeocodingApi
 import com.livinglifetechway.quickpermissions_kotlin.runWithPermissions
+import com.openclassrooms.realestatemanager.Models.FullEstate
+import com.openclassrooms.realestatemanager.Models.GeocodeInfo
+import com.openclassrooms.realestatemanager.Utils.GeocodeStream
+import io.reactivex.disposables.Disposable
+import io.reactivex.observers.DisposableObserver
 import kotlinx.android.synthetic.main.fragment_map.*
 
 
@@ -34,7 +44,7 @@ import kotlinx.android.synthetic.main.fragment_map.*
  *
  */
 
-class MapFragment : Fragment(), GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks, LocationListener {
+class MapFragment : BaseFragment(), GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks, LocationListener {
 
     private lateinit var mViewModel: EstateViewModel
     private var mMap: GoogleMap? = null
@@ -42,6 +52,7 @@ class MapFragment : Fragment(), GoogleApiClient.OnConnectionFailedListener, Goog
     private lateinit var mFusedLocationClient: FusedLocationProviderClient
     private lateinit var mLocationRequest : LocationRequest
     private lateinit var mLocationCallback : LocationCallback
+    private var listFullEstate = ArrayList<FullEstate>()
 
     companion object {
         fun newInstance(): MapFragment {
@@ -61,7 +72,12 @@ class MapFragment : Fragment(), GoogleApiClient.OnConnectionFailedListener, Goog
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mViewModel.getEstates().observe(this, Observer { })
+        mViewModel.getEstates().observe(this, Observer {
+            if (it != null) {
+                listFullEstate.addAll(it)
+                retrieveAddressByGeoCoding(it)
+            }
+        })
 
         map_fragment.onCreate(savedInstanceState)
         map_fragment.onResume()
@@ -70,6 +86,13 @@ class MapFragment : Fragment(), GoogleApiClient.OnConnectionFailedListener, Goog
         this.configureGoogleApiClient()
         this.configureLocationRequest()
         this.configureLocationCallback()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if(!mGoogleApiClient?.isConnected!! && !mGoogleApiClient?.isConnecting!!){
+            mGoogleApiClient?.connect()
+        }
     }
 
     override fun onResume() {
@@ -81,16 +104,18 @@ class MapFragment : Fragment(), GoogleApiClient.OnConnectionFailedListener, Goog
     override fun onPause() {
         super.onPause()
         map_fragment.onPause()
-        if (mGoogleApiClient != null && mGoogleApiClient?.isConnected!!){
-            this.stopLocationUpdate()
-            mGoogleApiClient?.stopAutoManage(activity!!)
-            mGoogleApiClient?.disconnect()
-        }
+        this.stopLocationUpdateAndDisconnectGoogleApiClient()
     }
 
-    override fun onDestroyOptionsMenu() {
-        super.onDestroyOptionsMenu()
-        map_fragment.onDestroy()
+    override fun onStop() {
+        super.onStop()
+        this.stopLocationUpdateAndDisconnectGoogleApiClient()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        this.disposeWhenDestroy()
+        this.stopLocationUpdateAndDisconnectGoogleApiClient()
     }
 
     override fun onLowMemory() {
@@ -101,6 +126,23 @@ class MapFragment : Fragment(), GoogleApiClient.OnConnectionFailedListener, Goog
     // -----------------
     // CONFIGURATION
     // -----------------
+
+    private fun stopLocationUpdateAndDisconnectGoogleApiClient(){
+        if (mGoogleApiClient != null){
+            Log.e("MAP_FRAGMENT", "ENTER IF CONDITION")
+            this.stopLocationUpdate()
+            mGoogleApiClient?.stopAutoManage(activity!!)
+            mGoogleApiClient?.disconnect()
+        }
+    }
+
+    private fun retrieveAddressByGeoCoding(listEstate: List<FullEstate>){
+        (0 until listEstate.size).forEach {
+            val address = getFullAddressFromEstate(listEstate[it].location)
+            if (address != null){ Log.e("MAP_FRAGMENT","Address : $address")
+                this.executeHttpRequestWithRetrofit(address, listEstate[it].estate.id)} else Log.e("MAP_FRAGMENT","Address error")
+        }
+    }
 
     override fun onConnectionFailed(p0: ConnectionResult) { Log.e("MAP_FRAGMENT","Connection result : $p0") }
 
@@ -129,16 +171,19 @@ class MapFragment : Fragment(), GoogleApiClient.OnConnectionFailedListener, Goog
             mMap = it
             it.isMyLocationEnabled = true
             it.uiSettings.isCompassEnabled = true
-            val locationButton = (map_fragment.findViewById<View>(Integer.parseInt("1")).parent as View).findViewById<View>(Integer.parseInt("2"))
-            // and next place it, for example, on bottom right (as Google Maps app)
-            val rlp = locationButton.layoutParams as RelativeLayout.LayoutParams
-            // position on right bottom
-            rlp.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0)
-            rlp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE)
-            rlp.setMargins(0, 0, 30, 30)
+            if (map_fragment != null){
+                val locationButton : View? = (map_fragment.findViewById<View>(Integer.parseInt("1")).parent as View).findViewById<View>(Integer.parseInt("2")) ?: null
+                // and next place it, for example, on bottom right (as Google Maps app)
+                val rlp = locationButton?.layoutParams as RelativeLayout.LayoutParams
+                // position on right bottom
+                rlp.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0)
+                rlp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE)
+                rlp.setMargins(0, 0, 30, 30)
+            }
+
             it.uiSettings.isMyLocationButtonEnabled = true
             it.uiSettings.isRotateGesturesEnabled = true
-            it.setOnMarkerClickListener { this.onClickMarker() }
+            it.setOnMarkerClickListener { this.onClickMarker(it) }
         }
     }
 
@@ -147,7 +192,7 @@ class MapFragment : Fragment(), GoogleApiClient.OnConnectionFailedListener, Goog
                 .Builder(this.context!!)
                 .addConnectionCallbacks(this)
                 .addApi(LocationServices.API)
-                .enableAutoManage(activity!!, this)
+                .enableAutoManage(activity!!,this)
                 .build()
     }
 
@@ -184,12 +229,57 @@ class MapFragment : Fragment(), GoogleApiClient.OnConnectionFailedListener, Goog
         mFusedLocationClient.removeLocationUpdates(mLocationCallback)
     }
 
-    private fun onClickMarker(): Boolean {
-        return true
-    }
-
     override fun onLocationChanged(p0: Location?) { this.handleNewLocation(p0!!) }
     override fun onStatusChanged(p0: String?, p1: Int, p2: Bundle?) {}
     override fun onProviderEnabled(p0: String?) {}
     override fun onProviderDisabled(p0: String?) {}
+
+    // -------------------
+    // UI
+    // -------------------
+
+    override fun getPositionFromRxRequest(position: LatLng?, estateId: Long) {
+        val markerOptions = MarkerOptions()
+        if (position != null){
+            Log.e("MAP_FRAGMENT","Location LatLng : $position")
+            markerOptions.position(position)
+            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.baseline_location_on_black_36))
+            val marker = mMap?.addMarker(markerOptions)
+            marker?.tag = estateId
+        }
+    }
+
+    // -----------------
+    // ACTION
+    // -----------------
+
+    private fun onClickMarker(marker: Marker): Boolean {
+        return if (marker.tag != null && marker.tag is Long){
+            Log.e("MAP_FRAGMENT","OnClickMarker tag : ${marker.tag}")
+            this.launchDetailFragment(marker.tag as Long)
+            true
+        }else{
+            Log.e("MAP_FRAGMENT","OnClickMarker tag : ERROR NO TAG")
+            false
+        }
+    }
+
+    private fun launchDetailFragment(databaseId : Long){
+        val bundle = Bundle()
+        val newFragment = DetailFragment.newInstance()
+        bundle.putLong(DATABASE_ID,databaseId)
+        newFragment.arguments = bundle
+
+        val transaction = activity!!.supportFragmentManager.beginTransaction()
+
+        if((activity as MainActivity).isTablet()){
+            transaction.replace(R.id.fragment_view_detail, newFragment)
+        }else{
+            transaction.replace(R.id.fragment_view, newFragment)
+        }
+
+        transaction.addToBackStack(null)
+        transaction.commit()
+
+    }
 }

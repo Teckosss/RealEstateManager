@@ -15,10 +15,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.MapView
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
 import com.openclassrooms.realestatemanager.Controller.Activities.EditActivity
 import com.openclassrooms.realestatemanager.Controller.Activities.MainActivity
 import com.openclassrooms.realestatemanager.Controller.ViewModel.EstateViewModel
@@ -34,14 +30,22 @@ import com.openclassrooms.realestatemanager.Utils.ItemClickSupport
 import kotlinx.android.synthetic.main.fragment_detail.*
 import android.os.Build
 import android.support.v4.content.ContextCompat
+import com.google.android.gms.maps.*
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
+import com.openclassrooms.realestatemanager.Models.GeocodeInfo
+import com.openclassrooms.realestatemanager.Utils.GeocodeStream
 import com.openclassrooms.realestatemanager.Utils.toFRString
+import io.reactivex.disposables.Disposable
+import io.reactivex.observers.DisposableObserver
 
 
 /**
  * A simple [Fragment] subclass.
  *
  */
-class DetailFragment : Fragment(), ActivityAddAdapter.Listener, OnMapReadyCallback {
+class DetailFragment : BaseFragment(), ActivityAddAdapter.Listener, OnMapReadyCallback {
 
     private lateinit var mViewModel:EstateViewModel
     private var databaseId:Any? = null
@@ -51,6 +55,7 @@ class DetailFragment : Fragment(), ActivityAddAdapter.Listener, OnMapReadyCallba
 
     private lateinit var googleMap: GoogleMap
     private lateinit var mapView:MapView
+    //private var disposable:Disposable? = null
 
     companion object {
         fun newInstance():DetailFragment{
@@ -89,6 +94,11 @@ class DetailFragment : Fragment(), ActivityAddAdapter.Listener, OnMapReadyCallba
         this.googleMap.setOnMapClickListener {  }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        this.disposeWhenDestroy()
+    }
+
     // ---------------------
     // CONFIGURATION
     // ---------------------
@@ -117,6 +127,8 @@ class DetailFragment : Fragment(), ActivityAddAdapter.Listener, OnMapReadyCallba
         if(databaseId != null){
             mViewModel.getEstatesByID(databaseId as Long).observe(this, Observer {
                 updateUI(it!!)
+                val address = getFullAddressFromEstate(it.location)
+                if (address != null)executeHttpRequestWithRetrofit(address,databaseId as Long)
             })
         }
     }
@@ -133,6 +145,19 @@ class DetailFragment : Fragment(), ActivityAddAdapter.Listener, OnMapReadyCallba
     // ---------------------
     // UI
     // ---------------------
+
+    override fun getPositionFromRxRequest(position: LatLng?, estateId: Long) {
+        val markerOptions = MarkerOptions()
+        if (position != null){
+            this.googleMap.moveCamera(CameraUpdateFactory.newLatLng(position))
+            this.googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(position, Constants.DETAIL_FRAGMENT_DEFAULT_ZOOM))
+            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.baseline_location_on_black_36))
+            markerOptions.position(position)
+            val marker = this.googleMap.addMarker(markerOptions)
+            marker.tag = estateId
+        }
+
+    }
 
     private fun updateUI(result:FullEstate){
         listImages.clear()

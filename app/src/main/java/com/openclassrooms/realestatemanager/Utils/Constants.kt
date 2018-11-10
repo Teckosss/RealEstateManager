@@ -11,7 +11,10 @@ object Constants {
     const val VIEW_HOLDER_ACTION_EDIT = "EDIT"
     const val VIEW_HOLDER_ACTION_DETAIL = "DETAIL"
 
-    const val MAP_FRAGMENT_DEFAULT_ZOOM = 14F
+    const val MAP_FRAGMENT_DEFAULT_ZOOM = 8F // GLOBAL MAP
+    const val DETAIL_FRAGMENT_DEFAULT_ZOOM = 17F // STATIC DETAIL MAP
+
+    const val FRAGMENT_TAG_KEY = "FRAGMENT_TAG_KEY"
 
     const val FRAGMENT_LIST = "LIST"
     const val FRAGMENT_SEARCH = "SEARCH"

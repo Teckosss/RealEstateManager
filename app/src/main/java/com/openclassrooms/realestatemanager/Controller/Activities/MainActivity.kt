@@ -10,6 +10,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.FrameLayout
 import com.facebook.stetho.Stetho
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.livinglifetechway.quickpermissions_kotlin.runWithPermissions
 import com.openclassrooms.realestatemanager.Controller.Fragments.*
 import com.openclassrooms.realestatemanager.R
@@ -20,16 +21,31 @@ import kotlinx.android.synthetic.main.toolbar.*
 class MainActivity : AppCompatActivity() {
 
     private var detailFragment: DetailFragment? = null
+    private lateinit var mFirebaseAnalytics: FirebaseAnalytics
+    private lateinit var mFragmentTag:String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         Stetho.initializeWithDefaults(this)
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
         this.configureToolbar()
         this.configureBottomNavigationView()
 
-        this.showFragment(ListFragment.newInstance())
+        if (savedInstanceState != null){
+            val tag = savedInstanceState.getString(Constants.FRAGMENT_TAG_KEY) ?: null
+            if (tag != null){
+                when(tag){
+                   Constants.FRAGMENT_LIST -> showFragment(ListFragment.newInstance())
+                   Constants.FRAGMENT_SEARCH -> showFragment(SearchFragment.newInstance())
+                   Constants.FRAGMENT_MAP -> showFragment(MapFragment.newInstance())
+                   Constants.FRAGMENT_LOAN -> showFragment(LoanFragment.newInstance())
+                }
+            }
+        }else{
+            this.showFragment(ListFragment.newInstance())
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -46,6 +62,11 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    override fun onSaveInstanceState(outState: Bundle?) {
+        outState?.putString(Constants.FRAGMENT_TAG_KEY, mFragmentTag)
+        super.onSaveInstanceState(outState)
+    }
+
     // ---------------------
     // CONFIGURATION
     // ---------------------
@@ -58,9 +79,9 @@ class MainActivity : AppCompatActivity() {
         bottom_navigation_view.setOnNavigationItemSelectedListener {
             when(it.itemId){
                 R.id.nav_menu_list -> showFragment(ListFragment.newInstance())
-                R.id.nav_menu_map -> runWithPermissions(Constants.PERM_FINE_LOCATION,Constants.PERM_COARSE_LOCATION){showFragment(MapFragment.newInstance())}
+                R.id.nav_menu_map -> runWithPermissions(Constants.PERM_FINE_LOCATION,Constants.PERM_COARSE_LOCATION){ showFragment(MapFragment.newInstance()) }
                 R.id.nav_menu_search -> showFragment(SearchFragment.newInstance())
-                R.id.nav_menu_sim -> showFragment(LoanFragment.newInstance())
+                R.id.nav_menu_loan -> showFragment(LoanFragment.newInstance())
             }
             return@setOnNavigationItemSelectedListener true
         }
@@ -68,10 +89,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun setBottomItemSelected(newFragment: Fragment){
         when(newFragment){
-            ListFragment.newInstance() ->bottom_navigation_view.selectedItemId = (R.id.nav_menu_list)
+            ListFragment.newInstance() -> bottom_navigation_view.selectedItemId = (R.id.nav_menu_list)
             SearchFragment.newInstance() -> bottom_navigation_view.selectedItemId = (R.id.nav_menu_search)
             MapFragment.newInstance() -> bottom_navigation_view.selectedItemId = (R.id.nav_menu_map)
-            LoanFragment.newInstance() -> bottom_navigation_view.selectedItemId = (R.id.nav_menu_sim)
+            LoanFragment.newInstance() -> bottom_navigation_view.selectedItemId = (R.id.nav_menu_loan)
         }
 
     }
@@ -96,6 +117,14 @@ class MainActivity : AppCompatActivity() {
 
     fun showFragment(newFragment: Fragment){
         //this.setBottomItemSelected(newFragment)
+
+        when(newFragment){
+            is ListFragment -> this.mFragmentTag = Constants.FRAGMENT_LIST
+            is SearchFragment -> this.mFragmentTag = Constants.FRAGMENT_SEARCH
+            is MapFragment -> this.mFragmentTag = Constants.FRAGMENT_MAP
+            is LoanFragment -> this.mFragmentTag = Constants.FRAGMENT_LOAN
+
+        }
 
         val transaction = supportFragmentManager.beginTransaction()
 

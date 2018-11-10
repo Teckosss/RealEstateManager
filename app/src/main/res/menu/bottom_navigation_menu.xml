@@ -23,7 +23,7 @@
         app:showAsAction="ifRoom|withText"
         />
     <item
-        android:id="@+id/nav_menu_sim"
+        android:id="@+id/nav_menu_loan"
         android:title="@string/nav_view_sim"
         android:icon="@drawable/baseline_account_balance_black_24"
         android:enabled="true"
