@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
+import android.widget.Toast
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.*
@@ -34,6 +35,7 @@ import com.livinglifetechway.quickpermissions_kotlin.runWithPermissions
 import com.openclassrooms.realestatemanager.Models.FullEstate
 import com.openclassrooms.realestatemanager.Models.GeocodeInfo
 import com.openclassrooms.realestatemanager.Utils.GeocodeStream
+import com.openclassrooms.realestatemanager.Utils.Utils
 import io.reactivex.disposables.Disposable
 import io.reactivex.observers.DisposableObserver
 import kotlinx.android.synthetic.main.fragment_map.*
@@ -72,12 +74,20 @@ class MapFragment : BaseFragment(), GoogleApiClient.OnConnectionFailedListener, 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mViewModel.getEstates().observe(this, Observer {
-            if (it != null) {
-                listFullEstate.addAll(it)
-                retrieveAddressByGeoCoding(it)
+        Utils{ internet ->
+            if (internet){
+                mViewModel.getEstates().observe(this, Observer {
+                    if (it != null) {
+                        listFullEstate.addAll(it)
+                        retrieveAddressByGeoCoding(it)
+                    }
+                })
+            }else{
+                Toast.makeText(context,resources.getString(R.string.exception_error_message),Toast.LENGTH_SHORT).show()
             }
-        })
+        }
+
+
 
         map_fragment.onCreate(savedInstanceState)
         map_fragment.onResume()
@@ -169,6 +179,7 @@ class MapFragment : BaseFragment(), GoogleApiClient.OnConnectionFailedListener, 
 
         map_fragment.getMapAsync {
             mMap = it
+            it.isIndoorEnabled = false
             it.isMyLocationEnabled = true
             it.uiSettings.isCompassEnabled = true
             if (map_fragment != null){
@@ -243,7 +254,7 @@ class MapFragment : BaseFragment(), GoogleApiClient.OnConnectionFailedListener, 
         if (position != null){
             Log.e("MAP_FRAGMENT","Location LatLng : $position")
             markerOptions.position(position)
-            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.baseline_location_on_black_36))
+            markerOptions.icon(getMarkerIconFromDrawable())
             val marker = mMap?.addMarker(markerOptions)
             marker?.tag = estateId
         }

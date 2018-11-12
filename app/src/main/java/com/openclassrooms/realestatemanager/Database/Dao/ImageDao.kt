@@ -14,8 +14,8 @@ import com.openclassrooms.realestatemanager.Models.Image
 @Dao
 interface ImageDao {
 
-    @Query("SELECT * FROM Image WHERE estateId = :index")
-    fun getItems(index:Long): LiveData<List<Image>>
+    @Query("SELECT * FROM Image WHERE estateId = :estateId")
+    fun getItems(estateId:Long): LiveData<List<Image>>
 
     @Insert
     fun insertItem(image: Image) : Long

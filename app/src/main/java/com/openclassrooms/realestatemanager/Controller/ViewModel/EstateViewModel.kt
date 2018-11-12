@@ -16,6 +16,7 @@ import com.openclassrooms.realestatemanager.Models.FullEstate
 import com.openclassrooms.realestatemanager.Models.Image
 import com.openclassrooms.realestatemanager.Models.Location
 import com.openclassrooms.realestatemanager.R
+import com.openclassrooms.realestatemanager.Utils.Notifications
 import com.openclassrooms.realestatemanager.Utils.toFRDate
 import io.reactivex.Observable
 import io.reactivex.Scheduler
@@ -105,7 +106,7 @@ class EstateViewModel(private val estateDataRepository: EstateDataRepository,
                 .observeOn(observerOn)
                 .subscribeOn(subscriberOn)
                 .subscribe(
-                        {Toast.makeText(context, context.resources.getString(R.string.activity_add_estate_saved), Toast.LENGTH_SHORT).show(); Log.e("CREATE_ESTATE","OnNext")},
+                        {Notifications().sendNotification(context); Log.e("CREATE_ESTATE","OnNext")},
                         {e -> Log.e("CREATE_ESTATE","OnError : ${e.localizedMessage}")}
                 )
         )
@@ -121,7 +122,7 @@ class EstateViewModel(private val estateDataRepository: EstateDataRepository,
                 .observeOn(observerOn)
                 .subscribeOn(subscriberOn)
                 .subscribe(
-                        { Toast.makeText(context, context.resources.getString(R.string.activity_add_estate_saved), Toast.LENGTH_SHORT).show();Log.e("UPDATE_ESTATE","OnNext")},
+                        { Notifications().sendNotification(context);Log.e("UPDATE_ESTATE","OnNext")},
                         {e -> Log.e("UPDATE_ESTATE","OnError : ${e.localizedMessage}")}
                 )
         )

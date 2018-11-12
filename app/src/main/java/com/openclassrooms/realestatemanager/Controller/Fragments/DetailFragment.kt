@@ -3,6 +3,8 @@ package com.openclassrooms.realestatemanager.Controller.Fragments
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.LightingColorFilter
 import android.graphics.drawable.Drawable
@@ -31,6 +33,7 @@ import kotlinx.android.synthetic.main.fragment_detail.*
 import android.os.Build
 import android.support.v4.content.ContextCompat
 import com.google.android.gms.maps.*
+import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
@@ -151,7 +154,7 @@ class DetailFragment : BaseFragment(), ActivityAddAdapter.Listener, OnMapReadyCa
         if (position != null){
             this.googleMap.moveCamera(CameraUpdateFactory.newLatLng(position))
             this.googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(position, Constants.DETAIL_FRAGMENT_DEFAULT_ZOOM))
-            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.baseline_location_on_black_36))
+            markerOptions.icon(getMarkerIconFromDrawable())
             markerOptions.position(position)
             val marker = this.googleMap.addMarker(markerOptions)
             marker.tag = estateId

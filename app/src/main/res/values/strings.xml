@@ -4,6 +4,12 @@
     <!-- POPUP TITLE PERM -->
     <string name="popup_title_permission_files_access">This application needs permissions to access your images</string>
 
+    <!-- ERROR TEXT -->
+    <string name="http_error_message">HttpException, Error code : %1$i</string>
+    <string name="timeout_error_message">Request timeout, please check your internet connection</string>
+    <string name="exception_error_message">An error occurred, please check your internet connection</string>
+    <string name="generic_error_message">An error occurred, please try again</string>
+
     <!-- MENU -->
     <string name="menu_add_text">Add</string>
     <string name="menu_edit_text">Edit</string>
@@ -164,5 +170,9 @@
     </string-array>
 
     <string name="search_statute_all">ALL</string>
+
+    <!-- NOTIFICATIONS -->
+    <string name="notification_title">Real Estate Manager</string>
+    <string name="notification_message">Estate was successfully added into database</string>
 
 </resources>

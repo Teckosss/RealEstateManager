@@ -9,6 +9,7 @@ android {
         applicationId "com.openclassrooms.realestatemanager"
         minSdkVersion 19
         targetSdkVersion 28
+        multiDexEnabled true
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -23,7 +24,10 @@ android {
             it.buildConfigField 'String', 'google_maps_api_key', google_maps_api_key
         }
     }
-    buildToolsVersion '27.0.3'
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
+    }
 }
 
 dependencies {
@@ -38,10 +42,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     implementation 'com.google.code.gson:gson:2.8.4'
-
-    // BUTTERKNIFE
-    implementation 'com.jakewharton:butterknife:8.8.1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
     // ROOM
     implementation 'android.arch.persistence.room:runtime:1.1.1'
@@ -71,6 +71,9 @@ dependencies {
 
     // STETHO
     implementation 'com.facebook.stetho:stetho:1.5.0'
+
+    // TESTING
+    androidTestCompile "android.arch.core:core-testing:1.1.0"
 
     // GEOCODE API
     implementation 'com.google.maps:google-maps-services:0.9.0'

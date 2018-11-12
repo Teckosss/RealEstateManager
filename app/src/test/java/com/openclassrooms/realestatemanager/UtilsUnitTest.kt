@@ -3,11 +3,15 @@ package com.openclassrooms.realestatemanager
 import com.openclassrooms.realestatemanager.Utils.Utils
 import junit.framework.Assert.assertEquals
 import org.junit.Test
+import java.text.SimpleDateFormat
+import java.util.*
 
 /**
  * Created by Adrien Deguffroy on 27/10/2018.
  */
 class UtilsUnitTest {
+
+    private val nowDate = SimpleDateFormat("dd/MM/yyyy").format(Date())
 
     @Test
     fun convertDollarToEuro() {
@@ -21,6 +25,6 @@ class UtilsUnitTest {
 
     @Test
     fun getTodayDate() {
-        assertEquals("27/10/2018", Utils.getTodayDate())
+        assertEquals(nowDate, Utils.getTodayDate())
     }
 }
