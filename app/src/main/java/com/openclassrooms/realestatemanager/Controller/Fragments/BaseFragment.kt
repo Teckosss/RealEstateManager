@@ -20,6 +20,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import retrofit2.HttpException
 import java.io.IOException
 import java.net.SocketTimeoutException
+import java.util.concurrent.TimeoutException
 
 
 /**
@@ -69,8 +70,12 @@ abstract class BaseFragment : Fragment() {
                     Log.e("IOException", "Error")
                     Toast.makeText(context, resources.getString(R.string.exception_error_message), Toast.LENGTH_SHORT).show()
                 }
+                is TimeoutException -> {
+                    Log.e("TimeoutException", "Error")
+                    Toast.makeText(context, resources.getString(R.string.timeout_error_message), Toast.LENGTH_SHORT).show()
+                }
                 else -> {
-                    Log.e("Generic handleError", "Error")
+                    Log.e("Generic handleError", "Error : ${throwable.javaClass}")
                     Toast.makeText(context, resources.getString(R.string.generic_error_message), Toast.LENGTH_SHORT).show()
                 }
             }

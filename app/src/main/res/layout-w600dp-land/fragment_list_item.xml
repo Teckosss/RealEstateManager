@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingTop="@dimen/space_between_elements"
+    android:paddingStart="@dimen/space_between_elements"
+    android:paddingBottom="@dimen/space_between_elements"
+    >
+
+    <ImageView
+        android:id="@+id/list_item_main_pic"
+        android:layout_width="@dimen/size_image_width_small"
+        android:layout_height="@dimen/size_image_height_small"
+        />
+
+    <TextView
+        android:id="@+id/list_item_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/space_between_elements"
+        android:textColor="@color/colorBlack"
+        android:textStyle="bold"
+        android:textSize="@dimen/size_text_normal"
+        android:layout_marginStart="@dimen/padding_to_parent"
+        app:layout_constraintStart_toEndOf="@id/list_item_main_pic"
+        app:layout_constraintBottom_toTopOf="@id/list_item_city"
+        />
+
+    <TextView
+        android:id="@+id/list_item_city"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/space_between_elements"
+        android:textColor="@color/colorGrey"
+        android:layout_marginStart="@dimen/padding_to_parent"
+        app:layout_constraintStart_toEndOf="@id/list_item_main_pic"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/list_item_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/size_text_big"
+        android:layout_marginStart="@dimen/padding_to_parent"
+        app:layout_constraintStart_toEndOf="@id/list_item_main_pic"
+        app:layout_constraintTop_toBottomOf="@id/list_item_city"
+        />
+
+    <ImageView
+        android:id="@+id/image_sold"
+        android:layout_width="@dimen/size_image_width_small"
+        android:layout_height="@dimen/size_image_height_small"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="@dimen/small_space_between_items"
+        />
+
+</android.support.constraint.ConstraintLayout>

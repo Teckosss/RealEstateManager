@@ -17,10 +17,6 @@ class InternetConnectionTest {
 
     @Test
     fun checkInternetConnection() {
-       Utils{hasInternet ->
-           run {
-               assertEquals(true, hasInternet)
-           }
-       }
+        assertEquals(true, Utils.isInternetAvailable(InstrumentationRegistry.getContext()))
     }
 }

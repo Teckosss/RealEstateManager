@@ -12,7 +12,7 @@
     <dimen name="size_image_height_small">@dimen/size_image_width_small</dimen>
 
     <!-- Text Size -->
-    <dimen name="size_text_small">15sp</dimen>
-    <dimen name="size_text_normal">20sp</dimen>
-    <dimen name="size_text_big">25sp</dimen>
+    <dimen name="large_size_text_small">15sp</dimen>
+    <dimen name="large_size_text_normal">20sp</dimen>
+    <dimen name="large_size_text_big">25sp</dimen>
 </resources>

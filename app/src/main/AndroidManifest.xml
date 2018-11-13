@@ -29,6 +29,11 @@
                 android:resource="@xml/file_paths"></meta-data>
         </provider>
 
+        <provider
+            android:name=".Provider.EstateContentProvider"
+            android:authorities="com.openclassrooms.realestatemanager.provider"
+            android:exported="true"/>
+
         <meta-data android:name="com.google.android.geo.API_KEY" android:value="@string/google_maps_api_key"/>
 
         <activity android:name=".Controller.Activities.MainActivity">

@@ -17,27 +17,18 @@ import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.*
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.openclassrooms.realestatemanager.Controller.Activities.MainActivity
 import com.openclassrooms.realestatemanager.Controller.ViewModel.EstateViewModel
 import com.openclassrooms.realestatemanager.Di.Injection
 
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.Utils.Constants
-import kotlinx.android.synthetic.main.activity_main.*
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
-import com.google.gson.GsonBuilder
-import com.google.maps.GeoApiContext
-import com.google.maps.GeocodingApi
-import com.livinglifetechway.quickpermissions_kotlin.runWithPermissions
+import com.google.maps.android.clustering.ClusterManager
 import com.openclassrooms.realestatemanager.Models.FullEstate
-import com.openclassrooms.realestatemanager.Models.GeocodeInfo
-import com.openclassrooms.realestatemanager.Utils.GeocodeStream
 import com.openclassrooms.realestatemanager.Utils.Utils
-import io.reactivex.disposables.Disposable
-import io.reactivex.observers.DisposableObserver
 import kotlinx.android.synthetic.main.fragment_map.*
 
 
@@ -74,20 +65,16 @@ class MapFragment : BaseFragment(), GoogleApiClient.OnConnectionFailedListener, 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Utils{ internet ->
-            if (internet){
-                mViewModel.getEstates().observe(this, Observer {
-                    if (it != null) {
-                        listFullEstate.addAll(it)
-                        retrieveAddressByGeoCoding(it)
-                    }
-                })
-            }else{
-                Toast.makeText(context,resources.getString(R.string.exception_error_message),Toast.LENGTH_SHORT).show()
-            }
+        if (Utils.isInternetAvailable(context)){
+            mViewModel.getEstates().observe(this, Observer {
+                if (it != null) {
+                    listFullEstate.addAll(it)
+                    retrieveAddressByGeoCoding(it)
+                }
+            })
+        }else{
+            Toast.makeText(context,resources.getString(R.string.exception_error_message),Toast.LENGTH_SHORT).show()
         }
-
-
 
         map_fragment.onCreate(savedInstanceState)
         map_fragment.onResume()

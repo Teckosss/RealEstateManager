@@ -75,32 +75,11 @@ public class Utils extends AsyncTask<Void,Void,Boolean> {
      * @param context
      * @return
      */
-    public static Single<Boolean> isInternetAvailable(Context context){
-       Single.fromCallable(() -> {
-           ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+    public static Boolean isInternetAvailable(Context context){
+        ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
-           NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-           boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
-
-           if (isConnected){
-               try{
-                   int timeOutMs = 1500;
-                   Socket socket = new Socket();
-                   InetSocketAddress socketAddress = new InetSocketAddress(googleDNS, googleDNSPort);
-
-                   socket.connect(socketAddress, timeOutMs);
-                   socket.close();
-                   return true;
-               }catch (IOException e){
-                   Log.e("UTILS_Internet","isInternetAvailable Exception : " + e);
-                   return false;
-               }
-           }
-          return false;
-       })
-               .subscribeOn(Schedulers.io())
-               .observeOn(AndroidSchedulers.mainThread());
-        return null;
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
     }
 }
 

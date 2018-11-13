@@ -122,8 +122,6 @@ class MainActivity : AppCompatActivity() {
     fun showFragment(newFragment: Fragment){
         //this.setBottomItemSelected(newFragment)
 
-        //if (isTablet()) this.changeLayout(resources.configuration.orientation)
-
         when(newFragment){
             is ListFragment -> this.mFragmentTag = Constants.FRAGMENT_LIST
             is SearchFragment -> this.mFragmentTag = Constants.FRAGMENT_SEARCH
@@ -155,48 +153,4 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun isTablet() = detailFragment == null && findViewById<FrameLayout>(R.id.fragment_view_detail) != null
-
-    private fun changeLayout(orientation:Int){
-        fragment_view_container.requestLayout()
-        fragment_view_detail_container.requestLayout()
-
-        val fragmentLayoutParams = fragment_view_container.layoutParams
-        val fragmentDetailLayoutParams = fragment_view_detail_container.layoutParams
-
-        val constraintLayout = findViewById<ConstraintLayout>(R.id.fragment_view_container)
-        val set = ConstraintSet()
-        set.clone(constraintLayout)
-        set.clear(R.id.fragment_view_container)
-
-
-        val constraintLayoutDetail = findViewById<ConstraintLayout>(R.id.fragment_view_detail_container)
-        val setDetail = ConstraintSet()
-        setDetail.clone(constraintLayoutDetail)
-        setDetail.clear(R.id.fragment_view_detail_container)
-
-
-        if (orientation == Configuration.ORIENTATION_PORTRAIT){
-            set.constrainPercentHeight(R.id.fragment_view_container,0.4F)
-
-            set.applyTo(constraintLayout)
-
-            fragmentLayoutParams.width = ConstraintLayout.LayoutParams.MATCH_PARENT
-            fragmentLayoutParams.height = ConstraintLayout.LayoutParams.MATCH_CONSTRAINT
-            fragment_view_container.layoutParams = fragmentLayoutParams
-
-            setDetail.constrainPercentHeight(R.id.fragment_view_detail_container, 0.6F)
-            setDetail.connect(R.id.fragment_view_detail_container, ConstraintSet.TOP, R.id.fragment_view_container,ConstraintSet.BOTTOM)
-            setDetail.connect(R.id.fragment_view_detail_container, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID,ConstraintSet.BOTTOM)
-            setDetail.applyTo(constraintLayoutDetail)
-
-            fragmentDetailLayoutParams.width = ConstraintLayout.LayoutParams.MATCH_PARENT
-            fragmentDetailLayoutParams.height = ConstraintLayout.LayoutParams.MATCH_CONSTRAINT
-            fragment_view_detail_container.layoutParams = fragmentDetailLayoutParams
-
-
-
-        }else{
-
-        }
-    }
 }

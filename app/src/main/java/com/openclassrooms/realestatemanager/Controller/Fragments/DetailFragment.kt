@@ -3,9 +3,6 @@ package com.openclassrooms.realestatemanager.Controller.Fragments
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.LightingColorFilter
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -26,22 +23,15 @@ import com.openclassrooms.realestatemanager.Models.FullEstate
 import com.openclassrooms.realestatemanager.Models.Image
 
 import com.openclassrooms.realestatemanager.R
-import com.openclassrooms.realestatemanager.R.id.detail_fragment_map
 import com.openclassrooms.realestatemanager.Utils.Constants
 import com.openclassrooms.realestatemanager.Utils.ItemClickSupport
 import kotlinx.android.synthetic.main.fragment_detail.*
 import android.os.Build
 import android.support.v4.content.ContextCompat
 import com.google.android.gms.maps.*
-import com.google.android.gms.maps.model.BitmapDescriptor
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.openclassrooms.realestatemanager.Models.GeocodeInfo
-import com.openclassrooms.realestatemanager.Utils.GeocodeStream
 import com.openclassrooms.realestatemanager.Utils.toFRString
-import io.reactivex.disposables.Disposable
-import io.reactivex.observers.DisposableObserver
 
 
 /**
@@ -223,8 +213,14 @@ class DetailFragment : BaseFragment(), ActivityAddAdapter.Listener, OnMapReadyCa
         setImage(context!!, school_image,result.estate.schools)
         setImage(context!!, highway_image,result.estate.highway)
 
-
-        listImages.addAll(result.images)
+        if(result.images.isEmpty()){
+            detail_fragment_recycler_view.visibility = View.GONE
+            detail_fragment_no_image_available.visibility = View.VISIBLE
+        }else{
+            detail_fragment_recycler_view.visibility = View.VISIBLE
+            detail_fragment_no_image_available.visibility = View.GONE
+            listImages.addAll(result.images)
+        }
     }
 
     private fun isAddressComplete(result: FullEstate) =

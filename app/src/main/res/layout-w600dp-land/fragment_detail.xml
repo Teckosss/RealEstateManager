@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/detail_fragment_media"
                 android:textStyle="bold"
-                android:textSize="@dimen/size_text_big"
+                android:textSize="@dimen/large_size_text_big"
                 android:paddingBottom="@dimen/space_between_elements"
                 android:textColor="@color/colorGreyTitle"
                 />
@@ -41,8 +41,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textStyle="italic"
-                android:textColor="@color/colorGrey"
-                android:textSize="@dimen/size_text_small"
+                android:textColor="@color/colorGreyText"
+                android:textSize="@dimen/large_size_text_small"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 />
@@ -51,28 +51,48 @@
                 android:id="@+id/detail_fragment_sold_on"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorGrey"
-                android:textSize="@dimen/size_text_small"
+                android:textColor="@color/colorGreyText"
+                android:textSize="@dimen/large_size_text_small"
                 android:textStyle="italic"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/detail_fragment_added_on" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/detail_fragment_recycler_view"
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/detail_fragment_image_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/detail_fragment_text_media"
                 >
-            </android.support.v7.widget.RecyclerView>
+
+                <TextView
+                    android:id="@+id/detail_fragment_no_image_available"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/detail_fragment_no_image_available"
+                    android:textColor="@color/colorGreyText"
+                    android:textSize="@dimen/large_size_text_normal"
+                    android:layout_marginBottom="@dimen/space_between_elements"
+                    android:visibility="gone"
+                    />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/detail_fragment_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+                </android.support.v7.widget.RecyclerView>
+
+            </android.support.constraint.ConstraintLayout>
 
             <TextView
                 android:id="@+id/detail_fragment_text_desc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/detail_fragment_desc"
-                app:layout_constraintTop_toBottomOf="@id/detail_fragment_recycler_view"
+                app:layout_constraintTop_toBottomOf="@id/detail_fragment_image_container"
                 android:textStyle="bold"
-                android:textSize="@dimen/size_text_big"
+                android:textSize="@dimen/large_size_text_big"
                 android:paddingTop="@dimen/space_between_elements"
                 android:paddingBottom="@dimen/space_between_elements"
                 android:textColor="@color/colorGreyTitle"
@@ -95,8 +115,8 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/detail_fragment_text_desc"
                 android:paddingBottom="@dimen/space_between_elements"
+                android:textSize="@dimen/large_size_text_normal"
                 android:textColor="@color/colorGreyText"
-                android:textSize="@dimen/size_text_small"
                 />
 
             <!-- SURFACE -->
@@ -119,6 +139,7 @@
                 app:layout_constraintBottom_toBottomOf="@id/detail_fragment_icon_surface"
                 app:layout_constraintStart_toEndOf="@id/detail_fragment_icon_surface"
                 android:textStyle="bold"
+                android:textSize="@dimen/large_size_text_normal"
                 android:textColor="@color/colorGreyTitle"
                 />
 
@@ -129,6 +150,7 @@
                 app:layout_constraintTop_toBottomOf="@id/detail_fragment_text_surface"
                 app:layout_constraintStart_toStartOf="@id/detail_fragment_text_surface"
                 android:paddingStart="@dimen/space_between_elements"
+                android:textSize="@dimen/large_size_text_normal"
                 android:textColor="@color/colorGreyText"
                 />
 
@@ -152,6 +174,7 @@
                 app:layout_constraintStart_toEndOf="@+id/detail_fragment_icon_rooms"
                 app:layout_constraintTop_toTopOf="@id/detail_fragment_icon_rooms"
                 android:textStyle="bold"
+                android:textSize="@dimen/large_size_text_normal"
                 android:textColor="@color/colorGreyTitle"
                 />
 
@@ -162,6 +185,7 @@
                 app:layout_constraintTop_toBottomOf="@id/detail_fragment_text_rooms"
                 app:layout_constraintStart_toStartOf="@id/detail_fragment_text_rooms"
                 android:paddingStart="@dimen/space_between_elements"
+                android:textSize="@dimen/large_size_text_normal"
                 android:textColor="@color/colorGreyText"
                 />
 
@@ -185,6 +209,7 @@
                 app:layout_constraintBottom_toBottomOf="@id/detail_fragment_icon_bathrooms"
                 app:layout_constraintStart_toEndOf="@id/detail_fragment_icon_bathrooms"
                 android:textStyle="bold"
+                android:textSize="@dimen/large_size_text_normal"
                 android:textColor="@color/colorGreyTitle"
                 />
 
@@ -195,6 +220,7 @@
                 app:layout_constraintTop_toBottomOf="@id/detail_fragment_text_bathrooms"
                 app:layout_constraintStart_toStartOf="@id/detail_fragment_text_bathrooms"
                 android:paddingStart="@dimen/space_between_elements"
+                android:textSize="@dimen/large_size_text_normal"
                 android:textColor="@color/colorGreyText"
                 />
 
@@ -219,6 +245,7 @@
                 app:layout_constraintBottom_toBottomOf="@id/detail_fragment_icon_bedrooms"
                 app:layout_constraintStart_toEndOf="@id/detail_fragment_icon_bedrooms"
                 android:textColor="@color/colorGreyTitle"
+                android:textSize="@dimen/large_size_text_normal"
                 android:textStyle="bold"
                 />
 
@@ -229,6 +256,7 @@
                 app:layout_constraintTop_toBottomOf="@id/detail_fragment_text_bedrooms"
                 app:layout_constraintStart_toStartOf="@id/detail_fragment_text_bedrooms"
                 android:paddingStart="@dimen/space_between_elements"
+                android:textSize="@dimen/large_size_text_normal"
                 android:textColor="@color/colorGreyText"
                 />
 
@@ -257,6 +285,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/detail_fragment_vicinity"
                     android:textStyle="bold"
+                    android:textSize="@dimen/large_size_text_normal"
                     android:textColor="@color/colorGreyTitle"
                     app:layout_constraintBottom_toBottomOf="@+id/detail_fragment_icon_vicinity"
                     app:layout_constraintStart_toEndOf="@+id/detail_fragment_icon_vicinity"
@@ -277,6 +306,8 @@
                         android:layout_height="wrap_content"
                         android:paddingBottom="@dimen/space_between_elements"
                         android:paddingTop="@dimen/space_between_elements"
+                        android:textSize="@dimen/large_size_text_normal"
+                        android:textColor="@color/colorGreyText"
                         android:text="@string/activity_add_estate_parks" />
 
                     <ImageView
@@ -297,6 +328,8 @@
                         android:paddingBottom="@dimen/space_between_elements"
                         android:paddingTop="@dimen/space_between_elements"
                         android:text="@string/activity_add_estate_shops"
+                        android:textSize="@dimen/large_size_text_normal"
+                        android:textColor="@color/colorGreyText"
                         app:layout_constraintBottom_toBottomOf="@id/park_image"
                         app:layout_constraintStart_toEndOf="@id/park_image"
                         app:layout_constraintTop_toTopOf="@id/park_image" />
@@ -319,6 +352,8 @@
                         android:paddingBottom="@dimen/space_between_elements"
                         android:paddingTop="@dimen/space_between_elements"
                         android:text="@string/activity_add_estate_schools"
+                        android:textSize="@dimen/large_size_text_normal"
+                        android:textColor="@color/colorGreyText"
                         app:layout_constraintBottom_toBottomOf="@id/shop_image"
                         app:layout_constraintStart_toEndOf="@id/shop_image"
                         app:layout_constraintTop_toTopOf="@id/shop_image" />
@@ -341,6 +376,8 @@
                         android:paddingBottom="@dimen/space_between_elements"
                         android:paddingTop="@dimen/space_between_elements"
                         android:text="@string/activity_add_estate_highway"
+                        android:textSize="@dimen/large_size_text_normal"
+                        android:textColor="@color/colorGreyText"
                         app:layout_constraintBottom_toBottomOf="@id/school_image"
                         app:layout_constraintStart_toEndOf="@id/school_image"
                         app:layout_constraintTop_toTopOf="@id/school_image" />
@@ -382,6 +419,7 @@
                     android:text="@string/detail_fragment_location"
                     android:textColor="@color/colorGreyTitle"
                     android:textStyle="bold"
+                    android:textSize="@dimen/large_size_text_normal"
                     app:layout_constraintBottom_toBottomOf="@id/detail_fragment_icon_location"
                     app:layout_constraintStart_toEndOf="@id/detail_fragment_icon_location"
                     app:layout_constraintTop_toTopOf="@id/detail_fragment_icon_location" />
@@ -393,6 +431,7 @@
                     android:paddingStart="@dimen/space_between_elements"
                     android:paddingTop="@dimen/space_between_elements"
                     android:textColor="@color/colorGreyText"
+                    android:textSize="@dimen/large_size_text_normal"
                     app:layout_constraintStart_toStartOf="@id/detail_fragment_text_location"
                     app:layout_constraintTop_toBottomOf="@id/detail_fragment_text_location" />
 
@@ -402,6 +441,7 @@
                     android:layout_height="wrap_content"
                     android:paddingStart="@dimen/space_between_elements"
                     android:textColor="@color/colorGreyText"
+                    android:textSize="@dimen/large_size_text_normal"
                     app:layout_constraintStart_toStartOf="@id/detail_fragment_text_location"
                     app:layout_constraintTop_toBottomOf="@id/detail_fragment_location_address" />
 
@@ -411,6 +451,7 @@
                     android:layout_height="wrap_content"
                     android:paddingStart="@dimen/space_between_elements"
                     android:textColor="@color/colorGreyText"
+                    android:textSize="@dimen/large_size_text_normal"
                     app:layout_constraintStart_toStartOf="@id/detail_fragment_text_location"
                     app:layout_constraintTop_toBottomOf="@id/detail_fragment_location_add_address" />
 
@@ -420,6 +461,7 @@
                     android:layout_height="wrap_content"
                     android:paddingStart="@dimen/space_between_elements"
                     android:textColor="@color/colorGreyText"
+                    android:textSize="@dimen/large_size_text_normal"
                     app:layout_constraintStart_toStartOf="@id/detail_fragment_text_location"
                     app:layout_constraintTop_toBottomOf="@id/detail_fragment_location_city" />
 
@@ -429,6 +471,7 @@
                     android:layout_height="wrap_content"
                     android:paddingStart="@dimen/space_between_elements"
                     android:textColor="@color/colorGreyText"
+                    android:textSize="@dimen/large_size_text_normal"
                     app:layout_constraintStart_toStartOf="@id/detail_fragment_text_location"
                     app:layout_constraintTop_toBottomOf="@id/detail_fragment_location_zip" />
 

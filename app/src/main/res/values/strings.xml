@@ -96,6 +96,7 @@
     <string name="detail_fragment_added_on">Estate added on %1s</string>
     <string name="detail_fragment_sold_on">Estate sold on %1s</string>
 
+    <string name="detail_fragment_no_image_available">This estate has no images yet</string>
     <string name="detail_fragment_not_specified">Not specified</string>
     <string name="detail_fragment_no_desc">This estate has no description yet</string>
 
