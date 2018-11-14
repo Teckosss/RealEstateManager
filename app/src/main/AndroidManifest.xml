@@ -45,8 +45,7 @@
         </activity>
         <activity
             android:name=".Controller.Activities.AddActivity"
-            android:label="@string/activity_add_title"
-            android:parentActivityName=".Controller.Activities.MainActivity" />
+            android:label="@string/activity_add_title" />
         <activity
             android:name=".Controller.Activities.EditActivity"
             android:label="@string/activity_edit_title" />

@@ -103,21 +103,24 @@ abstract class BaseFragment : Fragment() {
             = if (location.address != "" && location.city != "" && location.country != "" && location.zipCode != "") location.address + " " + location.city + ", " + location.country + " " + location.zipCode else null
 
     fun getMarkerIconFromDrawable(): BitmapDescriptor? {
-        val icon: Drawable = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            context!!.resources.getDrawable(R.drawable.baseline_location_on_black_36, context!!.applicationContext.theme)
-        }else{
-            context!!.resources.getDrawable(R.drawable.baseline_location_on_black_36)
-        }
-        val colorGreen = ContextCompat.getColor(context!!, R.color.colorAccent)
-        val filter = LightingColorFilter(colorGreen, colorGreen)
-        icon.colorFilter = filter
+        if (context != null){
+            val icon: Drawable = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                context!!.resources.getDrawable(R.drawable.baseline_location_on_black_36, context!!.applicationContext.theme)
+            }else{
+                context!!.resources.getDrawable(R.drawable.baseline_location_on_black_36)
+            }
+            val colorGreen = ContextCompat.getColor(context!!, R.color.colorAccent)
+            val filter = LightingColorFilter(colorGreen, colorGreen)
+            icon.colorFilter = filter
 
-        val canvas = Canvas()
-        val bitmap = Bitmap.createBitmap(icon.intrinsicWidth, icon.intrinsicHeight, Bitmap.Config.ARGB_8888)
-        canvas.setBitmap(bitmap)
-        icon.setBounds(0, 0, icon.intrinsicWidth, icon.intrinsicHeight)
-        icon.draw(canvas)
-        return BitmapDescriptorFactory.fromBitmap(bitmap)
+            val canvas = Canvas()
+            val bitmap = Bitmap.createBitmap(icon.intrinsicWidth, icon.intrinsicHeight, Bitmap.Config.ARGB_8888)
+            canvas.setBitmap(bitmap)
+            icon.setBounds(0, 0, icon.intrinsicWidth, icon.intrinsicHeight)
+            icon.draw(canvas)
+            return BitmapDescriptorFactory.fromBitmap(bitmap)
+        }
+        return null
     }
 
     // -------------------

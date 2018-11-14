@@ -69,13 +69,13 @@ class LoanFragment : Fragment() {
 
     private fun calculate(){
         var canCalculate = false
-        val amount = loan_amount.text.toString().toIntOrNull()
-        val downPayment = loan_down.text.toString().toIntOrNull()
+        val amount = loan_amount.text.toString().toDoubleOrNull() ?: 0.0
+        val downPayment = loan_down.text.toString().toDoubleOrNull() ?: 0.0
         val term = loan_term.text.toString().toDoubleOrNull()
         val interest = loan_interest.text.toString().toDoubleOrNull()
 
         when{
-            loan_amount.text.isNullOrEmpty() || loan_term.text.isNullOrEmpty() || loan_interest.text.isNullOrEmpty() -> {
+            loan_amount.text.isNullOrEmpty() || loan_term.text.isNullOrEmpty() || loan_interest.text.isNullOrEmpty() || downPayment >= amount!! -> {
                 canCalculate = false
                 if (loan_amount.text.isNullOrEmpty()){
                     loan_amount_layout.error = resources.getString(R.string.loan_error)
@@ -85,6 +85,11 @@ class LoanFragment : Fragment() {
                 }
                 if (loan_interest.text.isNullOrEmpty()){
                     loan_interest_layout.error = resources.getString(R.string.loan_error)
+                }else if (interest!! < 0 || interest > 100){
+                    loan_interest_layout.error = resources.getString(R.string.loan_error_interest_value)
+                }
+                if (downPayment != null && downPayment >= amount!!){
+                    loan_down_layout.error = resources.getString(R.string.loan_error_down_payment)
                 }
             }
             else -> {
@@ -92,14 +97,23 @@ class LoanFragment : Fragment() {
                 loan_amount_layout.error = null
                 loan_term_layout.error = null
                 loan_interest_layout.error = null
+                loan_down_layout.error = null
             }
         }
 
         if (canCalculate){
-            val result = (if (downPayment != null) (amount!! -(downPayment)) else amount)!! * ((interest!! / (100)) / (12)) / (1 - Math.pow( 1 + ((interest / 100) / 12), -term!! *12))
-            val totalPrice = 12 * term * result - amount!!
+            val result: Double
+            val totalPrice: Double
+            if(interest == 0.0){
+                result = (if (downPayment != null) ( amount!!-(downPayment)) else amount)!! / (term!! * 12)
+                totalPrice = 0.0
+            }else{
+                result = (if (downPayment != null) (amount!! -(downPayment)) else amount)!! * ((interest!! / (100)) / (12)) / (1 - Math.pow( 1 + ((interest / 100) / 12), -term!! *12))
+                totalPrice = 12 * term * result - (if (downPayment != null ) amount?.minus(downPayment)!! else amount!!)
+            }
             loan_monthly.setText(String.format("%.2f",result),TextView.BufferType.EDITABLE)
             loan_total.setText(String.format("%.2f",totalPrice), TextView.BufferType.EDITABLE)
+
         }
     }
 }

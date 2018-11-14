@@ -54,8 +54,6 @@ abstract class BaseActivity : AppCompatActivity() {
 
     fun configureToolbar(){
         setSupportActionBar(simple_toolbar)
-        val ab = supportActionBar
-        ab!!.setDisplayHomeAsUpEnabled(true)
     }
 
     fun setOnClickListener(){

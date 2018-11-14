@@ -116,6 +116,8 @@
     <string name="loan_calculate">Calculate</string>
 
     <string name="loan_error">This field can\'t be empty</string>
+    <string name="loan_error_interest_value">Interest rate must be between 0 and 100</string>
+    <string name="loan_error_down_payment">The down payment can\'t be higher or equal than loan amount</string>
 
     <!-- LOAN TERM VALUES -->
     <string-array name="loan_term_values">

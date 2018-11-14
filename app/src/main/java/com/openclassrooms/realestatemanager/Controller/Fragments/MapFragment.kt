@@ -26,7 +26,6 @@ import com.openclassrooms.realestatemanager.Utils.Constants
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
-import com.google.maps.android.clustering.ClusterManager
 import com.openclassrooms.realestatemanager.Models.FullEstate
 import com.openclassrooms.realestatemanager.Utils.Utils
 import kotlinx.android.synthetic.main.fragment_map.*
@@ -101,11 +100,13 @@ class MapFragment : BaseFragment(), GoogleApiClient.OnConnectionFailedListener, 
     override fun onPause() {
         super.onPause()
         map_fragment.onPause()
+        this.disposeWhenDestroy()
         this.stopLocationUpdateAndDisconnectGoogleApiClient()
     }
 
     override fun onStop() {
         super.onStop()
+        this.disposeWhenDestroy()
         this.stopLocationUpdateAndDisconnectGoogleApiClient()
     }
 
