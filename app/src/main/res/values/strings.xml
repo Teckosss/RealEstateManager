@@ -9,6 +9,7 @@
     <string name="timeout_error_message">Request timeout, please check your internet connection</string>
     <string name="exception_error_message">An error occurred, please check your internet connection</string>
     <string name="generic_error_message">An error occurred, please try again</string>
+    <string name="gps_error_message">Can not locate you, please enable GPS</string>
 
     <!-- MENU -->
     <string name="menu_add_text">Add</string>
@@ -176,6 +177,7 @@
 
     <!-- NOTIFICATIONS -->
     <string name="notification_title">Real Estate Manager</string>
-    <string name="notification_message">Estate was successfully added into database</string>
+    <string name="notification_message_create">Estate was successfully added into database</string>
+    <string name="notification_message_update">Estate was successfully updated into database</string>
 
 </resources>

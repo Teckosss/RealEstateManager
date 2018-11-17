@@ -21,6 +21,9 @@ object Constants {
     const val FRAGMENT_MAP = "MAP"
     const val FRAGMENT_LOAN = "LOAN"
 
+    const val VIEW_MODEL_ACTION_CREATE = "CREATE"
+    const val VIEW_MODEL_ACTION_EDIT = "EDIT"
+
     const val OVERLAY_WIDTH_PERCENT = 0.85
     const val OVERLAY_HEIGHT_PERCENT = 0.85
 

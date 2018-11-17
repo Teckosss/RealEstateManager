@@ -33,7 +33,7 @@ class Notifications {
     /**
      * Create and push the notification
      */
-    fun sendNotification(context: Context) {
+    fun sendNotification(context: Context,action:String) {
         this.mContext = context
         Log.e("TAG", "sendNotification: ")
         // Creates an explicit intent for an Activity in your app
@@ -42,8 +42,14 @@ class Notifications {
 
         val pendingIntent = PendingIntent.getActivity(mContext, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 
+        val notificationMessage:String = if (action == Constants.VIEW_MODEL_ACTION_CREATE){
+            context.resources.getString(R.string.notification_message_create)
+        }else{
+            context.resources.getString(R.string.notification_message_update)
+        }
+
         //Build notification
-        val notification = buildLocalNotification(mContext, pendingIntent).build()
+        val notification = buildLocalNotification(mContext, pendingIntent,notificationMessage).build()
 
         mNotificationManager = mContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
@@ -59,12 +65,12 @@ class Notifications {
         mNotificationManager.notify(notificationID, notification)
     }
 
-    private fun buildLocalNotification(mContext: Context, pendingIntent: PendingIntent): NotificationCompat.Builder {
+    private fun buildLocalNotification(mContext: Context, pendingIntent: PendingIntent, message:String): NotificationCompat.Builder {
         Log.e("TAG", "buildLocalNotification: ")
         mBuilder = NotificationCompat.Builder(mContext, channelID)
         mBuilder.setSmallIcon(R.drawable.baseline_location_city_black_24)
         mBuilder.setContentTitle(mContext.resources.getString(R.string.notification_title))
-                .setContentText(mContext.resources.getString(R.string.notification_message))
+                .setContentText(message)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
 

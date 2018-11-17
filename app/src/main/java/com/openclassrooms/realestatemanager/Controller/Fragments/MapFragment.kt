@@ -41,7 +41,7 @@ class MapFragment : BaseFragment(), GoogleApiClient.OnConnectionFailedListener, 
     private lateinit var mViewModel: EstateViewModel
     private var mMap: GoogleMap? = null
     private var mGoogleApiClient: GoogleApiClient? = null
-    private lateinit var mFusedLocationClient: FusedLocationProviderClient
+    private var mFusedLocationClient: FusedLocationProviderClient? = null
     private lateinit var mLocationRequest : LocationRequest
     private lateinit var mLocationCallback : LocationCallback
     private var listFullEstate = ArrayList<FullEstate>()
@@ -80,8 +80,13 @@ class MapFragment : BaseFragment(), GoogleApiClient.OnConnectionFailedListener, 
 
         this.configureMap()
         this.configureGoogleApiClient()
-        this.configureLocationRequest()
-        this.configureLocationCallback()
+        if (Utils.isLocationEnabled(activity)){
+            this.configureLocationRequest()
+            this.configureLocationCallback()
+        }else{
+            Toast.makeText(activity, resources.getString(R.string.gps_error_message), Toast.LENGTH_SHORT).show()
+        }
+
     }
 
     override fun onStart() {
@@ -146,11 +151,13 @@ class MapFragment : BaseFragment(), GoogleApiClient.OnConnectionFailedListener, 
 
     @SuppressLint("MissingPermission")
     override fun onConnected(p0: Bundle?) {
-        mFusedLocationClient.lastLocation.addOnSuccessListener {
-            if (it != null){
-                this.handleNewLocation(it)
-            }else{
-                mFusedLocationClient.requestLocationUpdates(mLocationRequest,mLocationCallback,null)
+        if (mFusedLocationClient != null){
+            mFusedLocationClient!!.lastLocation.addOnSuccessListener {
+                if (it != null){
+                    this.handleNewLocation(it)
+                }else{
+                    mFusedLocationClient!!.requestLocationUpdates(mLocationRequest,mLocationCallback,null)
+                }
             }
         }
     }
@@ -225,7 +232,9 @@ class MapFragment : BaseFragment(), GoogleApiClient.OnConnectionFailedListener, 
     }
 
     private fun stopLocationUpdate(){
-        mFusedLocationClient.removeLocationUpdates(mLocationCallback)
+        if (mFusedLocationClient != null){
+            mFusedLocationClient!!.removeLocationUpdates(mLocationCallback)
+        }
     }
 
     override fun onLocationChanged(p0: Location?) { this.handleNewLocation(p0!!) }
